@@ -1,16 +1,18 @@
-# exhibition_guide_app
+# 박물관 전시안내 하이브리드 앱
 
-A new Flutter application.
+## module
+- shared_preferences 
+- get
 
-## Getting Started
+## 진행사항
 
-This project is a starting point for a Flutter application.
+### 임시 UI 작업
+- splash UI
+- mian 화면 UI,
+- 앱 공지 UI
+- 전시물 위치 이미지 화면
+- 다운로드 알림 Alert
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 기능
+- GetX router 연동
+- 디바이스 로컬 데이터 저장 (shared_preferences)
