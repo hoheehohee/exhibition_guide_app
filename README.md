@@ -3,6 +3,7 @@
 ## module
 - shared_preferences 
 - get
+- Provider
 
 ## 진행사항
 
@@ -17,3 +18,5 @@
 - GetX router 연동
 - 디바이스 로컬 데이터 저장 (shared_preferences)
 - 설정 화면 Provider 연동
+- Provider 패턴 적용
+- 언어 설정 UI 및 Provider 연동

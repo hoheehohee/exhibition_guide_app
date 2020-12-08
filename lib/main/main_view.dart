@@ -1,4 +1,6 @@
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
+import 'package:exhibition_guide_app/language/language_view.dart';
+import 'package:exhibition_guide_app/museum/museum_view.dart';
 import 'package:exhibition_guide_app/setting/setting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +34,6 @@ class _MainViewState extends State<MainView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isSeeGuide = prefs.getString('isSeeGuide');
 
-    print('########## _isSeeGuide $_isSeeGuide');
     if(_isSeeGuide.isNull || _isSeeGuide == 'init')
       Get.off(
           GuideView(),
@@ -115,7 +116,12 @@ class _MainViewState extends State<MainView> {
           child:  FloatingActionButton(
             heroTag: 2,
             child: Icon(Icons.g_translate),
-            onPressed: () => { print('tttttt') },
+            onPressed: () => {
+              Get.to(
+                LanguageView(),
+                transition: Transition.rightToLeft
+              )
+            },
             elevation: 0,
             backgroundColor: Colors.transparent,
           ),
@@ -174,7 +180,10 @@ class _MainViewState extends State<MainView> {
                 child: InkWell(
                   splashColor: Colors.blue.withAlpha(30),
                   onTap: () {
-                    print('Card tapped.');
+                    Get.to(
+                      MuseumView(),
+                      transition: Transition.fadeIn
+                    );
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
