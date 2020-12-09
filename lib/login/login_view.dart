@@ -1,7 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:exhibition_guide_app/constant.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+GoogleSignIn _googleSignIn = GoogleSignIn(scopes: <String>[
+  'email',
+  'https://www.googleapis.com/auth/contacts.readonly',
+]);
+
+Future<void> login() async {
+  try {
+    await _googleSignIn.signIn();
+  } catch (error) {
+    print(error);
+  }
+}
+// void login() async {
+//   GoogleSignIn _googleSignIn = GoogleSignIn(
+//     scopes: [
+//       'email',
+//       // you can add extras if you require
+//     ],
+//   );
+//
+//   _googleSignIn.signIn().then((GoogleSignInAccount acc) async {
+//     GoogleSignInAuthentication auth = await acc.authentication;
+//     print(acc.id);
+//     print(acc.email);
+//     print(acc.displayName);
+//     print(acc.photoUrl);
+//
+//     acc.authentication.then((GoogleSignInAuthentication auth) async {
+//       print(auth.idToken);
+//       print(auth.accessToken);
+//     });
+//   });
+// }
 
 class LoginView extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +60,8 @@ class LoginView extends StatelessWidget {
       ),
     );
   }
+
+
 
   Widget _socialButtons(BuildContext context) {
     return Center(
@@ -102,7 +140,7 @@ class LoginView extends StatelessWidget {
                 height: 12,
               ),
               MaterialButton(
-                  onPressed: () {},
+                  onPressed: login,
                   color: kWhiteColor,
                   minWidth: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: 16),

@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
 
 import 'login/login_view.dart';
+import 'main/main_view.dart';
 
 void main() {
   runApp(MyApp());
