@@ -39,7 +39,7 @@ class _MainViewState extends State<MainView> {
           GuideView(),
           transition: Transition.fadeIn
       );
-    else if (_isSeeGuide == 'ignore' || _isSeeGuide == 'agree')
+    else if (_isSeeGuide == 'ignore' )
       await prefs.setString('isSeeGuide', 'init');
   }
 
@@ -99,7 +99,7 @@ class _MainViewState extends State<MainView> {
           top: 30,
           child: FloatingActionButton(
             heroTag: 1,
-            child: Icon(Icons.settings),
+            child: Icon(Icons.settings, color: Colors.white),
             onPressed: () => {
               Get.to(
                 SettingView(),
@@ -115,7 +115,7 @@ class _MainViewState extends State<MainView> {
           top: 30,
           child:  FloatingActionButton(
             heroTag: 2,
-            child: Icon(Icons.g_translate),
+            child: Icon(Icons.g_translate, color: Colors.white),
             onPressed: () => {
               Get.to(
                 LanguageView(),
@@ -144,7 +144,7 @@ class _MainViewState extends State<MainView> {
             bottom: 0,
             child: FloatingActionButton(
               heroTag: 3,
-              child: Icon(Icons.arrow_circle_down, size: 28),
+              child: Icon(Icons.arrow_circle_down, size: 28, color: Colors.white),
               onPressed: () {
                 Get.defaultDialog(
                   title: "알림",
