@@ -1,6 +1,7 @@
 import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:exhibition_guide_app/constant.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 void login(BuildContext context) async {
@@ -21,10 +22,7 @@ void login(BuildContext context) async {
       print(auth.idToken);
       print(auth.accessToken);
     });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MainView()),
-    );
+    Get.to(MainView());
   });
 }
 
