@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "673919982070",
+    "project_id": "exhibitiontest-200a8",
+    "storage_bucket": "exhibitiontest-200a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673919982070:android:7b5d5452505e135847cfd7",
+        "android_client_info": {
+          "package_name": "com.example.exhibition_guide_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673919982070-qiogjdqpaji87hr28e2p0va65rvs4fqq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNgqLVgAKYw3jscd7osMNfzdYNVhjWfq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673919982070-qiogjdqpaji87hr28e2p0va65rvs4fqq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
