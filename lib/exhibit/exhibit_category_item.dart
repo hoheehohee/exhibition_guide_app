@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_ink_well/image_ink_well.dart';
 
-class CategoryExhibitItem extends StatelessWidget {
-  CategoryExhibitItem(this.title, this.imageUrl);
+class ExhibitCategoryItem extends StatelessWidget {
+  ExhibitCategoryItem(this.title, this.imageUrl);
   final String title;
   final String imageUrl;
 

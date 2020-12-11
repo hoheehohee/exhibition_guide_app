@@ -1,12 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:drawerbehavior/drawer_scaffold.dart';
+import 'package:drawerbehavior/menu_screen.dart';
 import 'package:exhibition_guide_app/provider/museum_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../menu.dart';
 import 'category_item.dart';
 
-class MuseumView extends StatelessWidget {
+class MuseumView extends StatefulWidget {
+  @override
+  _MuseumViewState createState() => _MuseumViewState();
+}
+
+class _MuseumViewState extends State<MuseumView> {
+  int selectedMenuItemId;
+  DrawerScaffoldController controller = DrawerScaffoldController();
+
+  @override
+  void initState() {
+    selectedMenuItemId = menu.items[0].id;
+    super.initState();
+  }
+
   final List<String> _items = ['전시 카테고리1', '전시 카테고리2', '전시 카테고리3', '전시 카테고리4', '전시 카테고리5', '전시 카테고리6', '전시 카테고리7'];
 
   @override
@@ -14,11 +31,13 @@ class MuseumView extends StatelessWidget {
     final provider = Provider.of<MuseumProvider>(context);
     return DefaultTabController(
         length: 3,
-        child: Scaffold(
+        child: DrawerScaffold(
+          controller: controller,
           appBar: AppBar(
               title: Text("코쟁이 박물관")
           ),
-          body: Column(
+
+          builder: (context, id) =>  Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -37,7 +56,22 @@ class MuseumView extends StatelessWidget {
               )
             ],
           ),
-          drawer: _drawerWidget(),  // left 햄버거 메뉴
+          drawers: [
+            SideDrawer(
+              percentage: 1,
+              textStyle: TextStyle(color: Colors.white, fontSize: 24.0),
+              menu: menu,
+              animation: false,
+              alignment: Alignment.topLeft,
+              color: Colors.white24,
+              selectedItemId: selectedMenuItemId,
+              onMenuItemSelected: (itemId) {
+                setState(() {
+                  selectedMenuItemId = itemId;
+                });
+              },
+            )
+          ],
           bottomNavigationBar: _bottomBar(),  // bottom 버튼
         )
     );
@@ -73,6 +107,7 @@ class MuseumView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        // 검색
         TextField(
             cursorColor: Colors.grey,
             decoration: InputDecoration(
@@ -85,6 +120,7 @@ class MuseumView extends StatelessWidget {
               prefixIcon: Icon(Icons.search, color: Colors.grey,),
             )
         ),
+        // 이미지 슬라이더
         CarouselSlider(
             options: CarouselOptions(
               height: 150,
@@ -99,7 +135,8 @@ class MuseumView extends StatelessWidget {
             ),
             items: _imageItems(provider.imageList)
         ),
-        Row(
+        // 상설전시 체크박
+       Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -117,6 +154,7 @@ class MuseumView extends StatelessWidget {
             Text('상설전시', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
           ],
         ),
+        // 카테고리 리스트
         Expanded(
           flex: 2,
           child: ListView.builder(
@@ -129,7 +167,6 @@ class MuseumView extends StatelessWidget {
   }
 
   List<Widget> _imageItems(imgList) {
-
     List<Widget> result = [];
     for (var i = 0; i < imgList.length; i++) {
       result.add(Container(

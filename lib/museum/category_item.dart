@@ -1,4 +1,4 @@
-import 'package:exhibition_guide_app/category/category_view.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_category_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +23,7 @@ class CategoryItem extends StatelessWidget {
       ),
       onTap: () {
         Get.to(
-          CategoryView(),
+            ExhibitCategoryView(),
           transition: Transition.fadeIn
         );
       },

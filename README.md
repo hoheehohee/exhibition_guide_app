@@ -6,6 +6,8 @@
 - Provider
 - image_ink_well
 - carousel_slider
+- cached_network_image
+- drawerbehavior
 
 ## 진행사항
 
@@ -18,6 +20,10 @@
 - 언어 설정 UI
 - 전시정보 UI
 - 상설전시 목록 UI
+- 전시 목록 UI
+- 전시 상세 UI
+- 예약 신청 UI
+- 예약 신청 확인 UI
 
 ### 기능
 - GetX router 연동
@@ -28,4 +34,5 @@
 - 이미지 slider 적용 
 - 전시정보 Provider 연동
 - 이미지 로딩 비동기 로직 구현
+- drawerbehavior 구현 중
 
