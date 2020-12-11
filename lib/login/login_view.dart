@@ -1,8 +1,8 @@
 import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:exhibition_guide_app/constant.dart';
-import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:dio/dio.dart';
 
 void login(BuildContext context) async {
   GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -11,19 +11,20 @@ void login(BuildContext context) async {
     ],
   );
 
-  _googleSignIn.signIn().then((GoogleSignInAccount acc) async {
-    GoogleSignInAuthentication auth = await acc.authentication;
-    print(acc.id);
-    print(acc.email);
-    print(acc.displayName);
-    print(acc.photoUrl);
+  GoogleSignInAccount acc = await _googleSignIn.signIn();
+  GoogleSignInAuthentication auth = await acc.authentication;
+  Dio dio = new Dio();
 
-    acc.authentication.then((GoogleSignInAuthentication auth) async {
-      print(auth.idToken);
-      print(auth.accessToken);
-    });
-    Get.to(MainView());
-  });
+  Response response = await dio.post(
+                            "http://127.0.0.1:8080/v1/login/sns",
+                            data: {"authType": "g", "accessToken": auth.accessToken},
+                            options: Options(
+                              headers: {
+                                Headers.contentTypeHeader: "application/json",
+                              },
+                            ),
+                          );
+  print(response);
 }
 
 class LoginView extends StatelessWidget {
