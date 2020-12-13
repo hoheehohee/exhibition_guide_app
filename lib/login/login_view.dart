@@ -2,9 +2,13 @@ import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:exhibition_guide_app/constant.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' ;
+import 'package:get/get.dart' hide Response;
+import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:flutter_kakao_login/flutter_kakao_login.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
-void login(BuildContext context) async {
+void googleLogin() async {
   GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
@@ -13,18 +17,58 @@ void login(BuildContext context) async {
 
   GoogleSignInAccount acc = await _googleSignIn.signIn();
   GoogleSignInAuthentication auth = await acc.authentication;
+  Map data = {"authType": "g", "accessToken": auth.accessToken};
+  checkServer(data);
+}
+
+void naverLogin() async {
+  final NaverLoginResult result = await FlutterNaverLogin.logIn();
+  NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
+  Map data = {"authType": "n", "accessToken": res.accessToken};
+  checkServer(data);
+}
+
+void kakaoLogin() async {
+  FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();
+  await kakaoSignIn.logIn();
+  KakaoToken token = await (kakaoSignIn.currentToken);
+  print(token.accessToken);
+  Map data = {"authType": "k", "accessToken": token.accessToken};
+  checkServer(data);
+}
+
+void facebookLogin() async {
+  final fb = FacebookLogin();
+
+// Log in
+  final res = await fb.logIn(permissions: [
+    FacebookPermission.publicProfile,
+    FacebookPermission.email,
+  ]);
+
+  if (res.status == FacebookLoginStatus.Success) {
+    final FacebookAccessToken accessToken = res.accessToken;
+    print('Access token: ${accessToken.token}');
+    Map data = {"authType": "f", "accessToken": accessToken.token};
+    checkServer(data);
+  }
+}
+
+void checkServer(data) async {
   Dio dio = new Dio();
 
   Response response = await dio.post(
-                            "http://127.0.0.1:8080/v1/login/sns",
-                            data: {"authType": "g", "accessToken": auth.accessToken},
-                            options: Options(
-                              headers: {
-                                Headers.contentTypeHeader: "application/json",
-                              },
-                            ),
-                          );
-  print(response);
+    "http://172.16.11.225:8080/v1/login/sns",
+    data: data,
+    options: Options(
+      headers: {
+        Headers.contentTypeHeader: "application/json",
+      },
+    ),
+  );
+
+  print(response.data["token"]);
+  Get.to(MainView());
 }
 
 class LoginView extends StatelessWidget {
@@ -63,7 +107,7 @@ class LoginView extends StatelessWidget {
             children: [
               MaterialButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/exhibitionMain');
+                    kakaoLogin();
                   },
                   color: kKakaoColor,
                   minWidth: double.infinity,
@@ -86,9 +130,7 @@ class LoginView extends StatelessWidget {
               ),
               MaterialButton(
                   onPressed: () {
-                    // Navigator.of(context).push(
-                    //     MaterialPageRoute(builder: (context) => FlutterBeacon())
-                    // );
+                    naverLogin();
                   },
                   color: kNaverColor,
                   minWidth: double.infinity,
@@ -109,7 +151,9 @@ class LoginView extends StatelessWidget {
                 height: 12,
               ),
               MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  facebookLogin();
+                },
                 color: kFacebookColor,
                 minWidth: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 16),
@@ -132,7 +176,7 @@ class LoginView extends StatelessWidget {
               ),
               MaterialButton(
                   onPressed:() {
-                    login(context);
+                    googleLogin();
                   },
                   color: kWhiteColor,
                   minWidth: double.infinity,
