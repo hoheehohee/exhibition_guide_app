@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../main/main_view.dart';
 
 class BookingCheck extends StatelessWidget {
   @override
@@ -10,14 +13,18 @@ class BookingCheck extends StatelessWidget {
               builder: (BuildContext context) => (
                   IconButton(
                       icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () {}
+                      onPressed: () {
+                        Get.back();
+                      }
                   )
               )
           ),
           actions:[
             IconButton(
               icon: Icon(Icons.home_outlined),
-              onPressed: () {},
+              onPressed: () {
+                Get.offAll(MainView());
+              },
             )
           ]
       ),

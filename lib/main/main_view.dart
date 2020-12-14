@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:exhibition_guide_app/guide/guide_view.dart';
 
+import '../exhibit/exhibit_detail.dart';
 import '../message.dart';
 
 class MainView extends StatefulWidget {
@@ -212,7 +213,9 @@ class _MainViewState extends State<MainView> {
                 child: InkWell(
                   splashColor: Colors.blue.withAlpha(30),
                   onTap: () {
-                    print('Card tapped.');
+                    Get.to(
+                      ExhibitDetail()
+                    );
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

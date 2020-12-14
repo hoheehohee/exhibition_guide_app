@@ -24,6 +24,7 @@
 - 전시 상세 UI
 - 예약 신청 UI
 - 예약 신청 확인 UI
+- lnb 메뉴 UI
 
 ### 기능
 - GetX router 연동

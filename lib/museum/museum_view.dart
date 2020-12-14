@@ -4,8 +4,11 @@ import 'package:drawerbehavior/drawer_scaffold.dart';
 import 'package:drawerbehavior/menu_screen.dart';
 import 'package:exhibition_guide_app/provider/museum_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import '../booking/booking_view.dart';
+import '../exhibit/exhibit_category_view.dart';
 import '../menu.dart';
 import 'category_item.dart';
 
@@ -58,16 +61,52 @@ class _MuseumViewState extends State<MuseumView> {
           ),
           drawers: [
             SideDrawer(
+              itemBuilder: (BuildContext context, MenuItem menuItem, bool isSelected) {
+                return Container(
+                  height: 60,
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(width: 1.5, color: Colors.grey)
+                    )
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(Icons.bookmark, color: Colors.white),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                            menuItem.title,
+                            style: TextStyle(fontSize: 20, color: Colors.white)
+                        )
+                      )
+                    ],
+                  )
+                );
+              },
               percentage: 1,
-              textStyle: TextStyle(color: Colors.white, fontSize: 24.0),
               menu: menu,
               animation: false,
               alignment: Alignment.topLeft,
               color: Colors.white24,
               selectedItemId: selectedMenuItemId,
+              textStyle: TextStyle(color: Colors.white, fontSize: 24.0),
               onMenuItemSelected: (itemId) {
                 setState(() {
                   selectedMenuItemId = itemId;
+                  switch(itemId){
+                    case 0:
+                      Get.to(MuseumView());
+                      break;
+                    case 1:
+                      Get.to(ExhibitCategoryView());
+                      break;
+                    case 6:
+                      Get.to(BookingView());
+                      break;
+                  }
                 });
               },
             )
@@ -76,29 +115,6 @@ class _MuseumViewState extends State<MuseumView> {
         )
     );
   }
-
-  Widget _drawerWidget() => (
-      Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            Column(
-              children: [
-                SizedBox(height: 30),
-                ListTile(
-                  title: Text('Item 1'),
-                  onTap: () {},
-                ),
-                ListTile(
-                  title: Text('Item 2'),
-                  onTap: () {},
-                ),
-              ],
-            ),
-          ],
-        ),
-      )
-  );
 
   Widget _mainWidget(BuildContext context) {
     final provider = Provider.of<MuseumProvider>(context);

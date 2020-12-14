@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../main/main_view.dart';
+import 'booking_check.dart';
 
 class BookingView extends StatelessWidget {
   @override
@@ -10,14 +14,20 @@ class BookingView extends StatelessWidget {
               builder: (BuildContext context) => (
                   IconButton(
                       icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () {}
+                      onPressed: () {
+                        Get.back();
+                      }
                   )
               )
           ),
           actions:[
             IconButton(
               icon: Icon(Icons.home_outlined),
-              onPressed: () {},
+              onPressed: () {
+                Get.offAll(
+                  MainView()
+                );
+              },
             )
           ]
       ),
@@ -342,7 +352,11 @@ class BookingView extends StatelessWidget {
             borderRadius: BorderRadius.circular(5.0),
           ),
           child: Text('이용신청 완료', style: TextStyle(fontSize: 18, color: Colors.white)),
-          onPressed: () {},
+          onPressed: () {
+            Get.to(
+              BookingCheck()
+            );
+          },
         )
     );
   }

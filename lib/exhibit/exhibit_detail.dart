@@ -1,8 +1,33 @@
 import 'package:exhibition_guide_app/museum/museum_view.dart';
+import 'package:exhibition_guide_app/provider/device_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
-class ExhibitDetail extends StatelessWidget {
+class ExhibitDetail extends StatefulWidget {
+  @override
+  _ExhibitDetailState createState() => _ExhibitDetailState();
+}
+
+class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserver {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // Future.microtask(() {
+    //   Provider.of<DeviceProvider>(context, listen: false).init();
+    // });
+  }
+
+  @override
+  void dispose() {
+    print("Dispose DeviceListScreenState");
+    // Provider.of<DeviceProvider>(context, listen: false).dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +112,9 @@ class ExhibitDetail extends StatelessWidget {
                                   IconButton(
                                     iconSize: 30,
                                     icon: Icon(Icons.bluetooth_disabled),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Provider.of<DeviceProvider>(context, listen: false).refresh();
+                                    },
                                   )
                                 ]
                             )

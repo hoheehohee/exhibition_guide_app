@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:exhibition_guide_app/provider/device_provider.dart';
 import 'package:exhibition_guide_app/provider/language_provider.dart';
 import 'package:exhibition_guide_app/provider/museum_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ble_lib/flutter_ble_lib.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +16,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
+  BleManager bleManager = BleManager();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -20,6 +24,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SettingProvider()),
         ChangeNotifierProvider(create: (context) => LanguageProvider()),
         ChangeNotifierProvider(create: (context) => MuseumProvider()),
+        ChangeNotifierProvider(create: (context) => DeviceProvider(bleManager))
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
