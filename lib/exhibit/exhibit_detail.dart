@@ -1,8 +1,61 @@
 import 'package:exhibition_guide_app/museum/museum_view.dart';
+import 'package:exhibition_guide_app/provider/devices_provicer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
-class ExhibitDetail extends StatelessWidget {
+class ExhibitDetail extends StatefulWidget {
+  @override
+  State<ExhibitDetail> createState() => ExhibitDetailState();
+}
+
+class ExhibitDetailState extends State<ExhibitDetail> {
+  Provider _deviceseProvider;
+  StreamSubscription _appStateSubscription;
+
+  bool _shouldRunOnResume = true;
+
+  void _onPause() {
+    print("##### onPause");
+    _appStateSubscription.cancel();
+    _deviceseProvider.dispose();
+  }
+
+  void _onResume() {
+    print("##### onResume");
+    _deviceseProvider.init();
+
+    _appStateSubscription = _deviceseProvider.pickedDevice.listen((bleDevice) async {
+      print("##### navigate to details");
+      _onPause();
+      // await Navigator.pushNamed(context, "/details");
+      setState(() {
+        _shouldRunOnResume = true;
+      });
+      print("##### back from details");
+    });
+  }
+
+  @override
+  void didUpdateWidget(ExhibitDetail oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print("##### didUpdateWidget");
+  }
+
+  // didChangeDependencies 메서드는 위젯이 최초 생성될 때 initState 다음에 바로 호출된다.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print("##### DeviceListScreenState didChangeDependencies");
+    if (_dviceseProvider == null) {
+      _dviceseProvider = Provider.of<DevicesProvider>(context, listen: false);
+      if (_shouldRunOnResume) {
+        _shouldRunOnResume = false;
+        _onResume();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +87,13 @@ class ExhibitDetail extends StatelessWidget {
       body: _mainView(),
       bottomNavigationBar: _bottomButtons(),
     );
+  }
+
+  @override
+  void dispose() {
+    Fimber.d("Dispose DeviceListScreenState");
+    _onPause();
+    super.dispose();
   }
 
   Widget _mainView() {
