@@ -47,9 +47,8 @@ class ExhibitCategoryView extends StatelessWidget {
               padding: EdgeInsets.zero,
               icon: Icon(Icons.home_outlined),
               onPressed: () {
-                Get.off(
+                Get.offAll(
                   MainView(),
-                  transition: Transition.fadeIn
                 );
               },
             )

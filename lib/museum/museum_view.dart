@@ -2,6 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drawerbehavior/drawer_scaffold.dart';
 import 'package:drawerbehavior/menu_screen.dart';
+import 'package:exhibition_guide_app/crm/customer_center_view.dart';
+import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
+import 'package:exhibition_guide_app/language/language_view.dart';
+import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:exhibition_guide_app/provider/museum_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -103,8 +107,20 @@ class _MuseumViewState extends State<MuseumView> {
                     case 1:
                       Get.to(ExhibitCategoryView());
                       break;
+                    case 2:
+                      Get.to(ExhibitionMapView());
+                      break;
+                    case 4:
+                      Get.to(CustomerCenterView());
+                      break;
+                    case 5:
+                      Get.to(LanguageView());
+                      break;
                     case 6:
                       Get.to(BookingView());
+                      break;
+                    case 7:
+                      Get.to(MyPageView(0));
                       break;
                   }
                 });

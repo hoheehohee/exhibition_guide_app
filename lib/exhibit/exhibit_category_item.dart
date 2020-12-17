@@ -1,4 +1,6 @@
+import 'package:exhibition_guide_app/exhibit/exhibit_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_ink_well/image_ink_well.dart';
 
 class ExhibitCategoryItem extends StatelessWidget {
@@ -22,7 +24,12 @@ class ExhibitCategoryItem extends StatelessWidget {
               width: double.infinity,
               height: 50,
               image: NetworkImage(imageUrl),
-              onPressed: () {}
+              onPressed: () {
+                Get.to(
+                  ExhibitDetail(),
+                  transition: Transition.fadeIn
+                );
+              }
           ),
           Text(title, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold))
         ],

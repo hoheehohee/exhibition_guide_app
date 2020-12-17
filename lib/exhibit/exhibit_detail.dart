@@ -1,8 +1,11 @@
-import 'package:exhibition_guide_app/museum/museum_view.dart';
-import 'package:exhibition_guide_app/provider/device_provider.dart';
+import 'dart:async';
+
+import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+
+import '../main/main_view.dart';
 
 class ExhibitDetail extends StatefulWidget {
   @override
@@ -11,22 +14,50 @@ class ExhibitDetail extends StatefulWidget {
 
 class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserver {
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // Future.microtask(() {
-    //   Provider.of<DeviceProvider>(context, listen: false).init();
+  StreamSubscription _appStateSubscription;
+  bool _shouldRunOnResume = true;
+
+  void _onPause() {
+    print("##### onPause");
+    _appStateSubscription.cancel();
+    Provider.of<DevicesProvider>(context).dispose();
+  }
+
+  void _onResume() {
+    print("##### onResume");
+    final _deviceseProvider = Provider.of<DevicesProvider>(context);
+
+    // _appStateSubscription = _deviceseProvider.pickedDevice.listen((bleDevice) async {
+    //   print("##### navigate to details");
+      _onPause();
+    //   // await Navigator.pushNamed(context, "/details");
+    //   setState(() {
+    //     _shouldRunOnResume = true;
+    //   });
+    //   print("##### back from details");
     // });
   }
 
   @override
-  void dispose() {
-    print("Dispose DeviceListScreenState");
-    // Provider.of<DeviceProvider>(context, listen: false).dispose();
-    super.dispose();
+  void didUpdateWidget(ExhibitDetail oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print("##### didUpdateWidget");
   }
 
+  // didChangeDependencies 메서드는 위젯이 최초 생성될 때 initState 다음에 바로 호출된다.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print("##### DeviceListScreenState didChangeDependencies");
+    Provider.of<DevicesProvider>(context).init();
+    // if (_deviceseProvider == null) {
+    //   _deviceseProvider = Provider.of<DevicesProvider>(context, listen: false);
+    //   if (_shouldRunOnResume) {
+    //     _shouldRunOnResume = false;
+    //     _onResume();
+    //   }
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +79,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
               padding: EdgeInsets.zero,
               icon: Icon(Icons.home_outlined),
               onPressed: () {
-                Get.off(
-                  MuseumView(),
-                  transition: Transition.fadeIn
-                );
+                Get.offAll(MainView());
               },
             )
           ]
@@ -113,7 +141,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                                     iconSize: 30,
                                     icon: Icon(Icons.bluetooth_disabled),
                                     onPressed: () {
-                                      Provider.of<DeviceProvider>(context, listen: false).refresh();
+                                      Provider.of<DevicesProvider>(context, listen: false).refresh();
                                     },
                                   )
                                 ]

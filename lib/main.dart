@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:exhibition_guide_app/provider/device_provider.dart';
+import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/language_provider.dart';
 import 'package:exhibition_guide_app/provider/museum_provider.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SettingProvider()),
         ChangeNotifierProvider(create: (context) => LanguageProvider()),
         ChangeNotifierProvider(create: (context) => MuseumProvider()),
-        ChangeNotifierProvider(create: (context) => DeviceProvider(bleManager))
+        ChangeNotifierProvider(create: (context) => DevicesProvider(bleManager))
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,

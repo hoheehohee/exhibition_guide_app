@@ -1,3 +1,4 @@
+import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +24,10 @@ class BookingCheck extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.home_outlined),
               onPressed: () {
-                Get.offAll(MainView());
+                Get.offAll(
+                    MainView(),
+                    transition: Transition.fadeIn
+                );
               },
             )
           ]
@@ -181,7 +185,12 @@ class BookingCheck extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       child: Text('신청현황 확인', style: TextStyle(fontSize: 18, color: Colors.white)),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(
+                          MyPageView(1),
+                          transition: Transition.rightToLeft
+                        );
+                      },
                     )
                 ),
               )
