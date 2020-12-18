@@ -41,4 +41,5 @@
 - 전시정보 Provider 연동
 - 이미지 로딩 비동기 로직 구현
 - drawerbehavior 구현 중
+- social 로그인 비지니스 로직 분리
 

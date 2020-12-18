@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="client_id">UgP4HViLrFYYNjpVdmaX</string>
+    <string name="client_secret">Lgc3aRodeD</string>
+    <string name="client_name">exhibition</string>
+    <string name="kakao_app_key">cf1b1bd224be28380b11659982f4f52f</string>
+    <string name="facebook_app_id">2310441535938116</string>
+</resources>

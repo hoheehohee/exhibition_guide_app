@@ -1,8 +1,14 @@
+import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+
+import 'login_dialog_view.dart';
 
 class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _social = Provider.of<SocialProvider>(context);
     return Container(
         color: Colors.white,
         child: Column(
@@ -10,8 +16,9 @@ class ProfileView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 10,),
-            _loginView(),
-            // _notLogin(),
+            _social.isSocialLogin
+            ? _loginView()
+            : _notLogin(),
             SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -173,24 +180,27 @@ class ProfileView extends StatelessWidget {
                   ]
               )
             ),
-            _qnaList(),
-            // Center(
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.center,
-            //     children: [
-            //       Container(
-            //         width: 80,
-            //         height: 80,
-            //         margin: EdgeInsets.only(bottom: 10),
-            //         decoration: BoxDecoration(
-            //             color: Colors.grey.withOpacity(0.3),
-            //             borderRadius: BorderRadius.circular(50)
-            //         ),
-            //       ),
-            //       Text('로그인된 정보가 없습니다', style: TextStyle(color: Colors.grey.withOpacity(0.3)),)
-            //     ],
-            //   )
-            // )
+            _social.isSocialLogin
+            ? _qnaList()
+            : (
+              Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 80,
+                        margin: EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(50)
+                        ),
+                      ),
+                      Text('로그인된 정보가 없습니다', style: TextStyle(color: Colors.grey.withOpacity(0.3)),)
+                    ],
+                  )
+              )
+            )
           ],
         ));
   }
@@ -262,7 +272,11 @@ class ProfileView extends StatelessWidget {
                       color: Colors.white,
                       child: IconButton(
                         splashRadius: 20,
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.dialog(
+                            LoginDialogView(),
+                          );
+                        },
                         icon: Icon(Icons.arrow_forward_ios, color: Colors.orange),
                       ),
                     )

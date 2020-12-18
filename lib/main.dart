@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/language_provider.dart';
 import 'package:exhibition_guide_app/provider/museum_provider.dart';
+import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ble_lib/flutter_ble_lib.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SettingProvider()),
         ChangeNotifierProvider(create: (context) => LanguageProvider()),
         ChangeNotifierProvider(create: (context) => MuseumProvider()),
-        ChangeNotifierProvider(create: (context) => DevicesProvider(bleManager))
+        ChangeNotifierProvider(create: (context) => DevicesProvider(bleManager)),
+        ChangeNotifierProvider(create: (context) => SocialProvider()),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,

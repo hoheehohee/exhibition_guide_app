@@ -1,9 +1,11 @@
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/language/language_view.dart';
 import 'package:exhibition_guide_app/museum/museum_view.dart';
+import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:exhibition_guide_app/setting/setting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:exhibition_guide_app/guide/guide_view.dart';
@@ -32,6 +34,7 @@ class _MainViewState extends State<MainView> {
 
   void _init() async {
 
+    // 첫 가이드 화면 노출 여부 체크
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isSeeGuide = prefs.getString('isSeeGuide');
 
@@ -42,6 +45,11 @@ class _MainViewState extends State<MainView> {
       );
     else if (_isSeeGuide == 'ignore' )
       await prefs.setString('isSeeGuide', 'init');
+
+    // social 로그인 체크
+    Future.microtask(() {
+      Provider.of<SocialProvider>(context, listen: false).socialLoginCheck();
+    });
   }
 
   @override
