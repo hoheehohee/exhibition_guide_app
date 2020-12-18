@@ -55,19 +55,19 @@ void facebookLogin() async {
 }
 
 void checkServer(data) async {
-  Dio dio = new Dio();
-
-  Response response = await dio.post(
-    "http://172.16.11.225:8080/v1/login/sns",
-    data: data,
-    options: Options(
-      headers: {
-        Headers.contentTypeHeader: "application/json",
-      },
-    ),
-  );
-
-  print(response.data["token"]);
+  // Dio dio = new Dio();
+  //
+  // Response response = await dio.post(
+  //   "http://172.16.11.225:8080/v1/login/sns",
+  //   data: data,
+  //   options: Options(
+  //     headers: {
+  //       Headers.contentTypeHeader: "application/json",
+  //     },
+  //   ),
+  // );
+  //
+  // print(response.data["token"]);
   Get.to(MainView());
 }
 

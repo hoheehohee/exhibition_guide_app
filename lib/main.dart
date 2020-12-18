@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
               centerTitle: true
           ),
         ),
-        home: MainView(),
+        home: LoginView(),
       ),
     );
   }
