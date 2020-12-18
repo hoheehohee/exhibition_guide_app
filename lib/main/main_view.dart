@@ -1,11 +1,16 @@
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
+import 'package:exhibition_guide_app/language/language_view.dart';
+import 'package:exhibition_guide_app/museum/museum_view.dart';
+import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:exhibition_guide_app/setting/setting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:exhibition_guide_app/guide/guide_view.dart';
 
+import '../exhibit/exhibit_detail.dart';
 import '../message.dart';
 
 class MainView extends StatefulWidget {
@@ -29,17 +34,22 @@ class _MainViewState extends State<MainView> {
 
   void _init() async {
 
+    // 첫 가이드 화면 노출 여부 체크
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isSeeGuide = prefs.getString('isSeeGuide');
 
-    print('########## _isSeeGuide $_isSeeGuide');
     if(_isSeeGuide.isNull || _isSeeGuide == 'init')
       Get.off(
           GuideView(),
           transition: Transition.fadeIn
       );
-    else if (_isSeeGuide == 'ignore' || _isSeeGuide == 'agree')
+    else if (_isSeeGuide == 'ignore' )
       await prefs.setString('isSeeGuide', 'init');
+
+    // social 로그인 체크
+    Future.microtask(() {
+      Provider.of<SocialProvider>(context, listen: false).socialLoginCheck();
+    });
   }
 
   @override
@@ -98,7 +108,7 @@ class _MainViewState extends State<MainView> {
           top: 30,
           child: FloatingActionButton(
             heroTag: 1,
-            child: Icon(Icons.settings),
+            child: Icon(Icons.settings, color: Colors.white),
             onPressed: () => {
               Get.to(
                 SettingView(),
@@ -114,8 +124,13 @@ class _MainViewState extends State<MainView> {
           top: 30,
           child:  FloatingActionButton(
             heroTag: 2,
-            child: Icon(Icons.g_translate),
-            onPressed: () => { print('tttttt') },
+            child: Icon(Icons.g_translate, color: Colors.white),
+            onPressed: () => {
+              Get.to(
+                LanguageView(),
+                transition: Transition.rightToLeft
+              )
+            },
             elevation: 0,
             backgroundColor: Colors.transparent,
           ),
@@ -138,7 +153,7 @@ class _MainViewState extends State<MainView> {
             bottom: 0,
             child: FloatingActionButton(
               heroTag: 3,
-              child: Icon(Icons.arrow_circle_down, size: 28),
+              child: Icon(Icons.arrow_circle_down, size: 28, color: Colors.white),
               onPressed: () {
                 Get.defaultDialog(
                   title: "알림",
@@ -174,7 +189,10 @@ class _MainViewState extends State<MainView> {
                 child: InkWell(
                   splashColor: Colors.blue.withAlpha(30),
                   onTap: () {
-                    print('Card tapped.');
+                    Get.to(
+                      MuseumView(),
+                      transition: Transition.fadeIn
+                    );
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -203,7 +221,9 @@ class _MainViewState extends State<MainView> {
                 child: InkWell(
                   splashColor: Colors.blue.withAlpha(30),
                   onTap: () {
-                    print('Card tapped.');
+                    Get.to(
+                      ExhibitDetail()
+                    );
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

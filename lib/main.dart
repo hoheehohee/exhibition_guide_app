@@ -1,8 +1,16 @@
+import 'dart:async';
+
+import 'package:exhibition_guide_app/provider/devices_provider.dart';
+import 'package:exhibition_guide_app/provider/language_provider.dart';
+import 'package:exhibition_guide_app/provider/museum_provider.dart';
+import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ble_lib/flutter_ble_lib.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 import 'package:exhibition_guide_app/main/main_view.dart';
+import 'provider/setting_provider.dart';
 
 import 'login/login_view.dart';
 import 'main/main_view.dart';
@@ -12,17 +20,36 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
+  BleManager bleManager = BleManager();
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SettingProvider()),
+        ChangeNotifierProvider(create: (context) => LanguageProvider()),
+        ChangeNotifierProvider(create: (context) => MuseumProvider()),
+        ChangeNotifierProvider(create: (context) => DevicesProvider(bleManager)),
+        ChangeNotifierProvider(create: (context) => SocialProvider()),
+      ],
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.grey,
+          primaryTextTheme: TextTheme(
+              headline6: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold
+              )
+          ),
+          appBarTheme: AppBarTheme(
+              color: Colors.white,
+//           elevation: 0.0,
+              centerTitle: true
+          ),
+        ),
+        home: MainView(),
       ),
-      home: LoginView(),
     );
   }
 }

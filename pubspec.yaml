@@ -37,6 +37,17 @@ dependencies:
   flutter_naver_login: ^1.2.0
   flutter_kakao_login: ^1.2.0
   flutter_login_facebook: ^0.4.0+1
+  image_ink_well: ^0.1.0
+  carousel_slider: ^2.3.1
+  cached_network_image: 2.3.3
+  drawerbehavior: ^1.1.4
+  flutter_ble_lib: ^2.3.1
+  permission_handler: ^4.2.0+hotfix.3
+  dio: 3.0.10
+  flutter_naver_login: ^1.2.0
+  flutter_kakao_login: ^1.2.0
+  flutter_login_facebook: ^0.4.0+1
+  google_sign_in: ^4.5.6
 
 dev_dependencies:
   flutter_test:

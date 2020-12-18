@@ -2,6 +2,47 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <!-- 소셜로그인 -->
+    <!-- kakao -->
+    <key>KAKAO_APP_KEY</key>
+    <string>cf1b1bd224be28380b11659982f4f52f</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>kakaocf1b1bd224be28380b11659982f4f52f</string>
+        <string>kakaokompassauth</string>
+        <string>storykompassauth</string>
+        <string>kakaolink</string>
+        <string>storylink</string>
+    </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>com.example.exhibitionGuideApp</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>kakaocf1b1bd224be28380b11659982f4f52f</string>
+            </array>
+        </dict>
+    </array>
+    <!-- flutter_beacon -->
+    <!-- When in use -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Reason why app needs location</string>
+    <!-- Always -->
+    <!-- for iOS 11 + -->
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Reason why app needs location</string>
+    <!-- for iOS 9/10 -->
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Reason why app needs location</string>
+    <!-- Bluetooth Privacy -->
+    <!-- for iOS 13 + -->
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Reason why app needs bluetooth</string>
+    <!-- flutter_beacon -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
