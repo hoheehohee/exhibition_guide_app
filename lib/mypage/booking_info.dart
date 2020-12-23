@@ -1,5 +1,6 @@
 import 'package:exhibition_guide_app/booking/booking_state_view.dart';
 import 'package:exhibition_guide_app/crm/customer_center_view.dart';
+import 'package:exhibition_guide_app/model/ble_device.dart';
 import 'package:exhibition_guide_app/model/booking_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

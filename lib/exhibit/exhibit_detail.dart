@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,49 +12,11 @@ class ExhibitDetail extends StatefulWidget {
 
 class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserver {
 
-  StreamSubscription _appStateSubscription;
-  bool _shouldRunOnResume = true;
-
-  void _onPause() {
-    print("##### onPause");
-    _appStateSubscription.cancel();
-    Provider.of<DevicesProvider>(context).dispose();
-  }
-
-  void _onResume() {
-    print("##### onResume");
-    final _deviceseProvider = Provider.of<DevicesProvider>(context);
-
-    // _appStateSubscription = _deviceseProvider.pickedDevice.listen((bleDevice) async {
-    //   print("##### navigate to details");
-      _onPause();
-    //   // await Navigator.pushNamed(context, "/details");
-    //   setState(() {
-    //     _shouldRunOnResume = true;
-    //   });
-    //   print("##### back from details");
-    // });
-  }
-
   @override
-  void didUpdateWidget(ExhibitDetail oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print("##### didUpdateWidget");
-  }
-
-  // didChangeDependencies 메서드는 위젯이 최초 생성될 때 initState 다음에 바로 호출된다.
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print("##### DeviceListScreenState didChangeDependencies");
-    Provider.of<DevicesProvider>(context).init();
-    // if (_deviceseProvider == null) {
-    //   _deviceseProvider = Provider.of<DevicesProvider>(context, listen: false);
-    //   if (_shouldRunOnResume) {
-    //     _shouldRunOnResume = false;
-    //     _onResume();
-    //   }
-    // }
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<DevicesProvider>(context, listen: false).init();
   }
 
   @override
@@ -84,12 +44,13 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             )
           ]
       ),
-      body: _mainView(),
+      body: _mainView(context),
       bottomNavigationBar: _bottomButtons(),
     );
   }
 
-  Widget _mainView() {
+  Widget _mainView(BuildContext context) {
+    final _device = Provider.of<DevicesProvider>(context);
     final _imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0g6e6r-vJ7ov7qryFzHHedU2Jd4s6ueRhDw&usqp=CAU";
     final _text = "고흐는 막 화가일을 시작했을 당시부터 친하게 지내던 폴 고갱과 프랑스의 아를에서 잠시 공동 생활을 한 적이 있었는데, 이 기간 중에 둘의 사이는 점점 멀어지기 시작하며 나중에는 고갱이 고흐에게 돈도 못버는 화가라고 욕을 하고, 고흐는 고갱을 보고 돈만 아는 화가라고 욕할 지경에 다다랐다. 그러던 와중 아를의 카페 주인(마담 지누)을 고흐와 고갱이 전혀 다르게 묘사하자 고갱은 '술집여자일 뿐이다', 고흐는 '그래도 창녀처럼 그리는 것은 아니다'라는 주제로 다투던 와중 자신의 귀를 잘랐는데[1] 그 후 마을에서 정신병자 취급을 받자 생 레미 요양원에서 요양하며 느꼈던 정신적 고통을 소용돌이로 묘사했다고 한다.";
 
@@ -141,7 +102,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                                     iconSize: 30,
                                     icon: Icon(Icons.bluetooth_disabled),
                                     onPressed: () {
-                                      Provider.of<DevicesProvider>(context, listen: false).refresh();
+                                      _device.scan();
                                     },
                                   )
                                 ]
@@ -213,7 +174,9 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                                 IconButton(
                                   iconSize: 30,
                                   icon: Icon(Icons.language),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _device.connect();
+                                  },
                                 )
                               ]
                           )

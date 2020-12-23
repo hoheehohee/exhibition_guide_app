@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => SettingProvider()),
         ChangeNotifierProvider(create: (context) => LanguageProvider()),
         ChangeNotifierProvider(create: (context) => MuseumProvider()),
-        ChangeNotifierProvider(create: (context) => DevicesProvider(bleManager)),
         ChangeNotifierProvider(create: (context) => SocialProvider()),
+        ChangeNotifierProvider(create: (context) => DevicesProvider(bleManager)),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -7,134 +8,198 @@ import 'package:flutter_ble_lib/flutter_ble_lib.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class DevicesProvider extends ChangeNotifier {
-  final List<BleDevice> bleDevices = <BleDevice>[];
   BleManager _bleManager;
+  bool _isScanning = false; // 스캔 확인
+  bool _connected = false;  // 디바이스 연결
+  Peripheral _curPeripheral;
+  List<BleDevice> _deviceList = [];
+  String _statusText = '';             // BLE 상태 변수
+
+  BleDevice _device;
 
   DevicesProvider(this._bleManager);
 
-  // 초기값
-  List<BleDevice> _visibleDevicesController = <BleDevice>[];
-  // 스트림
-  StreamController<BleDevice> _devicePickerController = StreamController<BleDevice>();
-
-  StreamSubscription<ScanResult> _scanSubscription;
-  StreamSubscription _devicePickerSubscription;
-
-  List<BleDevice> get visibleDevicesController => _visibleDevicesController;
-
-  PermissionStatus _locationPermissionStatus = PermissionStatus.unknown;
-
-  // Stream<BleDevice> get pickDevice => _deviceRepository
-
-  // void _handlePickedDevice(BleDevice bleDevice) {
-  //   _deviceRepository.pickDevice(bleDevice);
-  // }
-
-  void dispose() {
-    print("##### cancel _devicePickerSubscription");
-    _devicePickerSubscription.cancel();
-    // _visibleDevicesController.close();
-    _devicePickerController.close();
-    _scanSubscription?.cancel();
+  void init() async {
+    print("##### init");
+    //ble 매니저 생성
+    await _bleManager.createClient(
+      // restoreStateIdentifier: "com.example.exhibitionGuideApp",
+        restoreStateAction: (peripherals) {
+          peripherals?.forEach((peripheral) {
+            print("Restored peripheral: ${peripheral.name}");
+          });
+        })
+        .catchError((e) => print("Couldn't create BLE client  $e"))
+        .then((_) => _checkPermissions())  //매니저 생성되면 권한 확인
+        .catchError((e) => print("Permission check error $e"));
   }
 
-  void init() {
-    print("##### Init devices bloc");
-    bleDevices.clear();
-
-    _bleManager
-        .createClient(restoreStateAction: (peripherals) {
-      /**
-       * restoreStateAction: 시스템에서 복원 한 주변 장치에 대해 알리는 데 사용되는 콜백입니다.
-       * iOS 전용
-       */
-
-      // 복원된 주변장치
-      peripherals?.forEach((peripheral) {
-        print("##### Restored peripheral: ${peripheral.name}");
-      });
-    })
-        .catchError((e) => print("##### Couldn't create BLE client: $e"))
-        .then((_) => _checkPermissions()) // 권한 확인
-        .catchError((e) => print("##### Permission check error: $e"))
-        .then((_) => _waitForBluetoothPoweredOn())  //블루투스 통신
-        .then((_) => _startScan());
-
-    if (_visibleDevicesController.isEmpty) {
-      _visibleDevicesController = <BleDevice>[];
-    }
-
-    // 스트림 close
-    if (_devicePickerController.isClosed) {
-      // 스트림 초기화
-      _devicePickerController = StreamController<BleDevice>();
-    }
-
-    print("##### listen to _devicePickerController.stream");
-    // _devicePickerSubscription =
-    //       _devicePickerController.stream.listen(_handlePickedDevice);
-  }
-
-  // 권한 체크
-  Future<void> _checkPermissions() async {
+  // 권한 확인 함수 권한 없으면 권한 요청 화면 표시, 안드로이드만 상관 있음
+  _checkPermissions() async {
     if (Platform.isAndroid) {
-      var permissionStatus = await PermissionHandler()
-          .requestPermissions([PermissionGroup.location]);
-
-      _locationPermissionStatus = permissionStatus[PermissionGroup.location];
-
-      if (_locationPermissionStatus != PermissionStatus.granted) {
-        return Future.error(Exception("##### Location permission not granted"));
+      if (await Permission.contacts.request().isGranted) {
       }
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.location
+      ].request();
+      print(statuses[Permission.location]);
     }
   }
 
 
-  // 블루투스 통신을 기다린다.
-  Future<void> _waitForBluetoothPoweredOn() async {
-    Completer completer = Completer();
-    StreamSubscription<BluetoothState> subscription;
+  //scan 함수
+  void scan() async {
+    print("##### scan");
+    if(!_isScanning) {
+      _deviceList.clear(); //기존 장치 리스트 초기화
+      //SCAN 시작
+      _bleManager.startPeripheralScan().listen((scanResult) {
+        print("######################################### scan #####################################################################");
+        //listen 이벤트 형식으로 장치가 발견되면 해당 루틴을 계속 탐.
+        //periphernal.name이 없으면 advertisementData.localName확인 이것도 없다면 unknown으로 표시
+        var name = scanResult.peripheral.name ?? scanResult.advertisementData.localName ?? "Unknown";
 
-    /**
-     * observeBluetoothState: Bluetooth 어댑터의 상태에 대한 변경 스트림을 반환
-     * 기본적으로 현재 상태로 스트림을 시작하지만
-     * emitCurrentValue로 false를 전달하여 재정의 할 수 있습니다.
-     */
-    subscription = _bleManager
-        .observeBluetoothState(emitCurrentValue: true)
-        .listen((bluetoothState) async {
-      if (bluetoothState == BluetoothState.POWERED_ON && !completer.isCompleted) {
-        await subscription.cancel();
-        completer.complete();
+        print('##### mac: ${scanResult.peripheral.identifier} advertisementData : ${scanResult.advertisementData.manufacturerData}');
+        // 기존에 존재하는 장치면 업데이트
+        var findDevice = _deviceList.any((element) {
+          if(element.peripheral.identifier == scanResult.peripheral.identifier)
+          {
+            element.peripheral = scanResult.peripheral;
+            element.advertisementData = scanResult.advertisementData;
+            element.rssi = scanResult.rssi;
+            return true;
+          }
+          return false;
+        });
+        // 새로 발견된 장치면 추가
+        if(!findDevice) {
+
+          print("##### name: $name");
+          print("##### scanResult overflowServiceUuids : ${scanResult.overflowServiceUuids }");
+          print("##### scanResult peripheral: ${scanResult.peripheral}");
+          print("##### scanResult advertisementData: ${scanResult.advertisementData}");
+          print("##### scanResult localName: ${scanResult.advertisementData.localName}");
+          print("##### scanResult serviceData: ${scanResult.advertisementData.serviceData }");
+          print("##### scanResult serviceUuids : ${scanResult.advertisementData.serviceUuids }");
+          print("##### scanResult solicitedServiceUuids : ${scanResult.advertisementData.solicitedServiceUuids }");
+          print("##### scanResult txPowerLevel: ${scanResult.advertisementData.txPowerLevel}");
+          print("##### scanResult manufacturerData: ${scanResult.advertisementData.manufacturerData}");
+
+          if(name == "wwwhohee42878") {
+            _device = BleDevice(name, scanResult.rssi, scanResult.peripheral, scanResult.advertisementData);
+          };
+          _deviceList.add(BleDevice(name, scanResult.rssi, scanResult.peripheral, scanResult.advertisementData));
+        }
+        //페이지 갱신용
+        // setState((){});
+      });
+      //BLE 상태가 변경되면 화면도 갱신
+      // setState(() {
+      //   _isScanning = true;
+      //   _setBLEState('Scanning');
+      // });
+    }
+
+    else {
+      //스켄중이었으면 스캔 중지
+      _bleManager.stopPeripheralScan();
+      //BLE 상태가 변경되면 페이지도 갱신
+      // setState(() {
+      //   _isScanning = false;
+      //   _setBLEState('Stop Scan');
+      // });
+    }
+  }
+
+  //BLE 연결시 예외 처리를 위한 래핑 함수
+  _runWithErrorHandling(runFunction) async {
+    try {
+      await runFunction();
+    } on BleError catch (e) {
+      print("BleError caught: ${e.errorCode.value} ${e.reason}");
+    } catch (e) {
+      if (e is Error) {
+        debugPrintStack(stackTrace: e.stackTrace);
+      }
+      print("${e.runtimeType}: $e");
+    }
+  }
+
+  // 상태 변경하면서 페이지도 갱신하는 함수
+  void _setBLEState(txt){
+    // setState(() => _statusText = txt);
+  }
+
+  //연결 함수
+  connect() async {
+    if(_connected) {  //이미 연결상태면 연결 해제후 종료
+      await _curPeripheral?.disconnectOrCancelConnection();
+      return;
+    }
+
+    //선택한 장치의 peripheral 값을 가져온다.
+    Peripheral peripheral = _device.peripheral;
+
+    //해당 장치와의 연결상태를 관촬하는 리스너 실행
+    peripheral.observeConnectionState(emitCurrentValue: true)
+        .listen((connectionState) {
+      // 연결상태가 변경되면 해당 루틴을 탐.
+      print("#################### observeConnectionState #######################");
+      print("##### connectionState: $connectionState");
+      print('##### mac: ${peripheral.identifier}');
+      switch(connectionState) {
+        case PeripheralConnectionState.connected: {  //연결됨
+          _curPeripheral = peripheral;
+          print("##### connectionState");
+          // _setBLEState('connected');
+        }
+        break;
+        case PeripheralConnectionState.connecting: { _setBLEState('connecting'); }//연결중
+        break;
+        case PeripheralConnectionState.disconnected: { //해제됨
+          _connected=false;
+          print("${peripheral.name} has DISCONNECTED");
+          // _setBLEState('disconnected');
+        }
+        break;
+        case PeripheralConnectionState.disconnecting: { _setBLEState('disconnecting');}//해제중
+        break;
+        default:{//알수없음...
+          print("unkown connection state is: \n $connectionState");
+        }
+        break;
       }
     });
-    print("##### completer.future: ${completer.future}");
-    return completer.future;
-  }
 
-  void _startScan() {
-    print("##### Ble client created");
-    _scanSubscription = _bleManager.startPeripheralScan().listen((ScanResult scanResult) {
-      var bleDevice = BleDevice(scanResult);
-      if (scanResult.advertisementData.localName != null && !bleDevices.contains(bleDevice)) {
-        print('found new device ${scanResult.advertisementData.localName} ${scanResult.peripheral.identifier}');
-        bleDevices.add(bleDevice);
-        // _visibleDevicesController.add(bleDevices.sublist(0));
-
-        print("##### bleDevices: ${bleDevices}");
-        print("##### _visibleDevicesController: ${_visibleDevicesController}");
+    _runWithErrorHandling(() async {
+      //해당 장치와 이미 연결되어 있는지 확인
+      bool isConnected = await peripheral.isConnected();
+      if(isConnected) {
+        print('device is already connected');
+        //이미 연결되어 있기때문에 무시하고 종료..
+        return;
       }
+
+      //연결 시작!
+      await peripheral.connect().then((_) {
+        //연결이 되면 장치의 모든 서비스와 캐릭터리스틱을 검색한다.
+        peripheral.discoverAllServicesAndCharacteristics()
+            .then((_) => peripheral.services())
+            .then((services) async {
+          print("PRINTING SERVICES for ${peripheral.name}");
+          //각각의 서비스의 하위 캐릭터리스틱 정보를 디버깅창에 표시한다.
+          for(var service in services) {
+            print("Found service ${service.uuid}");
+            List<Characteristic> characteristics = await service.characteristics();
+            for( var characteristic in characteristics ) {
+              print("##### characteristic uuid: ${characteristic.uuid}");
+            }
+          }
+          //모든 과정이 마무리되면 연결되었다고 표시
+          _connected = true;
+          print("${peripheral.name} has CONNECTED");
+        });
+      });
     });
   }
-
-  Future<void> refresh() async {
-    _scanSubscription.cancel();
-    await _bleManager.stopPeripheralScan();
-    bleDevices.clear();
-    // _visibleDevicesController.add(bleDevices.sublist(0));
-    await _checkPermissions()
-        .then((_) => _startScan())
-        .catchError((e) => print("##### Couldn't refresh: $e"));
-  }
-
 }
