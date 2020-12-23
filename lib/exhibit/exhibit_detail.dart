@@ -14,49 +14,16 @@ class ExhibitDetail extends StatefulWidget {
 
 class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserver {
 
-  StreamSubscription _appStateSubscription;
-  bool _shouldRunOnResume = true;
-
-  void _onPause() {
-    print("##### onPause");
-    _appStateSubscription.cancel();
-    Provider.of<DevicesProvider>(context).dispose();
-  }
-
-  void _onResume() {
-    print("##### onResume");
-    final _deviceseProvider = Provider.of<DevicesProvider>(context);
-
-    // _appStateSubscription = _deviceseProvider.pickedDevice.listen((bleDevice) async {
-    //   print("##### navigate to details");
-      _onPause();
-    //   // await Navigator.pushNamed(context, "/details");
-    //   setState(() {
-    //     _shouldRunOnResume = true;
-    //   });
-    //   print("##### back from details");
-    // });
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<DevicesProvider>(context, listen: false).init();
   }
 
   @override
-  void didUpdateWidget(ExhibitDetail oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print("##### didUpdateWidget");
-  }
-
-  // didChangeDependencies 메서드는 위젯이 최초 생성될 때 initState 다음에 바로 호출된다.
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print("##### DeviceListScreenState didChangeDependencies");
-    Provider.of<DevicesProvider>(context).init();
-    // if (_deviceseProvider == null) {
-    //   _deviceseProvider = Provider.of<DevicesProvider>(context, listen: false);
-    //   if (_shouldRunOnResume) {
-    //     _shouldRunOnResume = false;
-    //     _onResume();
-    //   }
-    // }
+  void dispose() {
+    super.dispose();
+    Provider.of<DevicesProvider>(context, listen: false).dispose();
   }
 
   @override
@@ -141,7 +108,6 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                                     iconSize: 30,
                                     icon: Icon(Icons.bluetooth_disabled),
                                     onPressed: () {
-                                      Provider.of<DevicesProvider>(context, listen: false).refresh();
                                     },
                                   )
                                 ]

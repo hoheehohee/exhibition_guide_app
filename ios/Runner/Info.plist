@@ -29,8 +29,12 @@
     </array>
     <!-- flutter_beacon -->
     <!-- When in use -->
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>App needs location permissions to scan nearby beacons.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Reason why app needs location</string>
+    <string>App needs location permissions to scan nearby beacons.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>App needs location permissions to scan nearby beacons.</string>
     <!-- Always -->
     <!-- for iOS 11 + -->
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
