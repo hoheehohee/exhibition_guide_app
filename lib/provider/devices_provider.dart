@@ -10,7 +10,24 @@ class DevicesProvider extends ChangeNotifier {
 
   String _beaconResult = 'Not Scanned Yet.';
   int _nrMessaggesReceived = 0;
-  bool isRunning = false;
+
+  bool _isRunning = false;
+
+  get isRunning => _isRunning;
+
+  void setIsRunning(bool running) {
+    _isRunning = running;
+    notifyListeners();
+  }
+
+  void becaonScan(bool type) async{
+    if (type) {
+      await BeaconsPlugin.startMonitoring;
+    } else {
+      await BeaconsPlugin.stopMonitoring;
+    }
+    setIsRunning(type);
+  }
 
   void init() async {
       if (Platform.isAndroid) {
@@ -21,17 +38,21 @@ class DevicesProvider extends ChangeNotifier {
 
       BeaconsPlugin.listenToBeacons(beaconEventsController);
 
+      // 비콘 정보
       await BeaconsPlugin.addRegion("wwwhohee42878", "74278BDA-B644-4520-8F0C-720EAF059935");
 
+      // UUID에 맞는 비콘 연결
       beaconEventsController.stream.listen((data) {
-          print("############ beaconEventsController ########### ");
+
           if (data.isNotEmpty) {
             print("##### Beacons DataReceived: $data");
             _beaconResult = data;
             _nrMessaggesReceived++;
           }
       },
-      onDone: () {},
+      onDone: () {
+        print("##### onDone");
+      },
       onError: (error) {
         print("##### error: $error");
       });
@@ -43,12 +64,12 @@ class DevicesProvider extends ChangeNotifier {
         BeaconsPlugin.channel.setMethodCallHandler((call) async {
           if (call.method == 'scannerReady') {
             await BeaconsPlugin.startMonitoring;
-            isRunning = true;
+            setIsRunning(true);
           }
         });
       } else if (Platform.isIOS) {
         await BeaconsPlugin.startMonitoring;
-        isRunning = true;
+        setIsRunning(true);
       }
   }
 
