@@ -4,6 +4,8 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - audioplayers (0.0.1):
+    - Flutter
   - barcode_scan (0.0.1):
     - Flutter
     - MTBBarcodeScanner
@@ -76,6 +78,7 @@ PODS:
     - FMDB (>= 2.7.5)
 
 DEPENDENCIES:
+  - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - barcode_scan (from `.symlinks/plugins/barcode_scan/ios`)
   - beacons_plugin (from `.symlinks/plugins/beacons_plugin/ios`)
   - Flutter (from `Flutter`)
@@ -101,6 +104,8 @@ SPEC REPOS:
     - naveridlogin-sdk-ios
 
 EXTERNAL SOURCES:
+  audioplayers:
+    :path: ".symlinks/plugins/audioplayers/ios"
   barcode_scan:
     :path: ".symlinks/plugins/barcode_scan/ios"
   beacons_plugin:
@@ -124,6 +129,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
   barcode_scan: 33f586d02270046fc6559135038b34b5754eaa4f
   beacons_plugin: 451bca1eea362d21793d61d58fa26d494cf19718
   FBSDKCoreKit: 4afd6ff53d8133a433dbcda44451c9498f8c6ce4

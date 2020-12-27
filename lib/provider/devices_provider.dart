@@ -1,25 +1,36 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:beacons_plugin/beacons_plugin.dart';
 import 'package:flutter/foundation.dart';
 
 
 class DevicesProvider extends ChangeNotifier {
+  AudioPlayer audioPlayer = new AudioPlayer();
+  Duration duration = new Duration();
+  Duration position = new Duration();
+
   final StreamController<String> beaconEventsController = StreamController<String>.broadcast();
 
   String _beaconResult = 'Not Scanned Yet.';
   String _qrCode = '';
   int _nrMessaggesReceived = 0;
 
+  bool _playing = false; // 재성버튼 활성 default
   bool _isRunning = false;
 
   get isRunning => _isRunning;
+  get isPlaying => _playing;
 
   void setIsRunning(bool running) {
     _isRunning = running;
     notifyListeners();
+  }
+
+  void setPlaying(bool py) {
+    _playing = py;
   }
 
   void becaonScan(bool type) async{
@@ -88,4 +99,33 @@ class DevicesProvider extends ChangeNotifier {
       print("#### scan error: $e");
     }
   }
+
+  //오디오 재생
+  void playAudio() async {
+    if (_playing) {
+      // pause song
+      var  res = await audioPlayer.pause();
+      if (res == 1) {
+        setPlaying(false);
+      }
+
+    } else {
+      // play song
+      var res = await audioPlayer.play('https://luan.xyz/files/audio/ambient_c_motion.mp3');
+      if (res == 1) {
+        setPlaying(true);
+      }
+    }
+
+    audioPlayer.onDurationChanged.listen((Duration dd) {
+      duration = dd;
+      notifyListeners();
+    });
+
+    audioPlayer.onAudioPositionChanged.listen((Duration dd) {
+      position = dd;
+      notifyListeners();
+    });
+  }
+
 }

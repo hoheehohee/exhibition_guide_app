@@ -8,6 +8,14 @@
 - carousel_slider
 - cached_network_image
 - drawerbehavior
+- beacons_plugin
+- dio
+- flutter_naver_login
+- flutter_kakao_login
+- flutter_login_facebook
+- google_sign_in
+- barcode_scan
+- audioplayers
 
 ## 진행사항
 
@@ -42,4 +50,6 @@
 - 이미지 로딩 비동기 로직 구현
 - drawerbehavior 구현 중
 - social 로그인 비지니스 로직 분리
+- ibeacon (특정 UUID beacon 연동) 기능
+- qrcode 인식 기능 적용
 

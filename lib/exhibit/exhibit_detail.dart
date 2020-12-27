@@ -14,6 +14,9 @@ class ExhibitDetail extends StatefulWidget {
 
 class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserver {
 
+  IconData playBtn = Icons.play_arrow; // 재성 시 활성 icon
+  BuildContext _context;
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +31,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
 
   @override
   Widget build(BuildContext context) {
+    // _context = context;
     return Scaffold(
       appBar: AppBar(
           title: Text("전시 카테고리1"),
@@ -52,7 +56,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
           ]
       ),
       body: _mainView(context),
-      bottomNavigationBar: _bottomButtons(),
+      bottomNavigationBar: _bottomButtons(context),
     );
   }
 
@@ -210,7 +214,8 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     );
   }
 
-  Widget _bottomButtons() {
+  Widget _bottomButtons(BuildContext context) {
+    final _device = Provider.of<DevicesProvider>(context);
     return Container(
         height: 140,
         child: Column(
@@ -219,7 +224,33 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             children: [
               Container(
                   height: 60,
-                  color: Colors.black
+                  child: Material(
+                    color: Colors.black,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            iconSize: 30,
+                            color: Colors.white,
+                            onPressed: () {
+                              _device.playAudio();
+                            },
+                            icon: Icon(_device.isPlaying ? Icons.pause : Icons.play_arrow)
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: _audioSlider(context)
+                        ),
+                        IconButton(
+                            iconSize: 30,
+                            color: Colors.white,
+                            onPressed: () {},
+                            icon: Icon(Icons.close)
+                        )
+                      ],
+                    )
+                  )
               ),
               Container(
                   height: 80,
@@ -300,6 +331,22 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
               )
             ]
         )
+    );
+  }
+
+  // 오디오 재생 슬라이드
+  Widget _audioSlider(BuildContext context) {
+    final _device = Provider.of<DevicesProvider>(context);
+    // print();
+    return Slider.adaptive(
+        min: 0,
+        value: _device.position.inSeconds.toDouble(),
+        max: _device.duration.inSeconds.toDouble() == 0 ? 1 : _device.duration.inSeconds.toDouble(),
+        onChanged: (double value) {
+          setState(() {
+            _device.audioPlayer.seek(new Duration(seconds: value.toInt()));
+          });
+        }
     );
   }
 }
