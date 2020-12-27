@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:beacons_plugin/beacons_plugin.dart';
 import 'package:flutter/foundation.dart';
-import 'package:permission_handler/permission_handler.dart';
+
 
 class DevicesProvider extends ChangeNotifier {
   final StreamController<String> beaconEventsController = StreamController<String>.broadcast();
 
   String _beaconResult = 'Not Scanned Yet.';
+  String _qrCode = '';
   int _nrMessaggesReceived = 0;
 
   bool _isRunning = false;
@@ -75,5 +77,15 @@ class DevicesProvider extends ChangeNotifier {
 
   void dispose() {
     beaconEventsController.close();
+  }
+
+  // qr코드 스캔 함수 (simulator는 지원 안됨)
+  void scan() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      print("#### barcode: ${barcode}");
+    }catch(e) {
+      print("#### scan error: $e");
+    }
   }
 }

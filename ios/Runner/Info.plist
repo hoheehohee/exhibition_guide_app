@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <!-- qr code -->
+    <key>NSCameraUsageDescription</key>
+    <string>Camera permission is required for barcode scanning.</string>
+
     <!-- 소셜로그인 -->
     <!-- kakao -->
     <key>KAKAO_APP_KEY</key>
@@ -27,6 +31,7 @@
             </array>
         </dict>
     </array>
+
     <!-- flutter_beacon -->
     <!-- When in use -->
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -47,6 +52,7 @@
     <key>NSBluetoothAlwaysUsageDescription</key>
     <string>Reason why app needs bluetooth</string>
     <!-- flutter_beacon -->
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

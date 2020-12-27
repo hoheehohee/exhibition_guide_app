@@ -103,7 +103,9 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                                   IconButton(
                                     iconSize: 30,
                                     icon: Icon(Icons.filter_center_focus, color: Colors.blue),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      _device.scan();
+                                    },
                                   ),
                                   IconButton(
                                     iconSize: 30,
