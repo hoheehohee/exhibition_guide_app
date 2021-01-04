@@ -38,6 +38,7 @@ class _MainViewState extends State<MainView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isSeeGuide = prefs.getString('isSeeGuide');
 
+    // 가이드 화면 노출 설정
     if(_isSeeGuide.isNull || _isSeeGuide == 'init')
       Get.off(
           GuideView(),
@@ -46,6 +47,11 @@ class _MainViewState extends State<MainView> {
     else if (_isSeeGuide == 'ignore' )
       await prefs.setString('isSeeGuide', 'init');
 
+    // default 언어 설정
+    final language = prefs.getString('language');
+    if (language.isNull) {
+     await prefs.setString('language', 'ko');
+    }
     // social 로그인 체크
     Future.microtask(() {
       Provider.of<SocialProvider>(context, listen: false).socialLoginCheck();
@@ -222,7 +228,7 @@ class _MainViewState extends State<MainView> {
                   splashColor: Colors.blue.withAlpha(30),
                   onTap: () {
                     Get.to(
-                      ExhibitDetail()
+                      ExhibitDetail(2)
                     );
                   },
                   child: Column(

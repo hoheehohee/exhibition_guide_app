@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:image_ink_well/image_ink_well.dart';
 
 class ExhibitCategoryItem extends StatelessWidget {
-  ExhibitCategoryItem(this.title, this.imageUrl);
+
+  ExhibitCategoryItem(this.title, this.idx, this.imageUrl);
   final String title;
+  final int idx;
   final String imageUrl;
 
   @override
@@ -26,7 +28,7 @@ class ExhibitCategoryItem extends StatelessWidget {
               image: NetworkImage(imageUrl),
               onPressed: () {
                 Get.to(
-                  ExhibitDetail(),
+                  ExhibitDetail(this.idx),
                   transition: Transition.fadeIn
                 );
               }
@@ -37,17 +39,3 @@ class ExhibitCategoryItem extends StatelessWidget {
     );
   }
 }
-
-
-// Container(
-// height: 50,
-// margin: EdgeInsets.only(bottom: 3, left: 10, right: 10),
-// padding: EdgeInsets.symmetric(horizontal: 5),
-// decoration: BoxDecoration(
-// image: DecorationImage(
-// image: NetworkImage(imageUrl),
-// fit: BoxFit.cover
-// ),
-// ),
-// child:
-// ),

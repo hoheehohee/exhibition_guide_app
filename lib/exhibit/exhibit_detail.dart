@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
+import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,9 @@ import 'package:provider/provider.dart';
 import '../main/main_view.dart';
 
 class ExhibitDetail extends StatefulWidget {
+  final int idx;
+  ExhibitDetail(this.idx);
+
   @override
   _ExhibitDetailState createState() => _ExhibitDetailState();
 }
@@ -20,7 +24,11 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   @override
   void initState() {
     super.initState();
-    Provider.of<DevicesProvider>(context, listen: false).init();
+
+    Future.microtask(() => {
+      Provider.of<DevicesProvider>(context, listen: false).init(),
+      Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx)
+    });
   }
 
   @override
@@ -31,10 +39,11 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
 
   @override
   Widget build(BuildContext context) {
-    // _context = context;
+    final _exhibit = Provider.of<ExhibitProvider>(context);
+    final loading = _exhibit.loading;
     return Scaffold(
       appBar: AppBar(
-          title: Text("전시 카테고리1"),
+          title: Text(!loading ? _exhibit.getTextByLanguage(-1, "exhibition_name"): ''),
           leading: Builder(
               builder: (BuildContext context) => (
                   IconButton(
@@ -62,8 +71,11 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
 
   Widget _mainView(BuildContext context) {
     final _device = Provider.of<DevicesProvider>(context);
+    final _exhibit = Provider.of<ExhibitProvider>(context);
+    final loading = _exhibit.loading;
+
     final _imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0g6e6r-vJ7ov7qryFzHHedU2Jd4s6ueRhDw&usqp=CAU";
-    final _text = "고흐는 막 화가일을 시작했을 당시부터 친하게 지내던 폴 고갱과 프랑스의 아를에서 잠시 공동 생활을 한 적이 있었는데, 이 기간 중에 둘의 사이는 점점 멀어지기 시작하며 나중에는 고갱이 고흐에게 돈도 못버는 화가라고 욕을 하고, 고흐는 고갱을 보고 돈만 아는 화가라고 욕할 지경에 다다랐다. 그러던 와중 아를의 카페 주인(마담 지누)을 고흐와 고갱이 전혀 다르게 묘사하자 고갱은 '술집여자일 뿐이다', 고흐는 '그래도 창녀처럼 그리는 것은 아니다'라는 주제로 다투던 와중 자신의 귀를 잘랐는데[1] 그 후 마을에서 정신병자 취급을 받자 생 레미 요양원에서 요양하며 느꼈던 정신적 고통을 소용돌이로 묘사했다고 한다.";
+    final _text = !loading ? _exhibit.getTextByLanguage(-1, "content") : '';
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -92,7 +104,10 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text('등록 전시물 3', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    child: Text(
+                        !loading ? _exhibit.getTextByLanguage(-1, "title") : '',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+                    ),
                   ),
                   Align(
                     alignment: Alignment.centerRight,

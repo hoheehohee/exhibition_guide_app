@@ -14,7 +14,7 @@ class ExhibitItems extends StatelessWidget {
               child: InkWell(
                   onTap: () {
                     Get.to(
-                      ExhibitDetail(),
+                      ExhibitDetail(2),
                       transition: Transition.fadeIn
                     );
                   },
