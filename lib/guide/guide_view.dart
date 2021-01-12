@@ -11,6 +11,7 @@ class GuideView extends StatefulWidget {
 class _GuideViewState extends State<GuideView> {
   bool _isChecked = false;
 
+  // 다시보지않기 클릭.
   void _checked(type) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('isSeeGuide', type);
@@ -23,20 +24,7 @@ class _GuideViewState extends State<GuideView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white24,
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-                icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-                onPressed: () {
-                  _checked('ignore');
-                }
-            );
-          },
-        ),
-      ),
+      appBar: _appBar(),
       body: Container(
         width: double.infinity,
         // color: Colors.white,
@@ -56,32 +44,27 @@ class _GuideViewState extends State<GuideView> {
               _guideText('박물관 무료 Wi-Fi 존에서 전시 콘텐츠\n다운로드가 가능합니다.'),
               Expanded(
                 flex: 1,
-                child: Align(
-                  alignment: Alignment(0, 0.7),
-                  child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text('다시보지 않기', style: TextStyle(fontSize: 18)),
-                        Padding(
-                          padding: EdgeInsets.only(right: 30),
-                          child: IconButton(
-                            icon: _isChecked ? Icon(Icons.radio_button_on, color: Colors.orange) : Icon(Icons.radio_button_off),
-                            onPressed: () {
-                              setState(() {
-                                _isChecked = !_isChecked;
-                              });
-                              _checked('agree');
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                child: _bottonBtn()
               )
             ],
           ),
+      ),
+    );
+  }
+
+  Widget _appBar() {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.white24,
+      leading: Builder(
+        builder: (BuildContext context) {
+          return IconButton(
+              icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+              onPressed: () {
+                _checked('ignore');
+              }
+          );
+        },
       ),
     );
   }
@@ -100,6 +83,32 @@ class _GuideViewState extends State<GuideView> {
           Expanded(
             flex: 1,
             child: Text(text, style: TextStyle(fontSize: 18)),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _bottonBtn() {
+    return Align(
+      alignment: Alignment(0, 0.7),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('다시보지 않기', style: TextStyle(fontSize: 18)),
+          Padding(
+            padding: EdgeInsets.only(right: 30),
+            child: IconButton(
+              icon: _isChecked ? Icon(Icons.radio_button_on, color: Colors.orange) : Icon(Icons.radio_button_off),
+              onPressed: () {
+                setState(() {
+                  _isChecked = !_isChecked;
+                });
+                _checked('agree');
+              },
+            ),
           )
         ],
       ),

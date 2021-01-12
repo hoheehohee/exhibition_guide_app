@@ -39,13 +39,14 @@ class _MainViewState extends State<MainView> {
     _isSeeGuide = prefs.getString('isSeeGuide');
 
     // 가이드 화면 노출 설정
-    if(_isSeeGuide.isNull || _isSeeGuide == 'init')
+    if(_isSeeGuide.isNull || _isSeeGuide == 'init'){
       Get.off(
-          GuideView(),
-          transition: Transition.fadeIn
+        GuideView(),
+        transition: Transition.fadeIn
       );
-    else if (_isSeeGuide == 'ignore' )
+    } else if (_isSeeGuide == 'ignore' ){
       await prefs.setString('isSeeGuide', 'init');
+    }
 
     // default 언어 설정
     final language = prefs.getString('language');
@@ -66,37 +67,25 @@ class _MainViewState extends State<MainView> {
         children: [
           Expanded(
             flex: 1,
-            child: _museumComponent(),
+            child: _museumComponent(),  // 박물관 사진 및 타이틀트 컴포넌트
           ),
           Padding(
             padding: EdgeInsets.only(top: 10, bottom: 20),
-            child: _exhibitionInfoButtons(),
+            child: _exhibitionInfoButtons(),  // 전시물 버큰 컴포넌트
           ),
           Container(
             width: double.infinity,
             height: 100,
             padding: EdgeInsets.only(bottom: 50, left: 20, right: 20),
             // color: Colors.green,
-            child: RaisedButton(
-              color: Colors.black54,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(13.0),
-              ),
-              child: Text('전시물 위치보기', style: TextStyle(fontSize: 18, color: Colors.white)),
-              onPressed: () {
-                Get.to(
-                    ExhibitionMapView(),
-                    transition: Transition.downToUp
-                );
-              },
-            ),
+            child: _mapButton() // 전시물 위치보기 버큰 컴포넌트
           )
         ],
       )
     );
   }
 
-  // 박물관 컴포넌트
+  // 박물관 사진 및 타이틀 컴포넌
   Widget _museumComponent() {
     return Stack(
       children: [
@@ -182,6 +171,7 @@ class _MainViewState extends State<MainView> {
     );
   }
 
+  // 전시물 버큰 컴포넌트
   Widget _exhibitionInfoButtons() {
     return Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -251,6 +241,23 @@ class _MainViewState extends State<MainView> {
             ),
           ),
         ],
+    );
+  }
+
+  // 전시물 위치보기 버튼 컴포넌트
+  Widget _mapButton() {
+    return RaisedButton(
+      color: Colors.black54,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(13.0),
+      ),
+      child: Text('전시물 위치보기', style: TextStyle(fontSize: 18, color: Colors.white)),
+      onPressed: () {
+        Get.to(
+            ExhibitionMapView(),
+            transition: Transition.downToUp
+        );
+      },
     );
   }
 
