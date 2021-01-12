@@ -2,8 +2,8 @@ import 'package:exhibition_guide_app/exhibit/exhibit_category_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CategoryItem extends StatelessWidget {
-  CategoryItem(this.title);
+class ExhibitInfoItem extends StatelessWidget {
+  ExhibitInfoItem(this.title);
   final String title;
 
   @override
@@ -24,7 +24,7 @@ class CategoryItem extends StatelessWidget {
       onTap: () {
         Get.to(
             ExhibitCategoryView(),
-          transition: Transition.fadeIn
+            transition: Transition.fadeIn
         );
       },
     );

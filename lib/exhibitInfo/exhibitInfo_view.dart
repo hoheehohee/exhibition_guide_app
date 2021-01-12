@@ -3,8 +3,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drawerbehavior/drawer_scaffold.dart';
 import 'package:drawerbehavior/menu_screen.dart';
 import 'package:exhibition_guide_app/crm/customer_center_view.dart';
+import 'package:exhibition_guide_app/exhibitInfo/exhibitInfo_item.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/language/language_view.dart';
+import 'package:exhibition_guide_app/model/exhibit_list_model.dart';
 import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:exhibition_guide_app/provider/museum_provider.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +16,13 @@ import 'package:provider/provider.dart';
 import '../booking/booking_view.dart';
 import '../exhibit/exhibit_category_view.dart';
 import '../menu.dart';
-import 'category_item.dart';
 
-class MuseumView extends StatefulWidget {
+class ExhibitInfoView extends StatefulWidget {
   @override
-  _MuseumViewState createState() => _MuseumViewState();
+  _ExhibitInfoViewState createState() => _ExhibitInfoViewState();
 }
 
-class _MuseumViewState extends State<MuseumView> {
+class _ExhibitInfoViewState extends State<ExhibitInfoView> {
   int selectedMenuItemId;
   DrawerScaffoldController controller = DrawerScaffoldController();
 
@@ -67,27 +68,27 @@ class _MuseumViewState extends State<MuseumView> {
             SideDrawer(
               itemBuilder: (BuildContext context, MenuItem menuItem, bool isSelected) {
                 return Container(
-                  height: 60,
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(width: 1.5, color: Colors.grey)
-                    )
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(Icons.bookmark, color: Colors.white),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                            menuItem.title,
-                            style: TextStyle(fontSize: 20, color: Colors.white)
+                    height: 60,
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(width: 1.5, color: Colors.grey)
                         )
-                      )
-                    ],
-                  )
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.bookmark, color: Colors.white),
+                        Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                                menuItem.title,
+                                style: TextStyle(fontSize: 20, color: Colors.white)
+                            )
+                        )
+                      ],
+                    )
                 );
               },
               percentage: 1,
@@ -102,7 +103,7 @@ class _MuseumViewState extends State<MuseumView> {
                   selectedMenuItemId = itemId;
                   switch(itemId){
                     case 0:
-                      Get.to(MuseumView());
+                      Get.to(ExhibitInfoView());
                       break;
                     case 1:
                       Get.to(ExhibitCategoryView());
@@ -168,7 +169,7 @@ class _MuseumViewState extends State<MuseumView> {
             items: _imageItems(provider.imageList)
         ),
         // 상설전시 체크박
-       Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -191,7 +192,7 @@ class _MuseumViewState extends State<MuseumView> {
           flex: 2,
           child: ListView.builder(
               itemCount: _items.length,
-              itemBuilder: (BuildContext context, int index) => CategoryItem(_items[index])
+              itemBuilder: (BuildContext context, int index) => ExhibitInfoItem(_items[index])
           ),
         ),
       ],
@@ -202,15 +203,15 @@ class _MuseumViewState extends State<MuseumView> {
     List<Widget> result = [];
     for (var i = 0; i < imgList.length; i++) {
       result.add(Container(
-          width: double.infinity,
-          margin: EdgeInsets.only(top: 10),
-          // decoration: BoxDecoration(color: Colors.green),
-          child: CachedNetworkImage(
-            imageUrl: imgList[i],
-            fit: BoxFit.fill,
-            placeholder: (context, url) => Center(child: CircularProgressIndicator(),),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          ),
+        width: double.infinity,
+        margin: EdgeInsets.only(top: 10),
+        // decoration: BoxDecoration(color: Colors.green),
+        child: CachedNetworkImage(
+          imageUrl: imgList[i],
+          fit: BoxFit.fill,
+          placeholder: (context, url) => Center(child: CircularProgressIndicator(),),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        ),
       ));
     }
     return result;
@@ -231,8 +232,8 @@ class _MuseumViewState extends State<MuseumView> {
               padding: EdgeInsets.zero,
               icon: Icon(
                   provider.isAutoExhibit
-                    ? Icons.toggle_on_outlined
-                    : Icons.toggle_off_outlined,
+                      ? Icons.toggle_on_outlined
+                      : Icons.toggle_off_outlined,
                   size: 34,
                   color: Colors.orange
               ),

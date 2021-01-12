@@ -1,6 +1,6 @@
+import 'package:exhibition_guide_app/exhibitInfo/exhibitInfo_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/language/language_view.dart';
-import 'package:exhibition_guide_app/museum/museum_view.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:exhibition_guide_app/setting/setting_view.dart';
 import 'package:flutter/material.dart';
@@ -186,7 +186,7 @@ class _MainViewState extends State<MainView> {
                   splashColor: Colors.blue.withAlpha(30),
                   onTap: () {
                     Get.to(
-                      MuseumView(),
+                      ExhibitInfoView(),
                       transition: Transition.fadeIn
                     );
                   },
