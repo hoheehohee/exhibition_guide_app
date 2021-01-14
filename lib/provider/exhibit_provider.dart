@@ -14,7 +14,7 @@ class ExhibitProvider extends ChangeNotifier {
   var _exhibitItem = null;
   List<ExhibitItem> _exhibitList = [];
 
-  get loading => _loading;
+  bool get loading => _loading;
   get exhibitList => _exhibitList;
   get exhibitItem => _exhibitItem;
 

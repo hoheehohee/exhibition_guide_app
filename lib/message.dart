@@ -3,3 +3,5 @@ var downloadMessage = "전시될 이미지와\n 음성안내를 받으시겠습�
 var imageUrl1 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZaRGjhJdP9kPvK2IxnMABnnzrWQCg5iD_dg&usqp=CAU";
 var imageUrl2 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2DiMl36fhDPNYPq8Cj5nFTfEP5fxIflYRyA&usqp=CAU";
 
+var permanentDetText1 = "국제갤러리는 K1 건물의 재개관을 기념하여 최욱경(1940-1985)의 개인전 《Wook-kyung Choi》를 개최한다. 2005년, 2016년에 이어 국제갤러리에서 세 번째로 열리는 개인전으로, 1960년대부터 1975년경 사이 제작된 흑백 잉크 드로잉과 추상회화외 콜라주로 구성된 컬러 작업을 40점 선보인다.";
+var permanentImage = "https://monthlyart.com/wp-content/uploads/2020/07/Kukje-Gallery-Wook-kyung-Choi-Untitled-c.-1960s-34-x-40-cm.jpg";

@@ -3,10 +3,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drawerbehavior/drawer_scaffold.dart';
 import 'package:drawerbehavior/menu_screen.dart';
 import 'package:exhibition_guide_app/crm/customer_center_view.dart';
+import 'package:exhibition_guide_app/exhibit/permanent_exhibit_view.dart';
 import 'package:exhibition_guide_app/exhibitInfo/exhibitInfo_item.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/language/language_view.dart';
-import 'package:exhibition_guide_app/model/exhibit_list_model.dart';
 import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:exhibition_guide_app/provider/museum_provider.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,6 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../booking/booking_view.dart';
-import '../exhibit/exhibit_category_view.dart';
 import '../menu.dart';
 
 class ExhibitInfoView extends StatefulWidget {
@@ -24,6 +23,7 @@ class ExhibitInfoView extends StatefulWidget {
 
 class _ExhibitInfoViewState extends State<ExhibitInfoView> {
   int selectedMenuItemId;
+  var provider;
   DrawerScaffoldController controller = DrawerScaffoldController();
 
   @override
@@ -36,15 +36,12 @@ class _ExhibitInfoViewState extends State<ExhibitInfoView> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<MuseumProvider>(context);
+    provider = Provider.of<MuseumProvider>(context);
     return DefaultTabController(
         length: 3,
         child: DrawerScaffold(
           controller: controller,
-          appBar: AppBar(
-              title: Text("코쟁이 박물관")
-          ),
-
+          appBar: _appBar(),
           builder: (context, id) =>  Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,76 +62,22 @@ class _ExhibitInfoViewState extends State<ExhibitInfoView> {
             ],
           ),
           drawers: [
-            SideDrawer(
-              itemBuilder: (BuildContext context, MenuItem menuItem, bool isSelected) {
-                return Container(
-                    height: 60,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(width: 1.5, color: Colors.grey)
-                        )
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(Icons.bookmark, color: Colors.white),
-                        Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Text(
-                                menuItem.title,
-                                style: TextStyle(fontSize: 20, color: Colors.white)
-                            )
-                        )
-                      ],
-                    )
-                );
-              },
-              percentage: 1,
-              menu: menu,
-              animation: false,
-              alignment: Alignment.topLeft,
-              color: Colors.white24,
-              selectedItemId: selectedMenuItemId,
-              textStyle: TextStyle(color: Colors.white, fontSize: 24.0),
-              onMenuItemSelected: (itemId) {
-                setState(() {
-                  selectedMenuItemId = itemId;
-                  switch(itemId){
-                    case 0:
-                      Get.to(ExhibitInfoView());
-                      break;
-                    case 1:
-                      Get.to(ExhibitCategoryView());
-                      break;
-                    case 2:
-                      Get.to(ExhibitionMapView());
-                      break;
-                    case 4:
-                      Get.to(CustomerCenterView());
-                      break;
-                    case 5:
-                      Get.to(LanguageView());
-                      break;
-                    case 6:
-                      Get.to(BookingView());
-                      break;
-                    case 7:
-                      Get.to(MyPageView(0));
-                      break;
-                  }
-                });
-              },
-            )
+            _sideDrawer() // LNB 메뉴
           ],
           bottomNavigationBar: _bottomBar(),  // bottom 버튼
         )
     );
   }
 
+  Widget _appBar() {
+    return AppBar(
+        title: Text("코쟁이 박물관")
+    );
+  }
+
+  // 검색, slider image, 상설전시, 카테고리 리스
   Widget _mainWidget(BuildContext context) {
-    final provider = Provider.of<MuseumProvider>(context);
+    // final provider = Provider.of<MuseumProvider>(context);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -217,8 +160,9 @@ class _ExhibitInfoViewState extends State<ExhibitInfoView> {
     return result;
   }
 
+  // 자동전시 안내, 음성지원 안내 버
   Widget _guideButton(context) {
-    final provider = Provider.of<MuseumProvider>(context);
+    // final provider = Provider.of<MuseumProvider>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -264,6 +208,71 @@ class _ExhibitInfoViewState extends State<ExhibitInfoView> {
           ],
         )
       ],
+    );
+  }
+
+  Widget _sideDrawer() {
+    return SideDrawer(
+      itemBuilder: (BuildContext context, MenuItem menuItem, bool isSelected) {
+        return Container(
+            height: 60,
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(width: 1.5, color: Colors.grey)
+                )
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.bookmark, color: Colors.white),
+                Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text(
+                        menuItem.title,
+                        style: TextStyle(fontSize: 20, color: Colors.white)
+                    )
+                )
+              ],
+            )
+        );
+      },
+      percentage: 1,
+      menu: menu,
+      animation: false,
+      alignment: Alignment.topLeft,
+      color: Colors.white24,
+      selectedItemId: selectedMenuItemId,
+      textStyle: TextStyle(color: Colors.white, fontSize: 24.0),
+      onMenuItemSelected: (itemId) {
+        setState(() {
+          selectedMenuItemId = itemId;
+          switch(itemId){
+            case 0:
+              Get.to(ExhibitInfoView());
+              break;
+            case 1:
+              Get.to(PermanentExhibitView());
+              break;
+            case 2:
+              Get.to(ExhibitionMapView());
+              break;
+            case 4:
+              Get.to(CustomerCenterView());
+              break;
+            case 5:
+              Get.to(LanguageView());
+              break;
+            case 6:
+              Get.to(BookingView());
+              break;
+            case 7:
+              Get.to(MyPageView(0));
+              break;
+          }
+        });
+      },
     );
   }
 
