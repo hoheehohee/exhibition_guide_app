@@ -1,14 +1,12 @@
+import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
+import 'package:exhibition_guide_app/exhibit/permanent_exhibit_item.dart';
 import 'package:exhibition_guide_app/message.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:exhibition_guide_app/exhibit/exhibit_category_list_view.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-
-import 'exhibit_category_item.dart';
 
 class PermanentExhibitView extends StatefulWidget {
   @override
@@ -49,7 +47,7 @@ class _PermanentExhibitViewState extends State<PermanentExhibitView> {
                   margin: EdgeInsets.all(10),
                   height: 200,
                   color: Colors.white,
-                  child: _exhibitContext()  // 전시물 title 및 상세내
+                  child: _exhibitContext()  // 전시물 title 및 상세내용
               ),
               Expanded(
                 flex: 1,
@@ -75,7 +73,7 @@ class _PermanentExhibitViewState extends State<PermanentExhibitView> {
                 icon: Icon(Icons.expand_more, size: 34),
                 onPressed: () {
                   Get.to(
-                      ExhibitCategoryListView(),
+                      ExhibitListView(),
                       transition: Transition.fadeIn
                   );
                 }
@@ -177,7 +175,7 @@ class _PermanentExhibitViewState extends State<PermanentExhibitView> {
     return ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return ExhibitCategoryItem(
+          return PermanentExhibitItem(
             _exhibit.getTextByLanguage(index, "title"), list[index].idx, permanentImage,
           );
         }
