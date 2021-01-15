@@ -8,7 +8,7 @@ import 'package:exhibition_guide_app/exhibitInfo/exhibitInfo_item.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/language/language_view.dart';
 import 'package:exhibition_guide_app/mypage/mypage_view.dart';
-import 'package:exhibition_guide_app/provider/museum_provider.dart';
+import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +36,7 @@ class _ExhibitInfoViewState extends State<ExhibitInfoView> {
 
   @override
   Widget build(BuildContext context) {
-    provider = Provider.of<MuseumProvider>(context);
+    provider = Provider.of<ExhibitProvider>(context);
     return DefaultTabController(
         length: 3,
         child: DrawerScaffold(

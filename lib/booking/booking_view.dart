@@ -8,34 +8,38 @@ class BookingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text("이용예약 신청"),
-          leading: Builder(
-              builder: (BuildContext context) => (
-                  IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        Get.back();
-                      }
-                  )
-              )
-          ),
-          actions:[
-            IconButton(
-              icon: Icon(Icons.home_outlined),
-              onPressed: () {
-                Get.offAll(
-                  MainView()
-                );
-              },
-            )
-          ]
-      ),
+      appBar: _appBar(),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: _mainView(),
       ),
       bottomNavigationBar: _bottomButtoms(),
+    );
+  }
+
+  Widget _appBar() {
+    return AppBar(
+        title: Text("이용예약 신청"),
+        leading: Builder(
+            builder: (BuildContext context) => (
+                IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: () {
+                      Get.back();
+                    }
+                )
+            )
+        ),
+        actions:[
+          IconButton(
+            icon: Icon(Icons.home_outlined),
+            onPressed: () {
+              Get.offAll(
+                  MainView()
+              );
+            },
+          )
+        ]
     );
   }
 

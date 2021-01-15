@@ -1,4 +1,4 @@
-import 'package:exhibition_guide_app/provider/language_provider.dart';
+import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +8,7 @@ class LanguageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color darkBlue = Color.fromARGB(255, 18, 32, 47);
-    _language = Provider.of<LanguageProvider>(context);
+    _language = Provider.of<SettingProvider>(context);
 
     return MaterialApp(
       theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: darkBlue),
