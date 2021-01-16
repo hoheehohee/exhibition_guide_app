@@ -17,6 +17,7 @@
 - barcode_scan
 - audioplayers
 - intl
+- image_picker
 
 ## 진행사항
 

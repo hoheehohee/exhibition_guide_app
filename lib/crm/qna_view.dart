@@ -1,10 +1,14 @@
 import 'package:exhibition_guide_app/main/main_view.dart';
+import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class QnaView extends StatelessWidget {
+  MyPageProvider _myPageProvider;
   @override
   Widget build(BuildContext context) {
+    _myPageProvider = Provider.of<MyPageProvider>(context);
     return  Scaffold(
         appBar: _appBar(),
         body: GestureDetector(
@@ -82,6 +86,9 @@ class QnaView extends StatelessWidget {
 
   // 입력 폼
   Widget _inputForm() {
+    TextEditingController myController
+      = TextEditingController()..text = _myPageProvider.imageName;
+
     return Container(
         color: Colors.white,
         width: double.infinity,
@@ -107,10 +114,14 @@ class QnaView extends StatelessWidget {
               Text('첨부파일', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(height: 10),
               TextField(
-                textInputAction: TextInputAction.done,
+                controller: myController,
+                readOnly: true,
+                onTap: () {
+                  _myPageProvider.getImage();
+                },
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: '문의 제목을 입력해주세요.'
+                    hintText: '사진만 업로드 가능합니다.'
                 ),
               ),
             ]
