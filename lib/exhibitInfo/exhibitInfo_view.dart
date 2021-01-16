@@ -23,7 +23,7 @@ class ExhibitInfoView extends StatefulWidget {
 
 class _ExhibitInfoViewState extends State<ExhibitInfoView> {
   int selectedMenuItemId;
-  var provider;
+  ExhibitProvider provider;
   DrawerScaffoldController controller = DrawerScaffoldController();
 
   @override

@@ -1,5 +1,6 @@
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
+import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => DevicesProvider()),
         ChangeNotifierProvider(create: (context) => SocialProvider()),
         ChangeNotifierProvider(create: (context) => ExhibitProvider()),
+        ChangeNotifierProvider(create: (context) => MyPageProvider())
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,

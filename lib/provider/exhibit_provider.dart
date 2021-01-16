@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:exhibition_guide_app/model/exhibit_list_model.dart';
 import 'package:flutter/foundation.dart';
@@ -7,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const _BASE_URL = 'http://115.144.53.222:8081/ilje/';
 
-class ExhibitProvider extends ChangeNotifier {
+class ExhibitProvider with ChangeNotifier {
 
   bool _isAudio = false;
   bool _loading = false;

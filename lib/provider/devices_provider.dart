@@ -7,7 +7,7 @@ import 'package:beacons_plugin/beacons_plugin.dart';
 import 'package:flutter/foundation.dart';
 
 
-class DevicesProvider extends ChangeNotifier {
+class DevicesProvider with ChangeNotifier {
   AudioPlayer audioPlayer = new AudioPlayer();
   Duration duration = new Duration();
   Duration position = new Duration();

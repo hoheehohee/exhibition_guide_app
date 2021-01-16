@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
@@ -6,7 +7,9 @@ import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SocialProvider extends ChangeNotifier {
+import 'mypage_provider.dart';
+
+class SocialProvider with ChangeNotifier {
   String _error;
   bool _isSocialLogin = false;
 
@@ -113,6 +116,7 @@ class SocialProvider extends ChangeNotifier {
 
   // 디바이스 로컬 스토어에 저장 social token 저장
   void socialTokeSave(String token) async {
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('social_token', token);
 

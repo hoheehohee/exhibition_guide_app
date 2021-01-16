@@ -16,6 +16,7 @@
 - google_sign_in
 - barcode_scan
 - audioplayers
+- intl
 
 ## 진행사항
 

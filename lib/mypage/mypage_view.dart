@@ -24,25 +24,7 @@ class _MyPageViewState extends State<MyPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text("마이페이지"),
-          leading: Builder(
-              builder: (BuildContext context) => (IconButton(
-                  icon: Icon(Icons.arrow_back_ios), onPressed: () {
-                    Get.back();
-              }))),
-          actions: [
-            IconButton(
-              padding: EdgeInsets.zero,
-              icon: Icon(Icons.home_outlined),
-              onPressed: () {
-                Get.offAll(
-                  MainView(),
-                  transition: Transition.fadeIn
-                );
-              },
-            )
-          ]),
+      appBar: _appBar(),
       body: Center(
           child: Container(
               color: Colors.white,
@@ -62,35 +44,65 @@ class _MyPageViewState extends State<MyPageView> {
                                     bottom: BorderSide(
                                         width: 1.5,
                                         color: Colors.grey.withOpacity(0.3)))),
-                            child: TabBar(
-                                unselectedLabelColor:
-                                    Colors.black.withOpacity(0.3),
-                                indicatorColor: Colors.orange,
-
-                                onTap: (index) {
-                                  setState(() {
-                                    tabIndex = index;
-                                  });
-                                },
-                                tabs: [
-                                  Center(
-                                      child: Text("프로필",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700))),
-                                  Center(
-                                      child: Text("신청현황",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700))),
-                                ])),
+                            child: _tabBar()  // 프로필, 신청현황
+                        ),
                         Expanded(
                             child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
                                 child: tabIndex == 0
-                                    ? ProfileView()
-                                    : BookingInfo()))
+                                    ? ProfileView() // 프로필
+                                    : BookingInfo() // 신청현황
+                            ))
                       ])))),
+    );
+  }
+
+  Widget _appBar() {
+    return AppBar(
+        title: Text("마이페이지"),
+        leading: Builder(
+            builder: (BuildContext context) => (IconButton(
+                icon: Icon(Icons.arrow_back_ios), onPressed: () {
+              Get.back();
+            }))),
+        actions: [
+          IconButton(
+            padding: EdgeInsets.zero,
+            icon: Icon(Icons.home_outlined),
+            onPressed: () {
+              Get.offAll(
+                  MainView(),
+                  transition: Transition.fadeIn
+              );
+            },
+          )
+        ]
+    );
+  }
+
+  // 프로필, 신청현황
+  Widget _tabBar() {
+    return TabBar(
+        unselectedLabelColor:
+        Colors.black.withOpacity(0.3),
+        indicatorColor: Colors.orange,
+        onTap: (index) {
+          setState(() {
+            tabIndex = index;
+          });
+        },
+        tabs: [
+          Center(
+              child: Text("프로필",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700))),
+          Center(
+              child: Text("신청현황",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700))),
+        ]
     );
   }
 }

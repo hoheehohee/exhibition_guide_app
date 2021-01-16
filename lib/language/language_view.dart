@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class LanguageView extends StatelessWidget {
-  var _language;
+  SettingProvider _language;
   @override
   Widget build(BuildContext context) {
     final Color darkBlue = Color.fromARGB(255, 18, 32, 47);
