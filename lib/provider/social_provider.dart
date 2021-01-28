@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'mypage_provider.dart';
 
+const _BASE_URL = 'http://115.144.53.222:8081/ilje/';
+
 class SocialProvider with ChangeNotifier {
   String _error;
   bool _isSocialLogin = false;
@@ -50,12 +52,12 @@ class SocialProvider with ChangeNotifier {
 
       GoogleSignInAccount acc = await _googleSignIn.signIn();
       GoogleSignInAuthentication auth = await acc.authentication;
-      Map data = {"authType": "g", "accessToken": auth.accessToken};
+      Map data = {"snsType": "google", "email": acc.email};
 
       _log("googleLogin", auth.accessToken, data, auth);
       //토큰 디바이스 로컬에 저장
-      socialTokeSave(auth.accessToken);
-      // checkServer(data);
+      // socialTokeSave(auth.accessToken);
+      checkServer(data);
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
       print("##### googleLogin error: $e");
@@ -140,9 +142,8 @@ class SocialProvider with ChangeNotifier {
   // token 서버로 전송
   void checkServer(data) async {
     Dio dio = new Dio();
-
-    Response response = await dio.post(
-      "http://172.16.11.225:8080/v1/login/sns",
+    print("##### checkServer ");
+    Response response = await dio.post("$_BASE_URL?snsType="+data['snsType']+"&email="+data['email'],
       data: data,
       options: Options(
         headers: {
@@ -150,7 +151,7 @@ class SocialProvider with ChangeNotifier {
         },
       ),
     );
-    print(response.data["token"]);
+    print("##### response: $response");
   }
 
   void _log(social, token, result, data) {
