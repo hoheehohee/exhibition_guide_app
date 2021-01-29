@@ -3,6 +3,7 @@ import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login_dialog_view.dart';
 
@@ -13,11 +14,19 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   SocialProvider _social;
+  var _email = "abc@naver.com";
 
   @override
-  void initState() {
+  Future<void> initState() {
     // TODO: implement initState
     super.initState();
+  }
+
+  void _init() async {
+    // 첫 가이드 화면 노출 여부 체크
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _email = prefs.getString('email');
+    print("aaa ${_email}");
   }
 
   @override
@@ -69,6 +78,8 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _loginView() {
+    _social = Provider.of<SocialProvider>(context);
+    _email = this._email;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,7 +106,7 @@ class _ProfileViewState extends State<ProfileView> {
               ],
             ),
             SizedBox(height: 10),
-            Text('iu@gmail.com', style: TextStyle(color: Colors.grey)),
+            Text(_email, style: TextStyle(color: Colors.grey)),
             Text('010-1234-5678', style: TextStyle(color: Colors.grey))
           ],
         )

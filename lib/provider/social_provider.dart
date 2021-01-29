@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:flutter/foundation.dart';
@@ -53,11 +55,9 @@ class SocialProvider with ChangeNotifier {
       GoogleSignInAccount acc = await _googleSignIn.signIn();
       GoogleSignInAuthentication auth = await acc.authentication;
       Map data = {"snsType": "google", "email": acc.email};
-
       _log("googleLogin", auth.accessToken, data, auth);
-      //토큰 디바이스 로컬에 저장
-      // socialTokeSave(auth.accessToken);
       checkServer(data);
+
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
       print("##### googleLogin error: $e");
@@ -121,6 +121,7 @@ class SocialProvider with ChangeNotifier {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('social_token', token);
+    await prefs.setString('social_token', token);
 
     _isSocialLogin = true;
     notifyListeners();
@@ -143,15 +144,25 @@ class SocialProvider with ChangeNotifier {
   void checkServer(data) async {
     Dio dio = new Dio();
     print("##### checkServer ");
-    Response response = await dio.post("$_BASE_URL?snsType="+data['snsType']+"&email="+data['email'],
-      data: data,
-      options: Options(
-        headers: {
-          Headers.contentTypeHeader: "application/json",
-        },
-      ),
-    );
-    print("##### response: $response");
+    Response resp;
+
+    try {
+      // resp = await dio.get("${_BASE_URL}userCheckData.do?snsType=${data['snsType']}&email=${data['email']}");
+      resp = await dio.get("${_BASE_URL}userCheckData.do?snsType=google&email=doony10@naver.com");
+      var map = Map<String, dynamic>.from(json.decode(resp.toString()));
+      print(map);
+      if(map["status"] == "N"){
+        print("로그인실패");
+      } else {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('loginId', map["loginID"]);
+        await prefs.setString('email', data['email']);
+        _isSocialLogin = true;
+        notifyListeners();
+      }
+    }catch(error){
+      print('##### getExhibitSel: $error');
+    }
   }
 
   void _log(social, token, result, data) {
