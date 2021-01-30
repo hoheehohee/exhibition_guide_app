@@ -44,6 +44,7 @@ dependencies:
   audioplayers: ^0.17.0
   intl: ^0.16.1
   image_picker: ^0.6.7+21
+  video_player: ^1.0.1
 
 dev_dependencies:
   flutter_test:

@@ -14,19 +14,20 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   SocialProvider _social;
-  var _email = "abc@naver.com";
+  var _email="";
 
   @override
-  Future<void> initState() {
+  void initState() {
     // TODO: implement initState
     super.initState();
-  }
-
-  void _init() async {
-    // 첫 가이드 화면 노출 여부 체크
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _email = prefs.getString('email');
-    print("aaa ${_email}");
+    (() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      setState(() {
+        if(prefs.getString('email') != null) {
+          _email = prefs.getString('email');
+        }
+      });
+    })();
   }
 
   @override
@@ -102,6 +103,12 @@ class _ProfileViewState extends State<ProfileView> {
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5),
                     child: Image.asset("assets/images/kakao_icon.png")
+                ),
+                RaisedButton(
+                  disabledColor: Colors.red,
+                  disabledTextColor: Colors.black,
+                  onPressed: null,
+                  child: Text('로그아웃'),
                 )
               ],
             ),
