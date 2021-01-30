@@ -90,7 +90,7 @@ class _MainViewState extends State<MainView> {
             TextButton(
               child: Text('Approve'),
               onPressed: () {
-                Get.to(ExhibitVideoView());
+                // Get.to(ExhibitVideoView());
               },
             ),
           ],

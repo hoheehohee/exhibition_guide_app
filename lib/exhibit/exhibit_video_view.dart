@@ -14,6 +14,7 @@ class _ExhibitVideoViewState extends State<ExhibitVideoView> {
   BetterPlayerController _betterPlayerController;
   BetterPlayerControlsConfiguration controlsConfiguration;
   BetterPlayerConfiguration betterPlayerConfiguration;
+  List dataSourceList = List<BetterPlayerDataSource>();
 
   @override
   void initState() {
@@ -37,6 +38,8 @@ class _ExhibitVideoViewState extends State<ExhibitVideoView> {
       fit: BoxFit.contain,
       // startAt: Duration(seconds: 5)
     );
+
+    createDataSet();
   }
 
   @override
@@ -44,24 +47,48 @@ class _ExhibitVideoViewState extends State<ExhibitVideoView> {
     super.dispose();
   }
 
+  List<BetterPlayerDataSource> createDataSet() {
+    dataSourceList.add(
+      BetterPlayerDataSource(
+        BetterPlayerDataSourceType.network,
+        "http://www.exit109.com/~dnn/clips/RW20seconds_1.mp4",
+      ),
+    );
+    dataSourceList.add(
+      BetterPlayerDataSource(BetterPlayerDataSourceType.network,
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"),
+    );
+    dataSourceList.add(
+      BetterPlayerDataSource(BetterPlayerDataSourceType.network,
+        "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"),
+    );
+    return dataSourceList;
+  }
+
   @override
   Widget build(BuildContext context) {
     final _device = Provider.of<DevicesProvider>(context, listen: true);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        iconTheme: IconThemeData(
+          color: Colors.white
+        ),
+      ),
       body: Container(
         color: Colors.black,
-        child: Container(
-          child: Center(
+        padding: EdgeInsets.only(bottom: 80),
+        child: Center(
             child: BetterPlayerPlaylist(
                 betterPlayerConfiguration: betterPlayerConfiguration,
                 betterPlayerPlaylistConfiguration: BetterPlayerPlaylistConfiguration(
                     loopVideos: false,
                     nextVideoDelay: Duration(seconds: 5)),
-                betterPlayerDataSourceList: _device.dataSourceList
+                // betterPlayerDataSourceList: _device.dataSourceList
+                betterPlayerDataSourceList: dataSourceList,
             )
-          ),
-        )
-      ),
+        ),
+      )
       // bottomNavigationBar: _videoPlayer(),
     );
   }

@@ -48,6 +48,10 @@ class DevicesProvider with ChangeNotifier {
     _playing = py;
   }
 
+  void setBeaconConnect(bool type) {
+    _beaconConnect = type;
+  }
+
   void becaonScan(bool type) async{
     if (type) {
       await BeaconsPlugin.startMonitoring;
@@ -55,6 +59,10 @@ class DevicesProvider with ChangeNotifier {
       await BeaconsPlugin.stopMonitoring;
     }
     setIsRunning(type);
+  }
+
+  void setInitdataSourceList() async {
+    _dataSourceList = [];
   }
 
   void init() async {
@@ -68,9 +76,10 @@ class DevicesProvider with ChangeNotifier {
 
       // 비콘 정보
       await BeaconsPlugin.addRegion("wwwhohee42878", "74278BDA-B644-4520-8F0C-720EAF059935");
-      beaconContentSelCall();
+      // beaconContentSelCall();
       // UUID에 맞는 비콘 연결
       beaconEventsController.stream.listen((data) {
+
           if (data.isNotEmpty) {
             _beaconResult = data;
             try{
@@ -115,7 +124,7 @@ class DevicesProvider with ChangeNotifier {
   Future<void> beaconContentSelCall() async {
     Dio dio = new Dio();
     Response resp;
-    _dataSourceList = [];
+    List<BetterPlayerDataSource> temp = [];
     try{
       resp = await dio.get(BASE_URL + '/beaconSearch.do', queryParameters: {
         // "UUID": beaconData.uuid,
@@ -130,17 +139,16 @@ class DevicesProvider with ChangeNotifier {
       _beaconConnect = true;
 
       _beaconContentList.data.forEach((element) {
-        _dataSourceList.add(
+        temp.add(
           BetterPlayerDataSource(
             BetterPlayerDataSourceType.network,
             element.videoFileEng
           ),
         );
       });
-
-      _dataSourceList.forEach((element) {
-        print("########## _dataSourceList $element");
-      });
+      print("##### temp length ${temp.length}");
+      print("##### _dataSourceList2 length ${_dataSourceList.length}");
+      _dataSourceList = temp;
 
       becaonScan(false);
 
