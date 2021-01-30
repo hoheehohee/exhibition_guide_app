@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,8 +19,9 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(
       Duration(seconds: 3),
-        () => Get.to(MainView())
+        () => Get.offAll(MainView())
     );
+
   }
 
   @override
@@ -39,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 60),
                   child: Image.asset(
                       "assets/images/splash_logo.png",
-                      fit: BoxFit.fitWidth
+                      fit: BoxFit.fill
                   ),
                 )
               ],

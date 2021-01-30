@@ -4,7 +4,8 @@ import 'package:exhibition_guide_app/model/exhibit_list_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const _BASE_URL = 'http://115.144.53.222:8081/ilje/';
+import '../message.dart';
+
 
 class ExhibitProvider with ChangeNotifier {
 
@@ -48,7 +49,7 @@ class ExhibitProvider with ChangeNotifier {
     Dio dio = new Dio();
 
     try {
-      resp = await dio.get(_BASE_URL + '/contentsData.do');
+      resp = await dio.get(BASE_URL + '/contentsData.do');
       final jsonData = json.decode('{"exhibitItem": $resp}');
       var map = Map<String, dynamic>.from(jsonData);
       var data = ExhibitListModel.fromJson(map);
@@ -68,7 +69,7 @@ class ExhibitProvider with ChangeNotifier {
     Dio dio = new Dio();
 
     try{
-      resp = await dio.get(_BASE_URL + '/contentsDataDetail.do', queryParameters: {"idx": idx});
+      resp = await dio.get(BASE_URL + '/contentsDataDetail.do', queryParameters: {"idx": idx});
       _exhibitItem = jsonDecode(resp.toString());
       _loading = false;
       notifyListeners();

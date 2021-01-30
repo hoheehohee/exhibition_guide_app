@@ -43,6 +43,7 @@ class _ExhibitInfoViewState extends State<ExhibitInfoView> {
           controller: controller,
           appBar: _appBar(),
           builder: (context, id) =>  Column(
+
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

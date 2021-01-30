@@ -95,7 +95,7 @@ class SocialProvider with ChangeNotifier {
         FacebookPermission.email,
       ]);
 
-      if (res.status == FacebookLoginStatus.Success) {
+      if (res.status == FacebookLoginStatus.success) {
         final FacebookAccessToken accessToken = res.accessToken;
         print('Access token: ${accessToken.token}');
         Map data = {"authType": "f", "accessToken": accessToken.token};
