@@ -6,6 +6,7 @@ import 'package:exhibition_guide_app/message.dart';
 import 'package:exhibition_guide_app/model/qna_list_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyPageProvider with ChangeNotifier {
   final picker = ImagePicker();
@@ -25,7 +26,9 @@ class MyPageProvider with ChangeNotifier {
     Response resp;
 
     try{
-      resp = await dio.get(BASE_URL + '/qnaListData.do', queryParameters: { "loginID": TEST_LOGIN_TOKEN });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String loginId = prefs.getString('loginId');
+      resp = await dio.get(BASE_URL + '/qnaListData.do', queryParameters: { "loginID": loginId });
       final jsonData = json.decode("$resp");
       _qnaList = QnaListModel.fromJson(jsonData);
       _loading = false;
@@ -45,4 +48,21 @@ class MyPageProvider with ChangeNotifier {
       print('##### No image selected.');
     }
   }
+
+  Future<String> setQna(String text) async {
+    Response resp;
+
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String loginId = prefs.getString('loginId');
+      resp = await dio.get(BASE_URL + '/qnaUpdateData.do', queryParameters: { "loginID": loginId, "questions":text });
+      var map = Map<String, dynamic>.from(json.decode(resp.toString()));
+      print(loginId);
+      print(map["state"]);
+      return map["state"];
+    }catch(error) {
+      print('##### setQna Error: $error');
+    }
+  }
 }
+

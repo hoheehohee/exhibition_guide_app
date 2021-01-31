@@ -14,20 +14,11 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   SocialProvider _social;
-  var _email="";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    (() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      setState(() {
-        if(prefs.getString('email') != null) {
-          _email = prefs.getString('email');
-        }
-      });
-    })();
   }
 
   @override
@@ -80,7 +71,6 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget _loginView() {
     _social = Provider.of<SocialProvider>(context);
-    _email = this._email;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,

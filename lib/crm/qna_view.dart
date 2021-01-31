@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 
 class QnaView extends StatelessWidget {
   MyPageProvider _myPageProvider;
+  final myController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     _myPageProvider = Provider.of<MyPageProvider>(context);
@@ -86,9 +88,6 @@ class QnaView extends StatelessWidget {
 
   // 입력 폼
   Widget _inputForm() {
-    TextEditingController myController
-      = TextEditingController()..text = _myPageProvider.imageName;
-
     return Container(
         color: Colors.white,
         width: double.infinity,
@@ -108,22 +107,9 @@ class QnaView extends StatelessWidget {
                     hintText: "문의하실 내용을 남겨주세요.",
                     border: OutlineInputBorder(),
                   ),
+                  controller: myController,
                 ),
-              ),
-              SizedBox(height: 15),
-              Text('첨부파일', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              SizedBox(height: 10),
-              TextField(
-                controller: myController,
-                readOnly: true,
-                onTap: () {
-                  _myPageProvider.getImage();
-                },
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: '사진만 업로드 가능합니다.'
-                ),
-              ),
+              )
             ]
         )
     );
@@ -141,7 +127,9 @@ class QnaView extends StatelessWidget {
             borderRadius: BorderRadius.circular(5.0),
           ),
           child: Text('문의하기', style: TextStyle(fontSize: 18, color: Colors.white)),
-          onPressed: () {},
+          onPressed: () async{
+            var status = await _myPageProvider.setQna(myController.text);
+          },
         )
     );
   }
