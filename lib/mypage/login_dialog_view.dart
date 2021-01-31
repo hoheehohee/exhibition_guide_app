@@ -4,6 +4,7 @@ import 'package:get/get.dart' hide Response;
 import 'package:provider/provider.dart';
 
 import '../constant.dart';
+import 'agree_dialog_view.dart';
 
 class LoginDialogView extends StatefulWidget {
   @override
@@ -148,8 +149,11 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                 height: 12,
               ),
               MaterialButton(
-                  onPressed:() {
-                    _social.googleLogin();
+                  onPressed:() async {
+                    var login = await _social.googleLogin();
+                    if(login["check"] == "N"){
+                      Get.dialog(AgreeDialogView(login['snsType'], login['email']));
+                    }
                   },
                   color: kWhiteColor,
                   minWidth: double.infinity,

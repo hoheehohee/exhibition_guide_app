@@ -48,8 +48,9 @@ class SocialProvider with ChangeNotifier {
   }
 
   // 구글 로그인
-  void googleLogin() async {
+  Future<Map> googleLogin() async {
     try{
+
       GoogleSignIn _googleSignIn = GoogleSignIn(
         scopes: [
           'email',
@@ -60,7 +61,8 @@ class SocialProvider with ChangeNotifier {
       GoogleSignInAuthentication auth = await acc.authentication;
       Map data = {"snsType": "google", "email": acc.email};
       _log("googleLogin", auth.accessToken, data, auth);
-      checkServer(data);
+      data["check"] = checkServer(data);
+      return data;
 
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
@@ -72,13 +74,14 @@ class SocialProvider with ChangeNotifier {
   }
 
   // 네이버 로그인
-  void naverLogin() async {
+  Future<Map> naverLogin() async {
     try {
       final NaverLoginResult result = await FlutterNaverLogin.logIn();
       NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
       Map data = {"snsType": "naver", "email": result.account.email};
       _log("naverLogin", res.accessToken, data, result);
-      checkServer(data);
+      data["check"] = checkServer(data);
+      return data;
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
       print("##### naverLogin error: $e");
@@ -141,7 +144,7 @@ class SocialProvider with ChangeNotifier {
   }
 
   // token 서버로 전송
-  void checkServer(data) async {
+  Future<String> checkServer(data) async {
     Dio dio = new Dio();
     print("##### checkServer ");
     Response resp;
@@ -149,7 +152,6 @@ class SocialProvider with ChangeNotifier {
     try {
       resp = await dio.get("${_BASE_URL}userCheckData.do?snsType=${data['snsType']}&email=${data['email']}");
       var map = Map<String, dynamic>.from(json.decode(resp.toString()));
-      print(map);
       if(map["status"] == "N"){
         Get.off(AgreeDialogView(data['snsType'], data['email']));
       } else if(map["status"] == "Y"){
@@ -162,12 +164,14 @@ class SocialProvider with ChangeNotifier {
       } else if(map["status"] == "B"){
 
       }
+
+      return map["status"];
     }catch(error){
       print('##### getExhibitSel: $error');
     }
   }
 
-  void joinServer(data) async {
+  Future<String> joinServer(data) async {
     Dio dio = new Dio();
     print("##### joinServer ");
     Response resp;
@@ -176,17 +180,19 @@ class SocialProvider with ChangeNotifier {
       print("${_BASE_URL}userCheckData.do?snsType=naver&email=harbris@naver.com");
       resp = await dio.get("${_BASE_URL}userCheckData.do?snsType=naver&email=harbris@naver.com");
       var map = Map<String, dynamic>.from(json.decode(resp.toString()));
+
       if(map["status"] == "Y"){
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('loginId', map["loginID"]);
         await prefs.setString('email', data['email']);
         _email = data["email"];
         _isSocialLogin = true;
-        notifyListeners();
-        Get.off(MyPageView(0));
       } else {
 
       }
+
+      // return map["status"];
+      return "J";
     }catch(error){
       print('##### joinServer: $error');
     }

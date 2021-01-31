@@ -4,6 +4,7 @@ import 'package:get/get.dart' hide Response;
 import 'package:provider/provider.dart';
 
 import '../constant.dart';
+import 'mypage_view.dart';
 
 class AgreeDialogView extends StatefulWidget {
   final String snsType;
@@ -143,7 +144,7 @@ class _AgreeDialogViewState extends State<AgreeDialogView>{
               ],
             ),
             MaterialButton(
-                onPressed: () {
+                onPressed: () async {
                   if(!_checkbox_email){
                     _showMyDialog("이메일 동의해주세요.");
                   } else if(!_checkbox_coll){
@@ -154,7 +155,10 @@ class _AgreeDialogViewState extends State<AgreeDialogView>{
                     _showMyDialog("이용기간 동의해주세요.");
                   } else {
                     Map data = {"snsType": widget.snsType, "email": widget.email};
-                    _social.joinServer(data);
+                    var join = await _social.joinServer(data);
+                    if(join == "J"){
+                      Get.to(MyPageView(0));
+                    }
                   }
                 },
                 color: kKakaoColor,
