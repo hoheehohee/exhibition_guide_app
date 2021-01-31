@@ -107,13 +107,13 @@ class _ProfileViewState extends State<ProfileView> {
                 RaisedButton(
                   disabledColor: Colors.red,
                   disabledTextColor: Colors.black,
-                  onPressed: null,
+                  onPressed: () => _social.logout(),
                   child: Text('로그아웃'),
                 )
               ],
             ),
             SizedBox(height: 10),
-            Text(_email, style: TextStyle(color: Colors.grey)),
+            Text(_social.email, style: TextStyle(color: Colors.grey)),
             Text('010-1234-5678', style: TextStyle(color: Colors.grey))
           ],
         )
