@@ -1,4 +1,4 @@
-import 'package:exhibition_guide_app/crm/qna_view.dart';
+import 'package:exhibition_guide_app/crm/qna_write.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/model/crm_model.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +116,7 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
                                         child: Text('1:1문의하기', style: TextStyle(fontSize: 18, color: Colors.white)),
                                         onPressed: () {
                                           Get.to(
-                                            QnaView(),
+                                            QnaWrite(),
                                             transition: Transition.rightToLeft
                                           );
                                         },

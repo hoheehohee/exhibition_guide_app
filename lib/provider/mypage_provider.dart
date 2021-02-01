@@ -49,6 +49,7 @@ class MyPageProvider with ChangeNotifier {
     }
   }
 
+  //1:1 문의 저장
   Future<String> setQna(String text) async {
     Response resp;
 
@@ -57,12 +58,27 @@ class MyPageProvider with ChangeNotifier {
       String loginId = prefs.getString('loginId');
       resp = await dio.get(BASE_URL + '/qnaUpdateData.do', queryParameters: { "loginID": loginId, "questions":text });
       var map = Map<String, dynamic>.from(json.decode(resp.toString()));
-      print(loginId);
-      print(map["state"]);
       return map["state"];
     }catch(error) {
       print('##### setQna Error: $error');
     }
   }
+
+  //1:1 문의 상
+  Future<Map> getQna(int qnaId) async {
+    Response resp;
+
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String loginId = prefs.getString('loginId');
+      resp = await dio.get(BASE_URL + '/qnaDetailData.do', queryParameters: { "loginID": loginId, "qnaID":qnaId });
+      var map = Map<String, dynamic>.from(json.decode(resp.toString()));
+      print(map);
+      return map;
+    }catch(error) {
+      print('##### setQna Error: $error');
+    }
+  }
 }
+
 
