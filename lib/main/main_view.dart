@@ -1,24 +1,22 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:drawerbehavior/drawer_scaffold.dart';
-import 'package:drawerbehavior/drawerbehavior.dart';
 import 'package:drawerbehavior/menu_screen.dart';
+import 'package:exhibition_guide_app/booking/booking_view.dart';
 import 'package:exhibition_guide_app/commons/custom_main_button.dart';
+import 'package:exhibition_guide_app/crm/customer_center_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
+import 'package:exhibition_guide_app/exhibit/permanent_exhibit_view.dart';
+import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
+import 'package:exhibition_guide_app/language/language_view.dart';
+import 'package:exhibition_guide_app/main/slider_drawers.dart';
+import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:exhibition_guide_app/booking/booking_view.dart';
-import 'package:exhibition_guide_app/crm/customer_center_view.dart';
-import 'package:exhibition_guide_app/exhibit/permanent_exhibit_view.dart';
-import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
-import 'package:exhibition_guide_app/language/language_view.dart';
-import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:exhibition_guide_app/guide/guide_view.dart';
 
 import '../menu.dart';
@@ -38,15 +36,13 @@ class _MainViewState extends State<MainView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // selectedMenuItemId = 1000;
-    Provider.of<DevicesProvider>(context, listen: false).init();
+    selectedMenuItemId = 0;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _init();
     });
   }
 
   void _init() async {
-
     // 첫 가이드 화면 노출 여부 체크
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isSeeGuide = prefs.getString('isSeeGuide');
@@ -57,6 +53,7 @@ class _MainViewState extends State<MainView> {
         GuideView(),
         transition: Transition.fadeIn
       );
+      return;
     } else if (_isSeeGuide == 'ignore' ){
       await prefs.setString('isSeeGuide', 'init');
     }
@@ -69,10 +66,12 @@ class _MainViewState extends State<MainView> {
     // social 로그인 체크
     Future.microtask(() {
       Provider.of<SocialProvider>(context, listen: false).socialLoginCheck();
+      Provider.of<DevicesProvider>(context, listen: false).init();
     });
   }
 
   Future<void> _showMyDialog() async {
+    final _device = Provider.of<DevicesProvider>(context, listen: false);
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
@@ -82,15 +81,23 @@ class _MainViewState extends State<MainView> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('test) 비콘 블루투스 통신 활성화로 인해 전시관련 정보로 이동합니다.'),
+                Text('(test) 비콘 블루투스 통신 활성화로 인해 전시관련 정보로 이동합니다.'),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Approve'),
+              child: Text('취소'),
               onPressed: () {
-                // Get.to(ExhibitVideoView());
+                Navigator.pop(context, false);
+                _device.setBeaconConnect(false);
+              },
+            ),
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                Navigator.pop(context, false);
+                Get.to(ExhibitVideoView());
               },
             ),
           ],
@@ -102,20 +109,22 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     final _device = Provider.of<DevicesProvider>(context);
-
     if (_device.isBeaconConnect) {
       Timer(
         Duration(seconds: 1),
-          () => Get.to(ExhibitVideoView())
+          () {
+            _showMyDialog();
+            _device.setBeaconConnect(false);
+            return;
+          }
       );
     };
     return DrawerScaffold(
       controller: controller,
       drawers: [
         _sideDrawer()
-        // SiderMenu()
       ],
-      builder: (context, id) => Column(
+      builder: (context, id) =>  Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
@@ -150,7 +159,8 @@ class _MainViewState extends State<MainView> {
                             ),
                           ],
                         ),
-                        onTap: () {},
+                        onTap: () {
+                        },
                       ),
                     ),
                     SizedBox(width: 10),
@@ -187,13 +197,13 @@ class _MainViewState extends State<MainView> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage("assets/images/main-back.jpg"),
-                        fit: BoxFit.fill
+                        fit: BoxFit.fitWidth
                     )
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(height: 60,),
+                    SizedBox(height: 40,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -210,7 +220,7 @@ class _MainViewState extends State<MainView> {
                         )
                       ],
                     ),
-                    SizedBox(height: 60),
+                    SizedBox(height: 40),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -279,79 +289,80 @@ class _MainViewState extends State<MainView> {
                           ],
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 20),
-                          child: SizedBox(
-                            width: 87,
-                            child: IconButton(
-                              padding: EdgeInsets.all(0),
-                              icon: Image.asset(
-                                'assets/images/toogle-main-off.png',
-                                width: 200,
-                                fit: BoxFit.fill,
+                            padding: EdgeInsets.only(top: 20),
+                            child: SizedBox(
+                              width: 87,
+                              child: IconButton(
+                                padding: EdgeInsets.all(0),
+                                icon: Image.asset(
+                                  Provider.of<DevicesProvider>(context).isRunning
+                                    ? 'assets/images/toogle-main-on.png'
+                                    : 'assets/images/toogle-main-off.png',
+                                  width: 200,
+                                  fit: BoxFit.fill,
+                                ),
+                                onPressed: () {
+                                  // _device.becaonScan(!_device.isRunning);
+                                },
                               ),
-                              onPressed: () {},
-                            ),
-                          )
+                            )
                         ),
                         Text(
-                          "자동전시안내",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
+                            "${_device.isRunning}",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
                         ),
                         SizedBox(height: 17),
                         Container(
                           padding: EdgeInsets.only(top: 21, bottom: 20, left: 10, right: 10),
                           color: Color(0xff253242).withOpacity(0.7),
                           child: (
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('개인정보처리방침', style: TextStyle(fontSize: 15, color: Colors.white)),
-                                SizedBox(height: 8),
-                                Text(
-                                  FOOTER_ADDRESS,
-                                  style: TextStyle(fontSize: 12, color: Colors.white),
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  FOOTER_COPY,
-                                  style: TextStyle(fontSize: 10, color: Color(0xff5A6B7B)),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            )
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('개인정보처리방침', style: TextStyle(fontSize: 15, color: Colors.white)),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    FOOTER_ADDRESS,
+                                    style: TextStyle(fontSize: 12, color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Text(
+                                    FOOTER_COPY,
+                                    style: TextStyle(fontSize: 10, color: Color(0xff5A6B7B)),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              )
                           ),
                         )
                       ],
                     )
                   ],
                 )
-              ),
             ),
+          ),
           )
         ],
-      )
-    );
-  }
-
-  Widget headerView(BuildContext context) {
-    return Container(
-      alignment: Alignment(-0.6, 0.0),
-      child: IconButton(
-        icon: ImageIcon(
-          AssetImage("assets/images/button/btn-back.png"),
-          color: Colors.white
-        ),
-        onPressed: () {
-          controller.closeDrawer(Direction.right);
-        },
-      )
+      ),
     );
   }
 
   Widget _sideDrawer() {
     return SideDrawer(
-      headerView: headerView(context),
+      headerView: Container(
+          alignment: Alignment(-0.6, 0.0),
+          child: IconButton(
+            icon: ImageIcon(
+                AssetImage("assets/images/button/btn-back.png"),
+                color: Colors.white
+            ),
+            onPressed: () {
+              controller.closeDrawer(Direction.right);
+            },
+          )
+      ),
       itemBuilder: (BuildContext context, MenuItem menuItem, bool isSelected) {
+        if (menuItem.id == 0) return Container();
         return Container(
             height: 60,
             key: GlobalKey(),
@@ -386,22 +397,19 @@ class _MainViewState extends State<MainView> {
       direction: Direction.right,
       alignment: Alignment.topRight,
       color: Color(0xff1C1C1C),
-      // selectedItemId: selectedMenuItemId,
+      // selectedItemId: ${selectedMenuItemId},
       textStyle: TextStyle(color: Colors.white, fontSize: 24.0),
-      onMenuItemSelected: (itemId) {
-        setState(() {
-          // selectedMenuItemId = itemId;
-          switch(itemId){
-            // case 0: Get.to(ExhibitInfoView()); break;
-            case 0: Get.off(ExhibitHighlightView()); break;
-            case 1: Get.to(PermanentExhibitView()); break;
-            case 2: Get.to(ExhibitionMapView()); break;
-            case 4: Get.to(CustomerCenterView()); break;
-            case 5: Get.to(LanguageView()); break;
-            case 6: Get.to(BookingView()); break;
-            case 7: Get.to(MyPageView(0)); break;
-          }
-        });
+      onMenuItemSelected: (itemId)  async {
+        switch(itemId){
+        // case 0: Get.to(ExhibitInfoView()); break;
+          case 1: Get.offAll(ExhibitHighlightView()); break;
+          case 2: Get.offAll(PermanentExhibitView()); break;
+          case 3: Get.offAll(ExhibitionMapView()); break;
+          case 4: Get.offAll(CustomerCenterView()); break;
+          case 5: Get.offAll(LanguageView()); break;
+          case 6: Get.offAll(BookingView()); break;
+          case 7: Get.offAll(MyPageView(0)); break;
+        }
       },
     );
   }

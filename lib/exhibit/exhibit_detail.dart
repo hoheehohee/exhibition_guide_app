@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:exhibition_guide_app/constant.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             IconButton(
                 icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
                 onPressed: () {
-                  Get.back();
+                  Get.offAll(ExhibitHighlightView());
                 }
             )
           )
@@ -75,7 +76,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
           px: 25.0,
           iconPath: 'assets/images/button/btn-home.png',
           onAction: () {
-            Get.to(MainView());
+            Get.offAll(MainView());
           }
         ),
       ]

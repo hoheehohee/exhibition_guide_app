@@ -20,7 +20,6 @@ class ExhibitHighlightView extends StatefulWidget {
 }
 
 class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
-
   final List<String> imgList = [
     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
     'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
@@ -36,7 +35,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // _selectedMenuItemId = menu.items[0].id;
+    _selectedMenuItemId = 333;
   }
 
   @override
@@ -62,13 +61,13 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     _exhibitList(
-                      title: "전시유물",
-                      iconPath: "assets/images/icon/icon-main-relics.png"
+                        title: "전시유물",
+                        iconPath: "assets/images/icon/icon-main-relics.png"
                     ),
                     SizedBox(height: 15,),
                     _exhibitList(
-                      title: '상설전시',
-                      iconPath: "assets/images/icon/icon-main-sangsul.png"
+                        title: '상설전시',
+                        iconPath: "assets/images/icon/icon-main-sangsul.png"
                     ),
                     SizedBox(height: 15,),
                     _exhibitList(
@@ -260,7 +259,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
                 InkWell(
                   child: Image.network(item, fit: BoxFit.cover, width: 1000.0),
                   onTap: () {
-                    Get.to(ExhibitDetail(2));
+                    Get.offAll(ExhibitDetail(2));
                   },
                 ),
                 Positioned(
@@ -296,26 +295,22 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
     )).toList();
   }
 
-
-
-  Widget _headerView(BuildContext context) {
-    return Container(
-        alignment: Alignment(-0.6, 0.0),
-        child: IconButton(
-          icon: ImageIcon(
-              AssetImage("assets/images/button/btn-back.png"),
-              color: Colors.white
-          ),
-          onPressed: () {
-            _controller.closeDrawer(Direction.right);
-          },
-        )
-    );
-  }
   Widget _sideDrawer() {
     return SideDrawer(
-      headerView: _headerView(context),
+      headerView:  Container(
+          alignment: Alignment(-0.6, 0.0),
+          child: IconButton(
+            icon: ImageIcon(
+                AssetImage("assets/images/button/btn-back.png"),
+                color: Colors.white
+            ),
+            onPressed: () {
+              _controller.closeDrawer(Direction.right);
+            },
+          )
+      ),
       itemBuilder: (BuildContext context, MenuItem menuItem, bool isSelected) {
+        if (menuItem.id == 0) return Container();
         return Container(
             height: 60,
             margin: EdgeInsets.symmetric(horizontal: 20),
@@ -352,20 +347,19 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
       // selectedItemId: _selectedMenuItemId,
       textStyle: TextStyle(color: Colors.white, fontSize: 24.0),
       onMenuItemSelected: (itemId) {
-
-        setState(() {
-          // _selectedMenuItemId = itemId;
-          switch(itemId){
-          // case 0: Get.to(ExhibitInfoView()); break;
-            case 0: _controller.closeDrawer(Direction.right); break;
-            case 1: Get.to(PermanentExhibitView()); break;
-            case 2: Get.to(ExhibitionMapView()); break;
-            case 4: Get.to(CustomerCenterView()); break;
-            case 5: Get.to(LanguageView()); break;
-            case 6: Get.to(BookingView()); break;
-            case 7: Get.to(MyPageView(0)); break;
-          }
-        });
+        switch(itemId){
+        // case 0: Get.to(ExhibitInfoView()); break;
+          case 1: _controller.closeDrawer(Direction.right); break;
+          case 2: Get.offAll(PermanentExhibitView()); break;
+          case 3: Get.offAll(ExhibitionMapView()); break;
+          case 4: Get.offAll(CustomerCenterView()); break;
+          case 5: Get.offAll(LanguageView()); break;
+          case 6: Get.offAll(BookingView()); break;
+          case 7: Get.offAll(MyPageView(0)); break;
+        }
+        // setState(() {
+        //   _selectedMenuItemId = itemId;
+        // });
       },
     );
   }

@@ -1,79 +1,45 @@
-import 'package:drawerbehavior/menu_screen.dart';
-import 'package:drawerbehavior/drawer_scaffold.dart';
+import 'package:drawerbehavior/drawerbehavior.dart';
 import 'package:exhibition_guide_app/booking/booking_view.dart';
 import 'package:exhibition_guide_app/crm/customer_center_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/permanent_exhibit_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/language/language_view.dart';
+import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../menu.dart';
 
-class ExhibitThemeList extends StatefulWidget {
-  @override
-  _ExhibitThemeListState createState() => _ExhibitThemeListState();
-}
-
-class _ExhibitThemeListState extends State<ExhibitThemeList> {
-
-  int selectedMenuItemId;
+class SliderDrawers {
+  int selectedMenuItemId = 0;
   DrawerScaffoldController controller = DrawerScaffoldController();
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    selectedMenuItemId = menu.items[0].id;
-  }
-  @override
   Widget build(BuildContext context) {
-    return DrawerScaffold(
-      controller: controller,
-      appBar: _appBar(),
-      drawers: [_sideDrawer()],
-      builder: (context, id) => Container(),
-    );
+    return _sideDrawer();
   }
 
-  Widget _appBar() {
-    return AppBar(
-      backgroundColor: Color(0xff304456),
-      title: Text('4F 전시실', style: TextStyle(color: Colors.white),),
-      actions:[
-        IconButton(
-          icon: new Icon(Icons.menu, size: 30, color: Colors.white,),
-          onPressed: () {
-            controller.toggle(Direction.right);
-          },
-        ),
-      ],
-      leading: new Container(),
-    );
-  }
-
-  Widget _headerView(BuildContext context) {
-    return Container(
-        alignment: Alignment(-0.6, 0.0),
-        child: IconButton(
-          icon: ImageIcon(
-              AssetImage("assets/images/button/btn-back.png"),
-              color: Colors.white
-          ),
-          onPressed: () {
-            controller.closeDrawer(Direction.right);
-          },
-        )
-    );
-  }
   Widget _sideDrawer() {
     return SideDrawer(
-      headerView: _headerView(context),
+      headerView: Container(
+          alignment: Alignment(-0.6, 0.0),
+          child: IconButton(
+            icon: ImageIcon(
+                AssetImage("assets/images/button/btn-back.png"),
+                color: Colors.white
+            ),
+            onPressed: () {
+              controller.closeDrawer(Direction.right);
+            },
+          )
+      ),
       itemBuilder: (BuildContext context, MenuItem menuItem, bool isSelected) {
+        if (menuItem.id == 0) return Container();
         return Container(
             height: 60,
+            key: GlobalKey(),
             margin: EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
                 border: Border(
@@ -108,19 +74,19 @@ class _ExhibitThemeListState extends State<ExhibitThemeList> {
       selectedItemId: selectedMenuItemId,
       textStyle: TextStyle(color: Colors.white, fontSize: 24.0),
       onMenuItemSelected: (itemId) {
-        setState(() {
-          selectedMenuItemId = itemId;
+        // setState(() {
+        //   selectedMenuItemId = itemId;
           switch(itemId){
           // case 0: Get.to(ExhibitInfoView()); break;
-            case 0: Get.to(ExhibitHighlightView()); break;
-            case 1: Get.to(PermanentExhibitView()); break;
-            case 2: Get.to(ExhibitionMapView()); break;
+            case 1: Get.off(ExhibitHighlightView()); break;
+            case 2: Get.to(PermanentExhibitView()); break;
+            case 3: Get.to(ExhibitionMapView()); break;
             case 4: Get.to(CustomerCenterView()); break;
             case 5: Get.to(LanguageView()); break;
             case 6: Get.to(BookingView()); break;
             case 7: Get.to(MyPageView(0)); break;
           }
-        });
+        // });
       },
     );
   }

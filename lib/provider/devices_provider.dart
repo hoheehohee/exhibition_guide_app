@@ -31,7 +31,7 @@ class DevicesProvider with ChangeNotifier {
   int _nrMessaggesReceived = 0;
 
   bool _playing = false; // 재성버튼 활성 default
-  bool _isRunning = false;
+  bool _isRunning = true;
 
   bool get isRunning => _isRunning;
   bool get isPlaying => _playing;
@@ -53,12 +53,14 @@ class DevicesProvider with ChangeNotifier {
   }
 
   void becaonScan(bool type) async{
+    print("####becaonScan ${type}");
     if (type) {
       await BeaconsPlugin.startMonitoring;
     } else {
       await BeaconsPlugin.stopMonitoring;
     }
-    setIsRunning(type);
+    _isRunning = type;
+    notifyListeners();
   }
 
   void setInitdataSourceList() async {
@@ -66,54 +68,54 @@ class DevicesProvider with ChangeNotifier {
   }
 
   void init() async {
-      if (Platform.isAndroid) {
-        await BeaconsPlugin.setDisclosureDialogMessage(
-            title: "Need Location Permission",
-            message: "This app collects location data to work with beacons.");
-      }
 
-      BeaconsPlugin.listenToBeacons(beaconEventsController);
+    if (!_isRunning) return;
+    if (Platform.isAndroid) {
+      await BeaconsPlugin.setDisclosureDialogMessage(
+          title: "Need Location Permission",
+          message: "This app collects location data to work with beacons.");
+    }
 
-      // 비콘 정보
-      await BeaconsPlugin.addRegion("wwwhohee42878", "74278BDA-B644-4520-8F0C-720EAF059935");
-      // beaconContentSelCall();
-      // UUID에 맞는 비콘 연결
-      beaconEventsController.stream.listen((data) {
+    BeaconsPlugin.listenToBeacons(beaconEventsController);
 
-          if (data.isNotEmpty) {
-            _beaconResult = data;
-            try{
-              Map beacon = jsonDecode(data);
-              beaconData = BeaconModel.fromJson(beacon);
-              print("##### beacon: $data");
-              beaconContentSelCall();
-            }catch(error) {
-              print("error: $error");
-            }
-            _nrMessaggesReceived++;
+    // 비콘 정보
+    await BeaconsPlugin.addRegion("", "FDA50693-A4E2-4FB1-AFCF-C6EB07647825");
+    // UUID에 맞는 비콘 연결
+    beaconEventsController.stream.listen((data) {
+        if (data.isNotEmpty) {
+          _beaconResult = data;
+          print("###### beacon data: $data");
+          try{
+            Map beacon = jsonDecode(data);
+            beaconData = BeaconModel.fromJson(beacon);
+            beaconContentSelCall();
+          }catch(error) {
+            print("error: $error");
           }
-      },
-      onDone: () {
-        print("##### onDone");
-      },
-      onError: (error) {
-        print("##### error: $error");
+          _nrMessaggesReceived++;
+        }
+    },
+    onDone: () {
+      print("##### onDone");
+    },
+    onError: (error) {
+      print("##### error: $error");
+    });
+
+    // 백그라운드에서 실행
+    await BeaconsPlugin.runInBackground(true);
+
+    if (Platform.isAndroid) {
+      BeaconsPlugin.channel.setMethodCallHandler((call) async {
+        if (call.method == 'scannerReady') {
+          await BeaconsPlugin.startMonitoring;
+          setIsRunning(true);
+        }
       });
-
-      // 백그라운드에서 실행
-      await BeaconsPlugin.runInBackground(true);
-
-      if (Platform.isAndroid) {
-        BeaconsPlugin.channel.setMethodCallHandler((call) async {
-          if (call.method == 'scannerReady') {
-            await BeaconsPlugin.startMonitoring;
-            setIsRunning(true);
-          }
-        });
-      } else if (Platform.isIOS) {
-        await BeaconsPlugin.startMonitoring;
-        setIsRunning(true);
-      }
+    } else if (Platform.isIOS) {
+      await BeaconsPlugin.startMonitoring;
+      setIsRunning(true);
+    }
   }
 
   void dispose() {
@@ -127,34 +129,26 @@ class DevicesProvider with ChangeNotifier {
     List<BetterPlayerDataSource> temp = [];
     try{
       resp = await dio.get(BASE_URL + '/beaconSearch.do', queryParameters: {
-        // "UUID": beaconData.uuid,
-        // "Major": beaconData.minor,
-        // "Minor": beaconData.minor
-        "UUID": 1,
-        "Major": 2,
-        "Minor": 3
+        "UUID": beaconData.uuid,
+        "Major": beaconData.minor,
+        "Minor": beaconData.minor
       });
       final jsonData = json.decode("$resp");
       _beaconContentList = BeaconContentModel.fromJson(jsonData);
-      _beaconConnect = true;
-
       _beaconContentList.data.forEach((element) {
         temp.add(
           BetterPlayerDataSource(
             BetterPlayerDataSourceType.network,
-            element.videoFileEng
+            element.videoFile
           ),
         );
       });
-      print("##### temp length ${temp.length}");
-      print("##### _dataSourceList2 length ${_dataSourceList.length}");
       _dataSourceList = temp;
-
+      _beaconConnect = true;
       becaonScan(false);
 
     }catch(error) {
       becaonScan(false);
-      _beaconConnect = false;
       print("#### beaconContentSelCall error: $error");
     }
     notifyListeners();

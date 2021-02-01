@@ -3,42 +3,47 @@ import 'package:flutter/material.dart';
 
 List<MenuItem> items = [
   new MenuItem<int>(
-    id: 0,
+      id: 0,
+      title: '',
+      icon: null
+  ),
+  new MenuItem<int>(
+    id: 1,
     title: '하이라이트',
     icon: Icons.stop_rounded
   ),
   new MenuItem<int>(
-    id: 1,
+    id: 2,
     title: '전시유물',
     icon: Icons.stop_rounded
   ),
   new MenuItem<int>(
-    id: 2,
+    id: 3,
     title: '상설전시',
     icon: Icons.stop_rounded
   ),
   new MenuItem<int>(
-    id: 3,
+    id: 4,
     title: '기획전시',
     icon: Icons.stop_rounded,
   ),
   new MenuItem<int>(
-    id: 4,
+    id: 5,
     title: '공지사항',
     icon: Icons.stop_rounded,
   ),
   new MenuItem<int>(
-    id: 5,
+    id: 6,
     title: '이용설정',
     icon: Icons.stop_rounded,
   ),
   new MenuItem<int>(
-    id: 6,
+    id: 7,
     title: '이용예약 신청',
     icon: Icons.stop_rounded,
   ),
   new MenuItem<int>(
-    id: 7,
+    id: 8,
     title: '마이페이지',
     icon: Icons.stop_rounded,
   ),
