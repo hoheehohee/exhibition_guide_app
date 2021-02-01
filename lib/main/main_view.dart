@@ -1,16 +1,7 @@
 import 'dart:async';
-import 'package:drawerbehavior/drawer_scaffold.dart';
-import 'package:drawerbehavior/menu_screen.dart';
-import 'package:exhibition_guide_app/booking/booking_view.dart';
 import 'package:exhibition_guide_app/commons/custom_main_button.dart';
-import 'package:exhibition_guide_app/crm/customer_center_view.dart';
-import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
-import 'package:exhibition_guide_app/exhibit/permanent_exhibit_view.dart';
-import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
-import 'package:exhibition_guide_app/language/language_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
-import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:exhibition_guide_app/guide/guide_view.dart';
 
-import '../menu.dart';
 import '../message.dart';
 
 class MainView extends StatefulWidget {
