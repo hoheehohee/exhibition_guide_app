@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:exhibition_guide_app/constant.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   var _exhibit;
   var _device;
   bool _loading;
+  bool _audioPlayShow = true;
 
   @override
   void initState() {
@@ -50,7 +52,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     return Scaffold(
       appBar: _appBar(),
       body: _mainView(),
-      bottomNavigationBar: _bottomButtons(),
+      bottomNavigationBar: _audioPlayShow ?  _bottomButtons() : null,
     );
   }
 
@@ -185,12 +187,19 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                   children: [
                     _imageIconBtn(
                       px: 40.0,
-                      onAction: () {},
+                      onAction: () {
+                        setState(() {
+                          _audioPlayShow = true;
+                        });
+                      },
                       iconPath: 'assets/images/icon/icon-headset.png',
                     ),
                     _imageIconBtn(
                       px: 40.0,
-                      onAction: () {},
+                      onAction: () async {
+                        await _device.setExhibitDetVideo('http://115.144.53.222:8081/ilje/fileDownload.do?folder=contents&filename=Nature42420_1611988753438.mp4');
+                        Get.to(ExhibitVideoView());
+                      },
                       iconPath: 'assets/images/icon/icon-movie.png',
                     ),
                     _imageIconBtn(
@@ -306,7 +315,12 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                 ),
                 _imageIconBtn(
                   px: 23.0,
-                  onAction: () {},
+                  onAction: () {
+                    _device.stopAudio();
+                    setState(() {
+                      _audioPlayShow = false;
+                    });
+                  },
                   iconPath: 'assets/images/button/btn-cancel.png'
                 )
               ],

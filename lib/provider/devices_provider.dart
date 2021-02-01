@@ -192,4 +192,24 @@ class DevicesProvider with ChangeNotifier {
     });
   }
 
+  // 오디오 정지
+  void stopAudio() async {
+    position = new Duration();
+    duration = new Duration();
+    audioPlayer.stop();
+    setPlaying(false);
+
+    notifyListeners();
+  }
+
+  // 전시물 상세 동영상 지정
+  void setExhibitDetVideo(String url) {
+    _dataSourceList.add(
+      BetterPlayerDataSource(
+        BetterPlayerDataSourceType.network,
+        url
+      ),
+    );
+  }
+
 }

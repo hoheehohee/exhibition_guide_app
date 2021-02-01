@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:exhibition_guide_app/commons/custom_main_button.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
@@ -219,14 +220,14 @@ class _MainViewState extends State<MainView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomMainButton(
-                              onTap: () {
-                                _showMyDialog();
-                              },
+                              onTap: () {},
                               title: "전시유물",
                               imgPath: 'assets/images/icon/icon-main-relics.png',
                             ),
                             CustomMainButton(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(ExhibitHighlightView());
+                              },
                               title: "하이라이트",
                               imgPath: 'assets/images/icon/icon-main-highlight.png',
                             ),

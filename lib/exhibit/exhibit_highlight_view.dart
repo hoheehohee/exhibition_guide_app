@@ -37,6 +37,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),
+      bottomNavigationBar: _bottomButtons(),
       key: _scaffoldKey,
       endDrawer: Drawer(
           child: Container(
