@@ -6,6 +6,7 @@ import 'package:exhibition_guide_app/constant.dart';
 import 'package:exhibition_guide_app/crm/customer_center_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/language/language_view.dart';
+import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,7 @@ class ExhibitHighlightView extends StatefulWidget {
 }
 
 class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> imgList = [
     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
     'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
@@ -40,14 +42,16 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
 
   @override
   Widget build(BuildContext context) {
-    return DrawerScaffold(
-      controller: _controller,
+    return Scaffold(
       appBar: _appBar(),
-      bottomNavigationBar: _bottomButtons(),
-      drawers: [
-        _sideDrawer()
-      ],
-      builder: (context, id) => Container(
+      key: _scaffoldKey,
+      endDrawer: Drawer(
+          child: Container(
+            color: Color(0xff1A1A1B),
+            child: SliderDrawers(),
+          )
+      ),
+      body: Container(
         color: backgroundColor,
         width: double.infinity,
         child: Column(
@@ -94,7 +98,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
         IconButton(
           icon: new Icon(Icons.menu, size: 30, color: Colors.white,),
           onPressed: () {
-            _controller.toggle(Direction.right);
+            _scaffoldKey.currentState.openEndDrawer();
           },
         ),
       ],
@@ -293,74 +297,5 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
         ),
       ),
     )).toList();
-  }
-
-  Widget _sideDrawer() {
-    return SideDrawer(
-      headerView:  Container(
-          alignment: Alignment(-0.6, 0.0),
-          child: IconButton(
-            icon: ImageIcon(
-                AssetImage("assets/images/button/btn-back.png"),
-                color: Colors.white
-            ),
-            onPressed: () {
-              _controller.closeDrawer(Direction.right);
-            },
-          )
-      ),
-      itemBuilder: (BuildContext context, MenuItem menuItem, bool isSelected) {
-        if (menuItem.id == 0) return Container();
-        return Container(
-            height: 60,
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(width: 1.5, color: Colors.grey)
-                )
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ImageIcon(
-                  AssetImage("assets/images/menu-dot.png"),
-                  color: Color(0xff363636),
-                ),
-                Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                        menuItem.title,
-                        style: TextStyle(fontSize: 20, color: Colors.white)
-                    )
-                ),
-              ],
-            )
-        );
-      },
-      percentage: 1,
-      menu: menu,
-      animation: false,
-      direction: Direction.right,
-      alignment: Alignment.topRight,
-      color: Color(0xff1C1C1C),
-      // selectedItemId: _selectedMenuItemId,
-      textStyle: TextStyle(color: Colors.white, fontSize: 24.0),
-      onMenuItemSelected: (itemId) {
-        switch(itemId){
-        // case 0: Get.to(ExhibitInfoView()); break;
-          case 1: _controller.closeDrawer(Direction.right); break;
-          case 2: Get.offAll(PermanentExhibitView()); break;
-          case 3: Get.offAll(ExhibitionMapView()); break;
-          case 4: Get.offAll(CustomerCenterView()); break;
-          case 5: Get.offAll(LanguageView()); break;
-          case 6: Get.offAll(BookingView()); break;
-          case 7: Get.offAll(MyPageView(0)); break;
-        }
-        // setState(() {
-        //   _selectedMenuItemId = itemId;
-        // });
-      },
-    );
   }
 }

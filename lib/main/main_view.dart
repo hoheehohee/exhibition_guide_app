@@ -28,15 +28,13 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   var _isSeeGuide = 'init';
-  int selectedMenuItemId;
-  DrawerScaffoldController controller = DrawerScaffoldController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    selectedMenuItemId = 0;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _init();
     });
@@ -119,12 +117,15 @@ class _MainViewState extends State<MainView> {
           }
       );
     };
-    return DrawerScaffold(
-      controller: controller,
-      drawers: [
-        _sideDrawer()
-      ],
-      builder: (context, id) =>  Column(
+    return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: Drawer(
+        child: Container(
+          color: Color(0xff1A1A1B),
+          child: SliderDrawers(),
+        )
+      ),
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
@@ -182,7 +183,7 @@ class _MainViewState extends State<MainView> {
                             fit: BoxFit.fill,
                           ),
                           onTap: () {
-                            controller.toggle(Direction.right);
+                            _scaffoldKey.currentState.openEndDrawer();
                           },
                         ),
                       ],
@@ -308,7 +309,7 @@ class _MainViewState extends State<MainView> {
                             )
                         ),
                         Text(
-                            "${_device.isRunning}",
+                            "자동 전시안내",
                             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
                         ),
                         SizedBox(height: 17),
@@ -344,73 +345,6 @@ class _MainViewState extends State<MainView> {
           )
         ],
       ),
-    );
-  }
-
-  Widget _sideDrawer() {
-    return SideDrawer(
-      headerView: Container(
-          alignment: Alignment(-0.6, 0.0),
-          child: IconButton(
-            icon: ImageIcon(
-                AssetImage("assets/images/button/btn-back.png"),
-                color: Colors.white
-            ),
-            onPressed: () {
-              controller.closeDrawer(Direction.right);
-            },
-          )
-      ),
-      itemBuilder: (BuildContext context, MenuItem menuItem, bool isSelected) {
-        if (menuItem.id == 0) return Container();
-        return Container(
-            height: 60,
-            key: GlobalKey(),
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(width: 1.5, color: Colors.grey)
-                )
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ImageIcon(
-                  AssetImage("assets/images/menu-dot.png"),
-                  color: Color(0xff363636),
-                ),
-                Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                        menuItem.title,
-                        style: TextStyle(fontSize: 20, color: Colors.white)
-                    )
-                ),
-              ],
-            )
-        );
-      },
-      percentage: 1,
-      menu: menu,
-      animation: false,
-      direction: Direction.right,
-      alignment: Alignment.topRight,
-      color: Color(0xff1C1C1C),
-      // selectedItemId: ${selectedMenuItemId},
-      textStyle: TextStyle(color: Colors.white, fontSize: 24.0),
-      onMenuItemSelected: (itemId)  async {
-        switch(itemId){
-        // case 0: Get.to(ExhibitInfoView()); break;
-          case 1: Get.offAll(ExhibitHighlightView()); break;
-          case 2: Get.offAll(PermanentExhibitView()); break;
-          case 3: Get.offAll(ExhibitionMapView()); break;
-          case 4: Get.offAll(CustomerCenterView()); break;
-          case 5: Get.offAll(LanguageView()); break;
-          case 6: Get.offAll(BookingView()); break;
-          case 7: Get.offAll(MyPageView(0)); break;
-        }
-      },
     );
   }
 }
