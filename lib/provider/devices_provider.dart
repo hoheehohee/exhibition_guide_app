@@ -130,7 +130,7 @@ class DevicesProvider with ChangeNotifier {
     try{
       resp = await dio.get(BASE_URL + '/beaconSearch.do', queryParameters: {
         "UUID": beaconData.uuid,
-        "Major": beaconData.minor,
+        "Major": beaconData.major,
         "Minor": beaconData.minor
       });
       final jsonData = json.decode("$resp");
