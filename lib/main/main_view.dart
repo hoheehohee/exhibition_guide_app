@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:exhibition_guide_app/commons/custom_main_button.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
+import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -59,55 +61,9 @@ class _MainViewState extends State<MainView> {
     });
   }
 
-  Future<void> _showMyDialog() async {
-    final _device = Provider.of<DevicesProvider>(context, listen: false);
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('전시관련 정보로 이동하시겠습니까?'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('(test) 비콘 블루투스 통신 활성화로 인해 전시관련 정보로 이동합니다.'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('취소'),
-              onPressed: () {
-                Navigator.pop(context, false);
-                _device.setBeaconConnect(false);
-              },
-            ),
-            TextButton(
-              child: Text('확인'),
-              onPressed: () {
-                Navigator.pop(context, false);
-                Get.to(ExhibitVideoView());
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final _device = Provider.of<DevicesProvider>(context);
-    // if (_device.isBeaconConnect) {
-    //   Timer(
-    //     Duration(seconds: 1),
-    //       () {
-    //         _showMyDialog();
-    //         _device.setBeaconConnect(false);
-    //         return;
-    //       }
-    //   );
-    // };
+    final _exhibitProv = Provider.of<ExhibitProvider>(context, listen: false);
     return Scaffold(
       key: _scaffoldKey,
       endDrawer: Drawer(
@@ -220,7 +176,12 @@ class _MainViewState extends State<MainView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomMainButton(
-                              onTap: () {},
+                              onTap: () async {
+                                await _exhibitProv.setExhibitContentDataSel("B");
+                                Get.offAll(ExhibitListView(
+                                  appBarTitle: '전시유물',
+                                ));
+                              },
                               title: "전시유물",
                               imgPath: 'assets/images/icon/icon-main-relics.png',
                             ),
