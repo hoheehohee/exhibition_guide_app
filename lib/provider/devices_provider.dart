@@ -1,17 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:developer' as developer;
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:beacons_plugin/beacons_plugin.dart';
 import 'package:better_player/better_player.dart';
 import 'package:dio/dio.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_detail.dart';
 import 'package:exhibition_guide_app/message.dart';
 import 'package:exhibition_guide_app/model/beacon_content_model.dart';
 import 'package:exhibition_guide_app/model/beacon_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart' as Getx;
 
 
 class DevicesProvider with ChangeNotifier {
@@ -28,6 +29,7 @@ class DevicesProvider with ChangeNotifier {
   bool _beaconConnect = false;
   String _qrCode = '';
   String _beaconResult = '';
+  String _audioUrl = '';
   int _nrMessaggesReceived = 0;
 
   bool _playing = false; // 재성버튼 활성 default
@@ -68,7 +70,7 @@ class DevicesProvider with ChangeNotifier {
   }
 
   void init() async {
-
+    // beaconContentSelCall();
     if (Platform.isAndroid) {
       await BeaconsPlugin.setDisclosureDialogMessage(
           title: "Need Location Permission",
@@ -130,10 +132,13 @@ class DevicesProvider with ChangeNotifier {
       resp = await dio.get(BASE_URL + '/beaconSearch.do', queryParameters: {
         "UUID": beaconData.uuid,
         "Major": beaconData.major,
-        "Minor": beaconData.minor
+        "Minor": beaconData.minor,
       });
       final jsonData = json.decode("$resp");
       _beaconContentList = BeaconContentModel.fromJson(jsonData);
+      // 비콘 통신 목록 중 첫번째 오디오 데이터 저장
+      _audioUrl = _beaconContentList.data[0].voiceFile;
+      // 비콘 통신 목록 중 비디오 목록 데이터 저장
       _beaconContentList.data.forEach((element) {
         print("### element.videoFile ${element.videoFile}");
         temp.add(
@@ -147,6 +152,8 @@ class DevicesProvider with ChangeNotifier {
       _dataSourceList = temp;
       _beaconConnect = true;
       becaonScan(false);
+
+      Getx.Get.to(ExhibitDetail(_beaconContentList.data[0].idx));
 
     }catch(error) {
       becaonScan(false);
@@ -176,6 +183,7 @@ class DevicesProvider with ChangeNotifier {
     } else {
       // play song
       var res = await audioPlayer.play('https://luan.xyz/files/audio/ambient_c_motion.mp3');
+      // var res = await audioPlayer.play(_audioUrl);
       if (res == 1) {
         setPlaying(true);
       }

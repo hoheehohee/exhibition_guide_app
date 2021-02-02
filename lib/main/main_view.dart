@@ -98,16 +98,16 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     final _device = Provider.of<DevicesProvider>(context);
-    if (_device.isBeaconConnect) {
-      Timer(
-        Duration(seconds: 1),
-          () {
-            _showMyDialog();
-            _device.setBeaconConnect(false);
-            return;
-          }
-      );
-    };
+    // if (_device.isBeaconConnect) {
+    //   Timer(
+    //     Duration(seconds: 1),
+    //       () {
+    //         _showMyDialog();
+    //         _device.setBeaconConnect(false);
+    //         return;
+    //       }
+    //   );
+    // };
     return Scaffold(
       key: _scaffoldKey,
       endDrawer: Drawer(

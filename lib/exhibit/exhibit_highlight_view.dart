@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
 import 'package:exhibition_guide_app/constant.dart';
+import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -84,7 +86,6 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
         ),
       ),
     );
-
   }
 
   Widget _appBar() {
@@ -121,10 +122,10 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
                     children: [
                       Text("자동전시", style: TextStyle(fontSize: 18, color: Colors.white)),
                       SizedBox(width: 5,),
-                      //"assets/images/toogle-main-on.png"
-                      InkWell(
-                        child: Image.asset("assets/images/toogle-main-on.png", width: 50,),
-                        onTap: () {},
+                      CustomImageIconBtn(
+                        px: 50.0,
+                        iconPath: "assets/images/toogle-main-on.png",
+                        onAction: () {},
                       )
                     ],
                   ),
@@ -134,10 +135,10 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
                     children: [
                       Text("음성지원 안내", style: TextStyle(fontSize: 18, color: Colors.white)),
                       SizedBox(width: 5,),
-                      //"assets/images/toogle-main-on.png"
-                      InkWell(
-                        child: Image.asset("assets/images/toogle-main-on.png", width: 50,),
-                        onTap: () {},
+                      CustomImageIconBtn(
+                        px: 50.0,
+                        iconPath: "assets/images/toogle-main-on.png",
+                        onAction: () {},
                       )
                     ],
                   ),
@@ -154,12 +155,16 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
                     _bottomBtn(
                       title: '오시는길',
                       iconPath: 'assets/images/icon/icon-location.png',
-                      onTapFunc: () {},
+                      onTapFunc: () {
+
+                      },
                     ),
                     _bottomBtn(
                       title: '전시관 지도',
                       iconPath: 'assets/images/icon/icon-map.png',
-                      onTapFunc: () {},
+                      onTapFunc: () {
+                        Get.to(ExhibitionMapView());
+                      },
                     ),
                     _bottomBtn(
                       title: '공지사항',

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:exhibition_guide_app/constant.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
+import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:flutter/material.dart';
@@ -32,16 +33,11 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   void initState() {
     super.initState();
     Future.microtask(() => {
-      // Provider.of<DevicesProvider>(context, listen: false).init(),
+      Provider.of<DevicesProvider>(context, listen: false).playAudio(),
       Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx)
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    // Provider.of<DevicesProvider>(context, listen: false).dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +65,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                 icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
                 onPressed: () {
                   Get.offAll(ExhibitHighlightView());
+                  _device.stopAudio();
                 }
             )
           )
@@ -78,6 +75,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
           px: 25.0,
           iconPath: 'assets/images/button/btn-home.png',
           onAction: () {
+            _device.stopAudio();
             Get.offAll(MainView());
           }
         ),
@@ -197,6 +195,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                     _imageIconBtn(
                       px: 40.0,
                       onAction: () async {
+                        _device.stopAudio();
                         await _device.setExhibitDetVideo('http://115.144.53.222:8081/ilje/fileDownload.do?folder=contents&filename=Nature42420_1611988753438.mp4');
                         Get.to(ExhibitVideoView());
                       },
@@ -204,7 +203,10 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                     ),
                     _imageIconBtn(
                       px: 40.0,
-                      onAction: () {},
+                      onAction: () {
+                        _device.stopAudio();
+                        Get.to(ExhibitionMapView());
+                      },
                       iconPath: 'assets/images/icon/icon-map-d.png',
                     )
                   ]
