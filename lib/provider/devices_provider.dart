@@ -182,8 +182,8 @@ class DevicesProvider with ChangeNotifier {
       }
     } else {
       // play song
-      var res = await audioPlayer.play('https://luan.xyz/files/audio/ambient_c_motion.mp3');
-      // var res = await audioPlayer.play(_audioUrl);
+      // var res = await audioPlayer.play('https://luan.xyz/files/audio/ambient_c_motion.mp3');
+      var res = await audioPlayer.play(_audioUrl);
       if (res == 1) {
         setPlaying(true);
       }
