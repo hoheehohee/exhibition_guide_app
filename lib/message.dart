@@ -7,3 +7,6 @@ const imageUrl2 = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2DiMl3
 
 const permanentDetText1 = "국제갤러리는 K1 건물의 재개관을 기념하여 최욱경(1940-1985)의 개인전 《Wook-kyung Choi》를 개최한다. 2005년, 2016년에 이어 국제갤러리에서 세 번째로 열리는 개인전으로, 1960년대부터 1975년경 사이 제작된 흑백 잉크 드로잉과 추상회화외 콜라주로 구성된 컬러 작업을 40점 선보인다.";
 const permanentImage = "https://monthlyart.com/wp-content/uploads/2020/07/Kukje-Gallery-Wook-kyung-Choi-Untitled-c.-1960s-34-x-40-cm.jpg";
+
+const FOOTER_ADDRESS = "주소 : 48532 부산 남구 홍곡로320번길 100 (대연동 산 204-1) TEL. 051-629-8600";
+const FOOTER_COPY = "COPYRIGHT © National Memorial Museum of Forced Mobilization under Japanese Occupation.ALL RIGHT RESERVED.";

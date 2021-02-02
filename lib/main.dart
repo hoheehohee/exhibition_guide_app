@@ -1,3 +1,4 @@
+import 'package:exhibition_guide_app/main/splash_screen.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:exhibition_guide_app/provider/mypage_provider.dart';
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
               centerTitle: true
           ),
         ),
-        home: MainView(),
+        // home: MainView(),
+        home: SplashScreen(),
       ),
     );
   }

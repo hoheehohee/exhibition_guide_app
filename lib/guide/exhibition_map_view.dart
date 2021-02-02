@@ -1,32 +1,52 @@
+import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
+import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
+import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../constant.dart';
 
 class ExhibitionMapView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var mediaQueryData = MediaQuery.of(context);
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.white.withOpacity(0.2),
-          leading: Builder(
-            builder: (BuildContext context) => (
-              IconButton(
-                icon: Icon(Icons.clear, color: Colors.black),
-                onPressed: () {
-                  Get.back();
-                },
-              )
-            ),
-          ),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(mediaQueryData.size.height * 0.07),
+          child: CustomDefaultAppbar(title: '전시물 위치')
         ),
         body: Container(
           width: double.infinity,
-          padding: EdgeInsets.all(10),
+          color: backgroundColor,
+          padding: EdgeInsets.symmetric(vertical: 20),
           child: Image.asset(
-            "assets/images/exhibition_map.jpg",
-            fit: BoxFit.fill,
+            "assets/images/map.png",
+            fit: BoxFit.fitHeight,
           ),
         )
+    );
+  }
+
+  Widget _appBar() {
+    return AppBar(
+      backgroundColor: backgroundColor,
+      title: Text('전시물 위치', style: TextStyle(color: Colors.white),),
+      leading: CustomImageIconBtn(
+        px: 15.0,
+        iconPath: "assets/images/button/btn-back.png",
+        onAction: () {
+          Get.back();
+        },
+      ),
+      actions:[
+        CustomImageIconBtn(
+          px: 25.0,
+          iconPath: "assets/images/button/btn-home.png",
+          onAction: () {
+            Get.offAll(MainView());
+          },
+        ),
+      ],
     );
   }
 }

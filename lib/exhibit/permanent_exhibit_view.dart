@@ -85,7 +85,7 @@ class _PermanentExhibitViewState extends State<PermanentExhibitView> {
                 IconButton(
                     icon: Icon(Icons.arrow_back_ios),
                     onPressed: () {
-                      Get.back();
+                      Get.offAll(MainView());
                     }
                 )
             )

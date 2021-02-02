@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:exhibition_guide_app/constant.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
+import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:flutter/material.dart';
@@ -19,24 +23,21 @@ class ExhibitDetail extends StatefulWidget {
 class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserver {
 
   IconData playBtn = Icons.play_arrow; // 재성 시 활성 icon
+
   var _exhibit;
   var _device;
   bool _loading;
+  bool _audioPlayShow = true;
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() => {
-      Provider.of<DevicesProvider>(context, listen: false).init(),
+      Provider.of<DevicesProvider>(context, listen: false).playAudio(),
       Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx)
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    Provider.of<DevicesProvider>(context, listen: false).dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,32 +48,38 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     return Scaffold(
       appBar: _appBar(),
       body: _mainView(),
-      bottomNavigationBar: _bottomButtons(),
+      bottomNavigationBar: _audioPlayShow ?  _bottomButtons() : null,
     );
   }
 
   Widget _appBar() {
     return AppBar(
-        title: Text(!_loading ? _exhibit.getTextByLanguage(-1, "exhibition_name"): ''),
-        leading: Builder(
-            builder: (BuildContext context) => (
-                IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Get.back();
-                    }
-                )
+      backgroundColor: backgroundColor,
+      title: Text(
+        !_loading ? _exhibit.getTextByLanguage(-1, "exhibition_name"): '',
+        style: TextStyle(color: Colors.white),
+      ),
+      leading: Builder(
+        builder: (BuildContext context) => (
+            IconButton(
+                icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
+                onPressed: () {
+                  Get.offAll(ExhibitHighlightView());
+                  _device.stopAudio();
+                }
             )
-        ),
-        actions: [
-          IconButton(
-            padding: EdgeInsets.zero,
-            icon: Icon(Icons.home_outlined),
-            onPressed: () {
-              Get.offAll(MainView());
-            },
           )
-        ]
+      ),
+      actions: [
+        _imageIconBtn(
+          px: 25.0,
+          iconPath: 'assets/images/button/btn-home.png',
+          onAction: () {
+            _device.stopAudio();
+            Get.offAll(MainView());
+          }
+        ),
+      ]
     );
   }
 
@@ -87,71 +94,77 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
         Container(
           height: 60,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Color(0xffE5E6E7),
             border: Border(bottom: BorderSide(color: Colors.grey)),
           ),
-          child: Material(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      width: 80,
-                      height: 30,
-                      margin: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.all(Radius.circular(5))
-                      ),
-                      child: Center(child: Text('1709', style: TextStyle(color: Colors.white, fontSize: 18)))
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Text(
-                        !_loading ? _exhibit.getTextByLanguage(-1, "title") : '',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: (
-                        Container(
-                            width: 100,
-                            margin: EdgeInsets.only(right: 20),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                    iconSize: 30,
-                                    icon: Icon(Icons.filter_center_focus, color: Colors.blue),
-                                    onPressed: () {
-                                      _device.scan();
-                                    },
-                                  ),
-                                  IconButton(
-                                    iconSize: 30,
-                                    icon:
-                                      _device.isRunning
-                                      ? Icon(Icons.bluetooth, color: Colors.blue)
-                                      : Icon(Icons.bluetooth_disabled),
-                                    onPressed: () {
-                                      _device.becaonScan(!_device.isRunning);
-                                    },
-                                  )
-                                ]
-                            )
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: 15,),
+              Expanded(
+                flex: 1,
+                child: Text(
+                    !_loading ? _exhibit.getTextByLanguage(-1, "title") : '',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff555657))
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: (
+                    Container(
+                        width: 60,
+                        margin: EdgeInsets.only(right: 15),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                  "assets/images/icon/icon-qr-on.png",
+                                  width: 25,
+                                  fit: BoxFit.fill
+                              ),
+                              Image.asset(
+                                  "assets/images/icon/icon-bluetooth.png",
+                                  color: Color(0xff2E667B),
+                                  width: 25,
+                                  fit: BoxFit.fill
+                              ),
+                            ]
                         )
-                    ),
-                  )
-                ],
+                    )
+                ),
               )
+            ],
+          )
+        ),
+        Container(
+          height: 60,
+          color: Color(0xffE5E6E7),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(width: 15,),
+              Container(
+                width: 50,
+                height: 32,
+                decoration: BoxDecoration(
+                    color: Color(0xffA58C60),
+                    borderRadius: BorderRadius.all(Radius.circular(5))
+                ),
+                child: Center(child: Text('상설', style: TextStyle(color: Colors.white, fontSize: 18, height: 1)))
+              ),
+              SizedBox(width: 15,),
+              Text(
+                "북해도 고락가",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff555657))
+              )
+            ],
           ),
         ),
         Container(
             height: 200,
             width: double.infinity,
-            margin: EdgeInsets.symmetric(horizontal: 10),
             child: Image.network(_imageUrl, fit: BoxFit.fill)
         ),
         Container(
@@ -159,69 +172,76 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(width: 1.2, color: Colors.grey))
+              color: Color(0xffF7F8F9),
+              border: Border(bottom: BorderSide(width: 1, color: Colors.grey))
             ),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                      flex: 2,
-                      child: Row(
-                          children: [
-                            IconButton(
-                              iconSize: 30,
-                              icon: Icon(Icons.favorite_border),
-                              onPressed: () {},
-                            ),
-                            IconButton(
-                              iconSize: 30,
-                              icon: Icon(Icons.headset_outlined),
-                              onPressed: () {},
-                            ),
-                            IconButton(
-                              iconSize: 30,
-                              icon: Icon(Icons.thumbs_up_down_outlined),
-                              onPressed: () {},
-                            ),
-                            IconButton(
-                              iconSize: 30,
-                              icon: Icon(Icons.map_outlined),
-                              onPressed: () {},
-                            ),
-                          ]
-                      )
-                  ),
-                  Expanded(
-                      flex: 1,
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                  iconSize: 30,
-                                  icon: Icon(Icons.share),
-                                  onPressed: () {},
-                                ),
-                                IconButton(
-                                  iconSize: 30,
-                                  icon: Icon(Icons.language),
-                                  onPressed: () {},
-                                )
-                              ]
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+            Expanded(
+                flex: 2,
+                child: Row(
+                  children: [
+                    _imageIconBtn(
+                      px: 40.0,
+                      onAction: () {
+                        setState(() {
+                          _audioPlayShow = true;
+                        });
+                      },
+                      iconPath: 'assets/images/icon/icon-headset.png',
+                    ),
+                    _imageIconBtn(
+                      px: 40.0,
+                      onAction: () async {
+                        _device.stopAudio();
+                        await _device.setExhibitDetVideo('http://115.144.53.222:8081/ilje/fileDownload.do?folder=contents&filename=Nature42420_1611988753438.mp4');
+                        Get.to(ExhibitVideoView());
+                      },
+                      iconPath: 'assets/images/icon/icon-movie.png',
+                    ),
+                    _imageIconBtn(
+                      px: 40.0,
+                      onAction: () {
+                        _device.stopAudio();
+                        Get.to(ExhibitionMapView());
+                      },
+                      iconPath: 'assets/images/icon/icon-map-d.png',
+                    )
+                  ]
+                )
+            ),
+            Expanded(
+                flex: 1,
+                child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _imageIconBtn(
+                            px: 40.0,
+                            onAction: () {},
+                            iconPath: 'assets/images/icon/icon-share.png'
+                          ),
+                          _imageIconBtn(
+                            px: 40.0,
+                            onAction: () {},
+                            iconPath: 'assets/images/icon/icon-type.png'
                           )
-                      )
-                  )
-
-                ]
-            )
+                        ]
+                    )
+                )
+              )
+            ]
+          )
         ),
         Expanded(
             flex: 1,
             child: Container(
                 padding: EdgeInsets.all(10),
+                width: double.infinity,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Text(_text, textScaleFactor: 1.2,),
@@ -229,6 +249,24 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             )
         )
       ],
+    );
+  }
+
+  Widget _imageIconBtn({ iconPath, onAction, px }) {
+    return IconButton(
+      padding: EdgeInsets.zero,
+      icon: Container(
+        width: px,
+        child: Image.asset(
+          iconPath,
+          fit: BoxFit.fill,
+        ),
+      ),
+      onPressed: () {
+        if (onAction != null) {
+          onAction();
+        }
+      },
     );
   }
 
@@ -240,7 +278,6 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _audioPlay(), // 오디오 플레이어
-              _beforeOrNext(),  // 이전, 다음 버튼
             ]
         )
     );
@@ -255,23 +292,38 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                IconButton(
-                    iconSize: 30,
-                    color: Colors.white,
-                    onPressed: () {
-                      _device.playAudio();
-                    },
-                    icon: Icon(_device.isPlaying ? Icons.pause : Icons.play_arrow)
+                _imageIconBtn(
+                  px: 30.0,
+                  onAction: () {
+                    _device.playAudio();
+                  },
+                  iconPath: (
+                    _device.isPlaying
+                      ? 'assets/images/button/btn-pause.png'
+                      :'assets/images/button/btn-play.png'
+                  )
+                ),
+                Text(
+                  "${_device.position.inMinutes}:${_device.position.inSeconds.remainder(60)}",
+                  style: TextStyle(color: Colors.white),
                 ),
                 Expanded(
                     flex: 1,
                     child: _audioSlider()
                 ),
-                IconButton(
-                    iconSize: 30,
-                    color: Colors.white,
-                    onPressed: () {},
-                    icon: Icon(Icons.close)
+                Text(
+                  "${_device.duration.inMinutes}:${_device.duration.inSeconds.remainder(60)}",
+                  style: TextStyle(color: Colors.white)
+                ),
+                _imageIconBtn(
+                  px: 23.0,
+                  onAction: () {
+                    _device.stopAudio();
+                    setState(() {
+                      _audioPlayShow = false;
+                    });
+                  },
+                  iconPath: 'assets/images/button/btn-cancel.png'
                 )
               ],
             )
@@ -281,9 +333,19 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
 
   // 오디오 재생 슬라이드
   Widget _audioSlider() {
-    _device = Provider.of<DevicesProvider>(context);
     // print();
-    return Slider.adaptive(
+    return SliderTheme(
+      data: SliderTheme.of(context).copyWith(
+        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 0.0),
+        // activeTrackColor: Colors.red[700],
+        // inactiveTrackColor: Colors.red[100],
+        // trackShape: RectangularSliderTrackShape(),
+        // trackHeight: 4.0,
+        // thumbColor: Colors.redAccent,
+        // overlayColor: Colors.red.withAlpha(32),
+        // overlayShape: RoundSliderOverlayShape(overlayRadius: 28.0),
+      ),
+      child: Slider(
         min: 0,
         value: _device.position.inSeconds.toDouble(),
         max: _device.duration.inSeconds.toDouble() == 0 ? 1 : _device.duration.inSeconds.toDouble(),
@@ -291,78 +353,8 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
           setState(() {
             _device.audioPlayer.seek(new Duration(seconds: value.toInt()));
           });
-        }
-    );
-  }
-
-  // 이전, 다음 버튼Container
-  Widget _beforeOrNext() {
-    return Container(
-        height: 80,
-        color: Colors.black38,
-        padding: EdgeInsets.symmetric(vertical: 10),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                  flex: 1,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                          onPressed: () {},
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: _beforeOrNextBtn('before', '1709', '등록진시물2'),
-                        )
-                      ]
-                  )
-              ),
-              Expanded(
-                  flex: 1,
-                  child: Row(
-                      textDirection: TextDirection.ltr,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        _beforeOrNextBtn('next', '1709', '등록진시물'),
-                        IconButton(
-                          icon: Icon(Icons.arrow_forward_ios, color: Colors.white),
-                          onPressed: () {},
-                        ),
-                      ]
-                  )
-              )
-            ]
-        )
-    );
-  }
-
-  // 이전, 다음 버튼
-  Widget _beforeOrNextBtn(String type, String id, String title ) {
-    return  Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: (
-          type == 'before' ? CrossAxisAlignment.start : CrossAxisAlignment.end
-        ),
-        children: [
-          Container(
-              width: 60,
-              height: 25,
-              margin: EdgeInsets.only(bottom: 2),
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  border: Border.all(width: 1, color: Colors.white),
-                  borderRadius: BorderRadius.all(Radius.circular(5))
-              ),
-              child: Center(child: Text(id, style: TextStyle(color: Colors.white, fontSize: 15)))
-          ),
-          Text(title, style: TextStyle(color: Colors.white))
-        ]
+        },
+      )
     );
   }
 }

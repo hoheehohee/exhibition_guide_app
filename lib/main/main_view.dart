@@ -1,16 +1,16 @@
-import 'package:exhibition_guide_app/exhibitInfo/exhibitInfo_view.dart';
-import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
-import 'package:exhibition_guide_app/language/language_view.dart';
+import 'dart:async';
+import 'package:exhibition_guide_app/commons/custom_main_button.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
+import 'package:exhibition_guide_app/main/slider_drawers.dart';
+import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
-import 'package:exhibition_guide_app/setting/setting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:exhibition_guide_app/guide/guide_view.dart';
 
-import '../exhibit/exhibit_detail.dart';
 import '../message.dart';
 
 class MainView extends StatefulWidget {
@@ -19,21 +19,19 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   var _isSeeGuide = 'init';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _init();
     });
   }
 
   void _init() async {
-
     // 첫 가이드 화면 노출 여부 체크
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isSeeGuide = prefs.getString('isSeeGuide');
@@ -44,6 +42,7 @@ class _MainViewState extends State<MainView> {
         GuideView(),
         transition: Transition.fadeIn
       );
+      return;
     } else if (_isSeeGuide == 'ignore' ){
       await prefs.setString('isSeeGuide', 'init');
     }
@@ -56,209 +55,287 @@ class _MainViewState extends State<MainView> {
     // social 로그인 체크
     Future.microtask(() {
       Provider.of<SocialProvider>(context, listen: false).socialLoginCheck();
+      Provider.of<DevicesProvider>(context, listen: false).init();
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 1,
-            child: _museumComponent(),  // 박물관 사진 및 타이틀트 컴포넌트
+  Future<void> _showMyDialog() async {
+    final _device = Provider.of<DevicesProvider>(context, listen: false);
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('전시관련 정보로 이동하시겠습니까?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('(test) 비콘 블루투스 통신 활성화로 인해 전시관련 정보로 이동합니다.'),
+              ],
+            ),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 10, bottom: 20),
-            child: _exhibitionInfoButtons(),  // 전시물 버큰 컴포넌트
-          ),
-          Container(
-            width: double.infinity,
-            height: 100,
-            padding: EdgeInsets.only(bottom: 50, left: 20, right: 20),
-            // color: Colors.green,
-            child: _mapButton() // 전시물 위치보기 버큰 컴포넌트
-          )
-        ],
-      )
-    );
-  }
-
-  // 박물관 사진 및 타이틀 컴포넌
-  Widget _museumComponent() {
-    return Stack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/images/main_image.jpeg"),
-                  fit: BoxFit.fill
-              )
-          ),
-        ),
-        // Image.asset("assets/images/main_image.jpeg",fit: BoxFit.fill),
-        Positioned(
-          left: 10,
-          top: 30,
-          child: FloatingActionButton(
-            heroTag: 1,
-            child: Icon(Icons.settings, color: Colors.white),
-            onPressed: () => {
-              Get.to(
-                SettingView(),
-                transition: Transition.leftToRight
-              )
-            },
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-          ),
-        ),
-        Positioned(
-          right: 10,
-          top: 30,
-          child:  FloatingActionButton(
-            heroTag: 2,
-            child: Icon(Icons.g_translate, color: Colors.white),
-            onPressed: () => {
-              Get.to(
-                LanguageView(),
-                transition: Transition.rightToLeft
-              )
-            },
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-          ),
-        ),
-        Positioned(
-          right: 80,
-          top: 150,
-          left: 80,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('코쟁이 박물관', style: TextStyle(fontSize: 34, color: Colors.white, fontWeight: FontWeight.bold),),
-              Text('재미있는 코쟁이 전시회', style: TextStyle(fontSize: 18, color: Colors.white))
-            ],
-          ),
-        ),
-        Positioned(
-            right: 10,
-            bottom: 0,
-            child: FloatingActionButton(
-              heroTag: 3,
-              child: Icon(Icons.arrow_circle_down, size: 28, color: Colors.white),
+          actions: <Widget>[
+            TextButton(
+              child: Text('취소'),
               onPressed: () {
-                Get.defaultDialog(
-                  title: "알림",
-                  titleStyle: TextStyle(),
-                  middleText: downloadMessage,
-                  confirm: FlatButton(
-                    minWidth: double.infinity,
-                    onPressed: () {
-                      Get.back();
-                    },
-                    child: Text("다운로드", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  ),
-                );
+                Navigator.pop(context, false);
+                _device.setBeaconConnect(false);
               },
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-            )
-        )
-      ],
-    );
-  }
-
-  // 전시물 버큰 컴포넌트
-  Widget _exhibitionInfoButtons() {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              height: 210,
-              child: Card(
-                child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: () {
-                    Get.to(
-                      ExhibitInfoView(),
-                      transition: Transition.fadeIn
-                    );
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Image.network(imageUrl1, fit: BoxFit.fill,),
-                      )),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: Text('전시 유물', style: TextStyle(fontSize: 18)),
-                      )
-                    ],
-                  ),
-                ),
-              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              height: 210,
-              child: Card(
-                child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: () {
-                    Get.to(
-                      ExhibitDetail(2)
-                    );
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Image.network(imageUrl2, fit: BoxFit.fill,),
-                          )),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: Text('상설전시물', style: TextStyle(fontSize: 18)),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                Navigator.pop(context, false);
+                Get.to(ExhibitVideoView());
+              },
             ),
-          ),
-        ],
-    );
-  }
-
-  // 전시물 위치보기 버튼 컴포넌트
-  Widget _mapButton() {
-    return RaisedButton(
-      color: Colors.black54,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(13.0),
-      ),
-      child: Text('전시물 위치보기', style: TextStyle(fontSize: 18, color: Colors.white)),
-      onPressed: () {
-        Get.to(
-            ExhibitionMapView(),
-            transition: Transition.downToUp
+          ],
         );
       },
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final _device = Provider.of<DevicesProvider>(context);
+    // if (_device.isBeaconConnect) {
+    //   Timer(
+    //     Duration(seconds: 1),
+    //       () {
+    //         _showMyDialog();
+    //         _device.setBeaconConnect(false);
+    //         return;
+    //       }
+    //   );
+    // };
+    return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: Drawer(
+        child: Container(
+          color: Color(0xff1A1A1B),
+          child: SliderDrawers(),
+        )
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+              height: 120,
+              color: Colors.white,
+              child: Container(
+                padding: EdgeInsets.only(left: 24, right: 24),
+                margin: EdgeInsets.only(top: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                        'assets/images/logo.png',
+                        width: 116,
+                        // height: 63.5,
+                        fit: BoxFit.fitWidth
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Image.asset(
+                              "assets/images/icon/icon-login.png",
+                              width: 22,
+                            ),
+                            Text(
+                              "로그인",
+                              style: TextStyle(fontSize: 18, height: 1.5),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/icon/icon-bluetooth-on.png',
+                          width: 45,
+                          fit: BoxFit.fill,
+                        ),
+                        SizedBox(width: 5,),
+                        InkWell(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.asset(
+                            'assets/images/button/btn-hamburger.png',
+                            width: 45,
+                            fit: BoxFit.fill,
+                          ),
+                          onTap: () {
+                            _scaffoldKey.currentState.openEndDrawer();
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+          ),
+          Expanded(child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/main-back.jpg"),
+                        fit: BoxFit.fitWidth
+                    )
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 40,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                '오늘은 어떻게 관람하고',
+                                style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
+                            Text(
+                                '싶으신가요?',
+                                style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 40),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomMainButton(
+                              onTap: () {},
+                              title: "전시유물",
+                              imgPath: 'assets/images/icon/icon-main-relics.png',
+                            ),
+                            CustomMainButton(
+                              onTap: () {
+                                Get.to(ExhibitHighlightView());
+                              },
+                              title: "하이라이트",
+                              imgPath: 'assets/images/icon/icon-main-highlight.png',
+                            ),
+                            CustomMainButton(
+                              onTap: () {},
+                              title: "상설전시",
+                              imgPath: 'assets/images/icon/icon-main-sangsul.png',
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomMainButton(
+                              onTap: () {},
+                              title: "4F 전시",
+                              imgPath: 'assets/images/icon/icon-main-4f.png',
+                            ),
+                            CustomMainButton(
+                              onTap: () {},
+                              title: "5F 전시실",
+                              imgPath: 'assets/images/icon/icon-main-5f.png',
+                            ),
+                            CustomMainButton(
+                              onTap: () {},
+                              title: "기획전시",
+                              imgPath: 'assets/images/icon/icon-main-plan.png',
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomMainButton(
+                              onTap: () {},
+                              title: "오시는",
+                              imgPath: 'assets/images/icon/icon-main-location.png',
+                            ),
+                            CustomMainButton(
+                              onTap: () {},
+                              title: "공지사항",
+                              imgPath: 'assets/images/icon/icon-main-notice.png',
+                            ),
+                            CustomMainButton(
+                              onTap: () {},
+                              title: "도슨트예약",
+                              imgPath: 'assets/images/icon/icon-main-docent.png',
+                            ),
+                          ],
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(top: 20),
+                            child: SizedBox(
+                              width: 87,
+                              child: IconButton(
+                                padding: EdgeInsets.all(0),
+                                icon: Image.asset(
+                                  Provider.of<DevicesProvider>(context).isRunning
+                                    ? 'assets/images/toogle-main-on.png'
+                                    : 'assets/images/toogle-main-off.png',
+                                  width: 200,
+                                  fit: BoxFit.fill,
+                                ),
+                                onPressed: () {
+                                  // _device.becaonScan(!_device.isRunning);
+                                },
+                              ),
+                            )
+                        ),
+                        Text(
+                            "자동 전시안내",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
+                        ),
+                        SizedBox(height: 17),
+                        Container(
+                          padding: EdgeInsets.only(top: 21, bottom: 20, left: 10, right: 10),
+                          color: Color(0xff253242).withOpacity(0.7),
+                          child: (
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('개인정보처리방침', style: TextStyle(fontSize: 15, color: Colors.white)),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    FOOTER_ADDRESS,
+                                    style: TextStyle(fontSize: 12, color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Text(
+                                    FOOTER_COPY,
+                                    style: TextStyle(fontSize: 10, color: Color(0xff5A6B7B)),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              )
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                )
+            ),
+          ),
+          )
+        ],
+      ),
+    );
+  }
 }
