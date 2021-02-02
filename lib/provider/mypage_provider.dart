@@ -15,10 +15,12 @@ class MyPageProvider with ChangeNotifier {
   bool _loading = false;
   File _image;
   QnaListModel _qnaList = QnaListModel.fromJson({"data": []});
+  var _qnaItem = null;
 
   bool get loading => _loading;
   String get imageName => _image != null ? '첨부파일 1' : '';
   QnaListModel get qnaList => _qnaList;
+  get qnaItem => _qnaItem;
 
   // 1:1문의하기 목록 조회
   Future<void> setQnaListSel() async {
@@ -64,20 +66,23 @@ class MyPageProvider with ChangeNotifier {
     }
   }
 
-  //1:1 문의 상
-  Future<Map> getQna(int qnaId) async {
+  //1:1 문의 상세
+  Future<void> getQna(int qnaId) async {
     Response resp;
 
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String loginId = prefs.getString('loginId');
       resp = await dio.get(BASE_URL + '/qnaDetailData.do', queryParameters: { "loginID": loginId, "qnaID":qnaId });
-      var map = Map<String, dynamic>.from(json.decode(resp.toString()));
-      print(map);
-      return map;
+      _qnaItem = json.decode(resp.toString());
+      notifyListeners();
     }catch(error) {
       print('##### setQna Error: $error');
     }
+  }
+
+  String getValue(String key) {
+    return _qnaItem['data'][key];
   }
 }
 

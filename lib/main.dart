@@ -8,7 +8,6 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 
 import 'package:exhibition_guide_app/main/main_view.dart';
-import 'mypage/Video_view.dart';
 import 'provider/setting_provider.dart';
 
 void main() {
