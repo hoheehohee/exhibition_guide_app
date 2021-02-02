@@ -152,7 +152,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                     color: Color(0xffA58C60),
                     borderRadius: BorderRadius.all(Radius.circular(5))
                 ),
-                child: Center(child: Text('상설', style: TextStyle(color: Colors.white, fontSize: 18, height: 1.5)))
+                child: Center(child: Text('상설', style: TextStyle(color: Colors.white, fontSize: 18, height: 1)))
               ),
               SizedBox(width: 15,),
               Text(

@@ -12,7 +12,7 @@ class ExhibitionMapView extends StatelessWidget {
     var mediaQueryData = MediaQuery.of(context);
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(mediaQueryData.size.height * 0.09),
+          preferredSize: Size.fromHeight(mediaQueryData.size.height * 0.07),
           child: CustomDefaultAppbar(title: '전시물 위치')
         ),
         body: Container(

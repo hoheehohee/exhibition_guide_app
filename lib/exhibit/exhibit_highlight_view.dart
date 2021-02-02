@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
 import 'package:exhibition_guide_app/constant.dart';
+import 'package:exhibition_guide_app/guide/exhibition_directions_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:flutter/material.dart';
@@ -156,7 +157,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
                       title: '오시는길',
                       iconPath: 'assets/images/icon/icon-location.png',
                       onTapFunc: () {
-
+                        Get.to(ExhivitDirectionsView());
                       },
                     ),
                     _bottomBtn(
