@@ -39,6 +39,7 @@ class DevicesProvider with ChangeNotifier {
   bool get isPlaying => _playing;
   bool get isBeaconConnect => _beaconConnect;
   List get dataSourceList => _dataSourceList;
+  BeaconModel get cBeaconData => beaconData;
   BeaconContentModel get beaconConteantList => _beaconContentList;
 
   void setIsRunning(bool running) {
@@ -52,6 +53,7 @@ class DevicesProvider with ChangeNotifier {
 
   void setBeaconConnect(bool type) {
     _beaconConnect = type;
+    notifyListeners();
   }
 
   void becaonScan(bool type) async{
@@ -70,21 +72,32 @@ class DevicesProvider with ChangeNotifier {
   }
 
   void init() async {
-    // beaconContentSelCall();
+    print("#####${Platform.isAndroid}");
+
+    // 백그라운드에서 실행
+    await BeaconsPlugin.startMonitoring;
+    await BeaconsPlugin.runInBackground(true);
+
     if (Platform.isAndroid) {
+
       await BeaconsPlugin.setDisclosureDialogMessage(
           title: "Need Location Permission",
           message: "This app collects location data to work with beacons.");
-    }
 
-    BeaconsPlugin.listenToBeacons(beaconEventsController);
+      //Only in case, you want the dialog to be shown again. By Default, dialog will never be shown if permissions are granted.
+      // await BeaconsPlugin.clearDisclosureDialogShowFlag(false);
+    }
+    await BeaconsPlugin.listenToBeacons(beaconEventsController);
 
     // 비콘 정보
     await BeaconsPlugin.addRegion("", "FDA50693-A4E2-4FB1-AFCF-C6EB07647825");
+
     // UUID에 맞는 비콘 연결
     beaconEventsController.stream.listen((data) {
+      print("###### beacon data: $data");
         if (data.isNotEmpty) {
           _beaconResult = data;
+          setBeaconConnect(true);
           print("###### beacon data: $data");
           try{
             Map beacon = jsonDecode(data);
@@ -102,9 +115,6 @@ class DevicesProvider with ChangeNotifier {
     onError: (error) {
       print("##### error: $error");
     });
-
-    // 백그라운드에서 실행
-    await BeaconsPlugin.runInBackground(true);
 
     if (Platform.isAndroid) {
       BeaconsPlugin.channel.setMethodCallHandler((call) async {
@@ -150,7 +160,6 @@ class DevicesProvider with ChangeNotifier {
         );
       });
       _dataSourceList = temp;
-      _beaconConnect = true;
       becaonScan(false);
 
       Getx.Get.to(ExhibitDetail(_beaconContentList.data[0].idx));

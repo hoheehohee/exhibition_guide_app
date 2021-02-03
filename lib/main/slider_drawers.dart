@@ -1,6 +1,7 @@
 import 'package:exhibition_guide_app/booking/booking_view.dart';
 import 'package:exhibition_guide_app/crm/customer_center_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
 import 'package:exhibition_guide_app/exhibit/permanent_exhibit_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/language/language_view.dart';
@@ -64,7 +65,7 @@ class SliderDrawers extends StatelessWidget {
                 onTap: () {
                   switch(drawersItemList[i]["idx"]){
                     case 0: Get.to(ExhibitHighlightView()); break;
-                    case 1: Get.to(PermanentExhibitView()); break;
+                    case 1: Get.to(ExhibitListView()); break;
                     case 2: Get.to(ExhibitionMapView()); break;
                     case 3: Get.to(MainView()); break;
                     case 4: Get.to(CustomerCenterView()); break;
