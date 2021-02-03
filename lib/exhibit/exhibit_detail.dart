@@ -180,7 +180,10 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
         Container(
             height: 200,
             width: double.infinity,
-            child: Image.network(_exhibit.exhibitItem['contentsImgFile'], fit: BoxFit.fill)
+            child: Image.network(
+                _exhibit.exhibitItem != null ? _exhibit.exhibitItem['contentsImgFile'] : '',
+                fit: BoxFit.fill
+            )
         ),
         Container(
             height: 60,

@@ -72,19 +72,29 @@ class DevicesProvider with ChangeNotifier {
   }
 
   void init() async {
+    print("#####${Platform.isAndroid}");
+
+    // 백그라운드에서 실행
+    await BeaconsPlugin.startMonitoring;
+    await BeaconsPlugin.runInBackground(true);
 
     if (Platform.isAndroid) {
+
       await BeaconsPlugin.setDisclosureDialogMessage(
           title: "Need Location Permission",
           message: "This app collects location data to work with beacons.");
-    }
 
-    BeaconsPlugin.listenToBeacons(beaconEventsController);
+      //Only in case, you want the dialog to be shown again. By Default, dialog will never be shown if permissions are granted.
+      // await BeaconsPlugin.clearDisclosureDialogShowFlag(false);
+    }
+    await BeaconsPlugin.listenToBeacons(beaconEventsController);
 
     // 비콘 정보
     await BeaconsPlugin.addRegion("", "FDA50693-A4E2-4FB1-AFCF-C6EB07647825");
+
     // UUID에 맞는 비콘 연결
     beaconEventsController.stream.listen((data) {
+      print("###### beacon data: $data");
         if (data.isNotEmpty) {
           _beaconResult = data;
           setBeaconConnect(true);
@@ -105,9 +115,6 @@ class DevicesProvider with ChangeNotifier {
     onError: (error) {
       print("##### error: $error");
     });
-
-    // 백그라운드에서 실행
-    await BeaconsPlugin.runInBackground(true);
 
     if (Platform.isAndroid) {
       BeaconsPlugin.channel.setMethodCallHandler((call) async {

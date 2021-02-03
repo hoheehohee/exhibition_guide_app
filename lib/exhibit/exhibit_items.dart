@@ -24,9 +24,27 @@ class ExhibitItems extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border(bottom: BorderSide(color: Colors.grey)),
                       ),
-                      child:  Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(_exhibitList[index], style: TextStyle(fontSize: 16))
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                              width: 50,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                  color: Color(0xffA58C60),
+                                  borderRadius: BorderRadius.all(Radius.circular(5))
+                              ),
+                              child: Center(child:
+                              Text(
+                                // !_loading ? getContentType(_exhibit.exhibitItem['contentsType']) : '',
+                                  '유물',
+                                  style: TextStyle(color: Colors.white, fontSize: 18, height: 1)))
+                          ),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(_exhibitList[index], style: TextStyle(fontSize: 16))
+                          )
+                        ],
                       )
                   )
               )
