@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:exhibition_guide_app/message.dart';
+import 'package:exhibition_guide_app/model/faq_list_model.dart';
 import 'package:exhibition_guide_app/model/qna_list_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,11 +16,13 @@ class MyPageProvider with ChangeNotifier {
   bool _loading = false;
   File _image;
   QnaListModel _qnaList = QnaListModel.fromJson({"data": []});
+  FaqListModel _faqList = FaqListModel.fromJson({"data": []});
   var _qnaItem = null;
 
   bool get loading => _loading;
   String get imageName => _image != null ? '첨부파일 1' : '';
   QnaListModel get qnaList => _qnaList;
+  FaqListModel get faqList => _faqList;
   get qnaItem => _qnaItem;
 
   // 1:1문의하기 목록 조회
@@ -83,6 +86,22 @@ class MyPageProvider with ChangeNotifier {
 
   String getValue(String key) {
     return _qnaItem['data'][key];
+  }
+
+  Future<void> getFaqListSel() async {
+    _loading = true;
+    Response resp;
+
+    try{
+      resp = await dio.get(BASE_URL + '/faqData.do');
+      final jsonData = json.decode("$resp");
+      _faqList = FaqListModel.fromJson(jsonData);
+      _loading = false;
+      print(_faqList);
+      notifyListeners();
+    }catch(error) {
+      print('##### getFaqListSel Error: $error');
+    }
   }
 }
 
