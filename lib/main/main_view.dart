@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:exhibition_guide_app/commons/custom_main_button.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_detail.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
@@ -61,9 +62,42 @@ class _MainViewState extends State<MainView> {
     });
   }
 
+  Future<void> _showMyDialog() async {
+    final _deviceProv = Provider.of<DevicesProvider>(context, listen: false);
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('AlertDialog Title'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text("UUID: ${_deviceProv.beaconData != null ? _deviceProv.beaconData.uuid : ''}"),
+                SizedBox(height: 5,),
+                Text("major: ${_deviceProv.beaconData != null ? _deviceProv.beaconData.major : ''}"),
+                Text("minor: ${_deviceProv.beaconData != null ? _deviceProv.beaconData.minor : ''}"),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final _exhibitProv = Provider.of<ExhibitProvider>(context, listen: false);
+    final _deviceProv = Provider.of<DevicesProvider>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       endDrawer: Drawer(
@@ -108,6 +142,7 @@ class _MainViewState extends State<MainView> {
                           ],
                         ),
                         onTap: () {
+                          _showMyDialog();
                         },
                       ),
                     ),
@@ -116,10 +151,17 @@ class _MainViewState extends State<MainView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          'assets/images/icon/icon-bluetooth-on.png',
-                          width: 45,
-                          fit: BoxFit.fill,
+                        InkWell(
+                          child: Image.asset(
+                            _deviceProv.isBeaconConnect
+                                ? 'assets/images/icon/icon-bluetooth-on.png'
+                                : 'assets/images/icon/icon-bluetooth-off.png',
+                            width: 45,
+                            fit: BoxFit.fill,
+                          ),
+                          onTap: () {
+                            _showMyDialog();
+                          },
                         ),
                         SizedBox(width: 5,),
                         InkWell(

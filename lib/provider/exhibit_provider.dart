@@ -33,6 +33,7 @@ class ExhibitProvider with ChangeNotifier {
   bool get isAutoExhibit => _isAutoExhibit;
   bool get isAudio => _isAudio;
   List get imageList => _imgList;
+  String get language => _language;
   ExhibitContentsDataModel get exhibitContentData => _exhibitContentData;
 
   get exhibitList => _exhibitList;

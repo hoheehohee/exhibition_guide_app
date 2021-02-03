@@ -1,12 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_detail.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
+import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../constant.dart';
+import '../util.dart';
 import 'exhibit_items.dart';
 
 class ExhibitListView extends StatelessWidget {
@@ -20,6 +23,7 @@ class ExhibitListView extends StatelessWidget {
   var mqw;
   var mqh;
   var _exhibitProv;
+  var _settingProv;
 
   final String appBarTitle;
 
@@ -36,6 +40,7 @@ class ExhibitListView extends StatelessWidget {
     mqw = mqd.size.width;
     mqh = mqd.size.height;
     _exhibitProv = Provider.of<ExhibitProvider>(context);
+    _settingProv = Provider.of<SettingProvider>(context);
 
     return Scaffold(
         appBar: _appBar(),
@@ -56,25 +61,29 @@ class ExhibitListView extends StatelessWidget {
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CarouselSlider(
-                        options: CarouselOptions(
-                          aspectRatio: 2.0,
-                          // enlargeCenterPage: true,
+                  child: (
+                    _exhibitProv.loading
+                      ? Center(child: CircularProgressIndicator(), heightFactor: 10,)
+                      : Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CarouselSlider(
+                          options: CarouselOptions(
+                            aspectRatio: 2.0,
+                            // enlargeCenterPage: true,
+                          ),
+                          items: _imageSliders(imgList1),
                         ),
-                        items: _imageSliders(imgList1),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(mqw * 0.03),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: _contentItem(),
-                        ),
-                      )
-                    ],
-                  ),
+                        Container(
+                          padding: EdgeInsets.all(mqw * 0.03),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: _contentItem()
+                          ),
+                        )
+                      ],
+                    )
+                  )
                 ),
               )
             ]
@@ -191,33 +200,39 @@ class ExhibitListView extends StatelessWidget {
     ];
 
     _exhibitProv.exhibitContentData.data.forEach((item) => {
-      result.add(Container(
-          height: mqh * 0.1,
-          width: double.infinity,
-          margin: EdgeInsets.only(bottom: mqw * 0.02),
-          decoration: BoxDecoration(
-            // color: Colors.green,
-              borderRadius: BorderRadius.circular((mqw * 0.03)),
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.25), BlendMode.dstATop),
-                // image: new NetworkImage(
-                //   'http://www.allwhitebackground.com/images/2/2582-190x190.jpg',
-                // ),
-                image: AssetImage("assets/images/content_layer.png"),
+      result.add(
+        InkWell(
+          onTap: () {
+            Get.to(ExhibitDetail(item.idx, appbarTitle: '전시유물',));
+          },
+          child: Container(
+              height: mqh * 0.1,
+              width: double.infinity,
+              margin: EdgeInsets.only(bottom: mqw * 0.02),
+              decoration: BoxDecoration(
+                // color: Colors.green,
+                  borderRadius: BorderRadius.circular((mqw * 0.03)),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.25), BlendMode.dstATop),
+                    image: new NetworkImage(
+                        item.contentsImgFile
+                    ),
+                  )
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: mqw * 0.08),
+                    child: Text(getTextByLanguage(item, 'title', _settingProv.language), style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                  )
+                ],
               )
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: mqw * 0.08),
-                child: Text(item.title, style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-              )
-            ],
-          )
-      ))
+        )
+      )
     });
     return result;
   }

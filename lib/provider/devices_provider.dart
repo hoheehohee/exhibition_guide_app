@@ -39,6 +39,7 @@ class DevicesProvider with ChangeNotifier {
   bool get isPlaying => _playing;
   bool get isBeaconConnect => _beaconConnect;
   List get dataSourceList => _dataSourceList;
+  BeaconModel get cBeaconData => beaconData;
   BeaconContentModel get beaconConteantList => _beaconContentList;
 
   void setIsRunning(bool running) {
@@ -52,6 +53,7 @@ class DevicesProvider with ChangeNotifier {
 
   void setBeaconConnect(bool type) {
     _beaconConnect = type;
+    notifyListeners();
   }
 
   void becaonScan(bool type) async{
@@ -70,7 +72,7 @@ class DevicesProvider with ChangeNotifier {
   }
 
   void init() async {
-    // beaconContentSelCall();
+
     if (Platform.isAndroid) {
       await BeaconsPlugin.setDisclosureDialogMessage(
           title: "Need Location Permission",
@@ -85,6 +87,7 @@ class DevicesProvider with ChangeNotifier {
     beaconEventsController.stream.listen((data) {
         if (data.isNotEmpty) {
           _beaconResult = data;
+          setBeaconConnect(true);
           print("###### beacon data: $data");
           try{
             Map beacon = jsonDecode(data);
@@ -150,7 +153,6 @@ class DevicesProvider with ChangeNotifier {
         );
       });
       _dataSourceList = temp;
-      _beaconConnect = true;
       becaonScan(false);
 
       Getx.Get.to(ExhibitDetail(_beaconContentList.data[0].idx));

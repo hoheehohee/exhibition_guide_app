@@ -6,15 +6,21 @@ import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
+import 'package:exhibition_guide_app/util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../main/main_view.dart';
+import 'exhibit_all_list_view.dart';
 
 class ExhibitDetail extends StatefulWidget {
   final int idx;
-  ExhibitDetail(this.idx);
+  final String appbarTitle;
+  ExhibitDetail(this.idx, {
+    Key key,
+    this.appbarTitle
+  }) : super(key: key);
 
   @override
   _ExhibitDetailState createState() => _ExhibitDetailState();
@@ -56,7 +62,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     return AppBar(
       backgroundColor: backgroundColor,
       title: Text(
-        !_loading ? _exhibit.getTextByLanguage(-1, "exhibition_name"): '',
+        widget.appbarTitle != null ? widget.appbarTitle : "",
         style: TextStyle(color: Colors.white),
       ),
       leading: Builder(
@@ -64,7 +70,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             IconButton(
                 icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
                 onPressed: () {
-                  Get.offAll(ExhibitHighlightView());
+                  Get.back();
                   _device.stopAudio();
                 }
             )
@@ -105,7 +111,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
               Expanded(
                 flex: 1,
                 child: Text(
-                    !_loading ? _exhibit.getTextByLanguage(-1, "title") : '',
+                    !_loading ? _exhibit.getTextByLanguage(-1, "exhibition_name"): '',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff555657))
                 ),
               ),
@@ -138,34 +144,43 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             ],
           )
         ),
-        Container(
-          height: 60,
-          color: Color(0xffE5E6E7),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(width: 15,),
-              Container(
-                width: 50,
-                height: 32,
-                decoration: BoxDecoration(
-                    color: Color(0xffA58C60),
-                    borderRadius: BorderRadius.all(Radius.circular(5))
+        InkWell(
+          onTap: () {
+            Get.to(ExhibitAllListView());
+          },
+          child: Container(
+            height: 60,
+            color: Color(0xffE5E6E7),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(width: 15,),
+                Container(
+                    width: 50,
+                    height: 32,
+                    decoration: BoxDecoration(
+                        color: Color(0xffA58C60),
+                        borderRadius: BorderRadius.all(Radius.circular(5))
+                    ),
+                    child: Center(child:
+                    Text(
+                        // !_loading ? getContentType(_exhibit.exhibitItem['contentsType']) : '',
+                        '유물',
+                        style: TextStyle(color: Colors.white, fontSize: 18, height: 1)))
                 ),
-                child: Center(child: Text('상설', style: TextStyle(color: Colors.white, fontSize: 18, height: 1)))
-              ),
-              SizedBox(width: 15,),
-              Text(
-                "북해도 고락가",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff555657))
-              )
-            ],
+                SizedBox(width: 15,),
+                Text(
+                    !_loading ? _exhibit.getTextByLanguage(-1, "title") : '',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff555657))
+                )
+              ],
+            ),
           ),
         ),
         Container(
             height: 200,
             width: double.infinity,
-            child: Image.network(_imageUrl, fit: BoxFit.fill)
+            child: Image.network(_exhibit.exhibitItem['contentsImgFile'], fit: BoxFit.fill)
         ),
         Container(
             height: 60,
