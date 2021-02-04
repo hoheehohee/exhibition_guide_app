@@ -3,6 +3,7 @@ import 'package:exhibition_guide_app/commons/custom_main_button.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_detail.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_theme_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
@@ -219,9 +220,11 @@ class _MainViewState extends State<MainView> {
                           children: [
                             CustomMainButton(
                               onTap: () async {
-                                await _exhibitProv.setExhibitContentDataSel("B");
                                 Get.offAll(ExhibitListView(
                                   appBarTitle: '전시유물',
+                                  contentType: 'B',
+                                  contentTitle: "전시유물",
+                                  contentIconPath: "assets/images/icon/icon-main-relics.png",
                                 ));
                               },
                               title: "전시유물",
@@ -235,7 +238,14 @@ class _MainViewState extends State<MainView> {
                               imgPath: 'assets/images/icon/icon-main-highlight.png',
                             ),
                             CustomMainButton(
-                              onTap: () {},
+                              onTap: () async {
+                                Get.offAll(ExhibitListView(
+                                  appBarTitle: '상설전시',
+                                  contentType: 'A',
+                                  contentTitle: "상설전시",
+                                  contentIconPath: "assets/images/icon/icon-main-sangsul.png",
+                                ));
+                              },
                               title: "상설전시",
                               imgPath: 'assets/images/icon/icon-main-sangsul.png',
                             ),
@@ -246,7 +256,14 @@ class _MainViewState extends State<MainView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomMainButton(
-                              onTap: () {},
+                              onTap: () {
+                                Get.offAll(
+                                  ExhibitThemeView(
+                                    appBarTitle: '4F 전시실',
+                                    location: 'A',
+                                  )
+                                );
+                              },
                               title: "4F 전시",
                               imgPath: 'assets/images/icon/icon-main-4f.png',
                             ),

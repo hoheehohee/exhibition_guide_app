@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_list_model.dart';
+import 'package:exhibition_guide_app/model/exhibit_theme_item_model.dart';
+import 'package:exhibition_guide_app/model/exhibit_theme_model.dart' as ETM;
+import 'package:exhibition_guide_app/util.dart' as util;
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,8 +22,10 @@ class ExhibitProvider with ChangeNotifier {
   var _exhibitItem = null;
 
   ExhibitContentsDataModel _exhibitContentData = ExhibitContentsDataModel.fromJson({"data": []});
+  ETM.ExhibitThemeModel _exhibitThemeData = ETM.ExhibitThemeModel.fromJson({"data": []});
 
   List<ExhibitItem> _exhibitList = [];
+  List<ExhibitThemeItemModel> _exhibitThemeItem = [];
   List _imgList = [
     'https://monthlyart.com/wp-content/uploads/2020/07/Kukje-Gallery-Wook-kyung-Choi-Untitled-c.-1960s-34-x-40-cm.jpg',
     'https://i.pinimg.com/originals/2c/14/9a/2c149a9c12290855b200229d311f2bb7.jpg',
@@ -33,6 +38,8 @@ class ExhibitProvider with ChangeNotifier {
   bool get isAutoExhibit => _isAutoExhibit;
   bool get isAudio => _isAudio;
   List get imageList => _imgList;
+  List<ExhibitThemeItemModel> get exhibitThemeItem => _exhibitThemeItem;
+
   String get language => _language;
   ExhibitContentsDataModel get exhibitContentData => _exhibitContentData;
 
@@ -132,6 +139,36 @@ class ExhibitProvider with ChangeNotifier {
       resp = await dio.get(BASE_URL + '/contentsData.do', queryParameters: {"contentsType": type});
       final jsonData = json.decode('{"data": $resp}');
       _exhibitContentData = ExhibitContentsDataModel.fromJson(jsonData);
+      _loading = false;
+      notifyListeners();
+    } catch(error) {
+      print("##### setExhibitContentDataSel: $error}");
+    }
+  }
+
+  //전시유물 테마 목록 API 조회
+  Future<void> setExhibitThemeListSel(String type) async {
+    _loading = true;
+    init();
+    Response resp;
+    Dio dio = new Dio();
+
+    try {
+      resp = await dio.get(BASE_URL + '/exhibitionData.do', queryParameters: {"location": type});
+      final jsonData = json.decode('{"data": $resp}');
+      _exhibitThemeData = ETM.ExhibitThemeModel.fromJson(jsonData);
+
+      _exhibitThemeItem = List.generate(_exhibitThemeData.data.length, (index) {
+        ETM.Data _data = _exhibitThemeData.data[index];
+
+        return ExhibitThemeItemModel(
+          title: util.getTextByLanguage(_data, 'exhibition_name', _language),
+          subTitle: util.getTextByLanguage(_data, 'sub_name', _language),
+          imgPath: _data.listBackground,
+          isOpen: false
+        );
+
+      });
       _loading = false;
       notifyListeners();
     } catch(error) {

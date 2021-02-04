@@ -135,9 +135,17 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
                                   },
                                   children: _data.map<ExpansionPanel>((QnA item) {
                                     return ExpansionPanel(
+
                                       headerBuilder: (BuildContext context, bool isExpanded) {
                                         return ListTile(
-                                          title: Text(item.headerValue),
+                                          title: InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                item.isExpanded = !item.isExpanded;
+                                              });
+                                            },
+                                            child: Text(item.headerValue),
+                                          )
                                         );
                                       },
                                       body: ListTile(

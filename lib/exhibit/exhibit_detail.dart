@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:exhibition_guide_app/constant.dart';
-import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
-import 'package:exhibition_guide_app/util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../main/main_view.dart';
+import '../util.dart';
 import 'exhibit_all_list_view.dart';
 
 class ExhibitDetail extends StatefulWidget {
@@ -39,7 +38,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   void initState() {
     super.initState();
     Future.microtask(() => {
-      Provider.of<DevicesProvider>(context, listen: false).playAudio(),
+      // Provider.of<DevicesProvider>(context, listen: false).playAudio(),
       Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx)
     });
   }
@@ -164,8 +163,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                     ),
                     child: Center(child:
                     Text(
-                        // !_loading ? getContentType(_exhibit.exhibitItem['contentsType']) : '',
-                        '유물',
+                        _exhibit.exhibitItem != null ? getContentType(_exhibit.exhibitItem['contentsType']) : '',
                         style: TextStyle(color: Colors.white, fontSize: 18, height: 1)))
                 ),
                 SizedBox(width: 15,),

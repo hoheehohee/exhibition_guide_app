@@ -65,8 +65,22 @@ class SliderDrawers extends StatelessWidget {
                 onTap: () {
                   switch(drawersItemList[i]["idx"]){
                     case 0: Get.to(ExhibitHighlightView()); break;
-                    case 1: Get.to(ExhibitListView()); break;
-                    case 2: Get.to(ExhibitionMapView()); break;
+                    case 1:
+                      Get.offAll(ExhibitListView(
+                        appBarTitle: '전시유물',
+                        contentType: 'B',
+                        contentTitle: "전시유물",
+                        contentIconPath: "assets/images/icon/icon-main-relics.png",
+                      ));
+                      break;
+                    case 2:
+                      Get.offAll(ExhibitListView(
+                        appBarTitle: '상설전시',
+                        contentType: 'A',
+                        contentTitle: "상설전시",
+                        contentIconPath: "assets/images/icon/icon-main-sangsul.png",
+                      ));
+                      break;
                     case 3: Get.to(MainView()); break;
                     case 4: Get.to(CustomerCenterView()); break;
                     case 5: Get.to(LanguageView()); break;

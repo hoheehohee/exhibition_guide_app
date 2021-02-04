@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_detail.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
-import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
@@ -10,29 +9,49 @@ import 'package:provider/provider.dart';
 
 import '../constant.dart';
 import '../util.dart';
-import 'exhibit_items.dart';
 
-class ExhibitListView extends StatelessWidget {
+class ExhibitListView extends StatefulWidget {
 
   ExhibitListView({
     Key key,
-    this.appBarTitle
+    this.appBarTitle,
+    this.contentType,
+    this.contentTitle,
+    this.contentIconPath
   }) : super(key: key);
 
+  final String appBarTitle;
+  final String contentType;
+  final String contentTitle;
+  final String contentIconPath;
+
+  @override
+  _ExhibitListViewState createState() => _ExhibitListViewState();
+}
+
+class _ExhibitListViewState extends State<ExhibitListView> {
   var mqd;
   var mqw;
   var mqh;
   var _exhibitProv;
   var _settingProv;
 
-  final String appBarTitle;
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final List<String> imgList1 = [
     'http://image.dongascience.com/Photo/2016/12/14830593296726.jpg',
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRin2FtYAFZIK4Yv-fCVboJylGVZSS9u-lM3w&usqp=CAU',
     'https://pds.joins.com//news/component/htmlphoto_mmdata/201712/02/7ff3ada7-1393-4da8-833d-ee5f877913d8.jpg',
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() => {
+      Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataSel(widget.contentType)
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +114,7 @@ class ExhibitListView extends StatelessWidget {
   Widget _appBar() {
     return AppBar(
       backgroundColor: backgroundColor,
-      title: Text(appBarTitle != null ? appBarTitle : '', style: TextStyle(color: Colors.white),),
+      title: Text(widget.appBarTitle != null ? widget.appBarTitle : '', style: TextStyle(color: Colors.white),),
       actions:[
         IconButton(
           icon: new Icon(Icons.menu, size: mqw * 0.08, color: Colors.white,),
@@ -193,8 +212,8 @@ class ExhibitListView extends StatelessWidget {
   List<Widget> _contentItem() {
     List<Widget> result = [
       _exhibitTitle(
-          "전시유물",
-          "assets/images/icon/icon-main-relics.png"
+          widget.contentTitle,
+          widget.contentIconPath
       ),
       SizedBox(height: mqh * 0.02),
     ];
