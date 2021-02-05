@@ -1,4 +1,5 @@
 import 'package:exhibition_guide_app/commons/exhibit_view_bottom.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/message.dart';
 import 'package:exhibition_guide_app/model/exhibit_theme_item_model.dart';
@@ -7,6 +8,7 @@ import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:exhibition_guide_app/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../constant.dart';
@@ -154,17 +156,30 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
                   ),
                 ),
                 item.isOpen ? (
-                    Container(
-                      width: double.infinity,
-                      height: mqh * 0.22,
-                      padding: EdgeInsets.all(mqw * 0.03),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8.0), bottomRight: Radius.circular(8.0))
-                      ),
-                      child: Text(
-                        getTextByLanguage(item, 'content', _settingProv.language),
-                        style: TextStyle(fontSize: 18),
+                    InkWell(
+                      onTap: () {
+                        Get.to(
+                          ExhibitListView(
+                            contentType: '',
+                            contentIconPath: '',
+                            contentTitle: '',
+                            appBarTitle: getTextByLanguage(item, 'title', _settingProv.language),
+                            exhibitionCode: item.exhibitionCode,
+                          )
+                        );
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: mqh * 0.22,
+                        padding: EdgeInsets.all(mqw * 0.03),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8.0), bottomRight: Radius.circular(8.0))
+                        ),
+                        child: Text(
+                          getTextByLanguage(item, 'content', _settingProv.language),
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
                     )
                 ) : Container()

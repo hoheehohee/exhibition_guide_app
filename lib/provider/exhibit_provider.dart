@@ -180,6 +180,46 @@ class ExhibitProvider with ChangeNotifier {
     }
   }
 
+  //전시유물, 전시물 목록 API조회
+  Future<void> setExhibitContentDataTwoSel(String exhibitionCode) async {
+    _loading = true;
+    init();
+    Response respOne;
+    Response respTwo;
+    Response respThree;
+    Dio dio = new Dio();
+
+    try {
+      respOne = await dio.get(
+          BASE_URL + '/contentsData.do',
+          queryParameters: {"highlightYN": 'Y', "exhibitionCode": exhibitionCode}
+      );
+      final jsonData = json.decode('{"data": $respOne}');
+      _exhibitContentDataOne = ExhibitContentsDataModel.fromJson(jsonData);
+
+      respTwo = await dio.get(
+          BASE_URL + '/contentsData.do',
+          queryParameters: {"contentsType": 'B', "exhibitionCode": exhibitionCode }
+      );
+
+      final jsonDataTwo = json.decode('{"data": $respTwo}');
+      _exhibitContentDataTwo = ExhibitContentsDataModel.fromJson(jsonDataTwo);
+
+      respThree = await dio.get(
+          BASE_URL + '/contentsData.do',
+          queryParameters: {"contentsType": "A", "exhibitionCode": exhibitionCode }
+      );
+      final jsonThree = json.decode('{"data": $respThree}');
+      _exhibitContentDataThree = ExhibitContentsDataModel.fromJson(jsonThree);
+
+
+      _loading = false;
+      notifyListeners();
+    } catch(error) {
+      print("##### setExhibitContentDataSel: $error}");
+    }
+  }
+
   //전시유물 테마 목록 API 조회
   Future<void> setExhibitThemeListSel(String type) async {
     _loading = true;
@@ -208,6 +248,7 @@ class ExhibitProvider with ChangeNotifier {
           contentChn: _data.contentChn,
           contentEng: _data.contentEng,
           contentJpn: _data.contentJpn,
+          exhibitionCode: _data.exhibitionCode,
           imgPath: _data.listBackground,
           isOpen: false
         );

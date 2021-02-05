@@ -11,6 +11,7 @@ class ExhibitThemeItemModel {
   String contentEng;
   String contentChn;
   String contentJpn;
+  String exhibitionCode;
   String imgPath;
   bool isOpen;
 
@@ -27,6 +28,7 @@ class ExhibitThemeItemModel {
         this.contentEng,
         this.contentChn,
         this.contentJpn,
+        this.exhibitionCode,
         this.imgPath,
         this.isOpen});
 
@@ -43,6 +45,7 @@ class ExhibitThemeItemModel {
     contentEng = json['content_eng'];
     contentChn = json['content_chn'];
     contentJpn = json['content_jpn'];
+    exhibitionCode = json['exhibition_code'];
     imgPath = json['imgPath'];
     isOpen = json['isOpen'];
   }
@@ -61,6 +64,7 @@ class ExhibitThemeItemModel {
     data['content_eng'] = this.contentEng;
     data['content_chn'] = this.contentChn;
     data['content_jpn'] = this.contentJpn;
+    data['exhibition_code'] = this.exhibitionCode;
     data['imgPath'] = this.imgPath;
     data['isOpen'] = this.isOpen;
     return data;

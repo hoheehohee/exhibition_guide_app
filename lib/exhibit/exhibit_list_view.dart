@@ -21,6 +21,7 @@ class ExhibitListView extends StatefulWidget {
     this.contentType,
     this.contentTitle,
     this.exhibitionType,
+    this.exhibitionCode,
     this.contentIconPath
   }) : super(key: key);
 
@@ -28,6 +29,7 @@ class ExhibitListView extends StatefulWidget {
   final String contentType;
   final String contentTitle;
   final String exhibitionType;
+  final String exhibitionCode;
   final String contentIconPath;
 
   @override
@@ -54,7 +56,11 @@ class _ExhibitListViewState extends State<ExhibitListView> {
     // TODO: implement initState
     super.initState();
     Future.microtask(() => {
-      Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataSel(widget.contentType, widget.exhibitionType)
+      if (widget.exhibitionCode != null && widget.exhibitionCode.isNotEmpty) {
+        Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataTwoSel(widget.exhibitionCode)
+      } else {
+        Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataSel(widget.contentType, widget.exhibitionType)
+      }
     });
   }
 
