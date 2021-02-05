@@ -21,7 +21,13 @@ class ExhibitProvider with ChangeNotifier {
   var _language;
   var _exhibitItem = null;
 
-  ExhibitContentsDataModel _exhibitContentData = ExhibitContentsDataModel.fromJson({"data": []});
+  ExhibitContentsDataModel _exhibitHighlightDataOne = ExhibitContentsDataModel.fromJson({"data": []});
+  ExhibitContentsDataModel _exhibitHighlightDataTwo = ExhibitContentsDataModel.fromJson({"data": []});
+  ExhibitContentsDataModel _exhibitHighlightDataThree = ExhibitContentsDataModel.fromJson({"data": []});
+  ExhibitContentsDataModel _exhibitContentDataOne = ExhibitContentsDataModel.fromJson({"data": []});
+  ExhibitContentsDataModel _exhibitContentDataTwo = ExhibitContentsDataModel.fromJson({"data": []});
+  ExhibitContentsDataModel _exhibitContentDataThree = ExhibitContentsDataModel.fromJson({"data": []});
+
   ETM.ExhibitThemeModel _exhibitThemeData = ETM.ExhibitThemeModel.fromJson({"data": []});
 
   List<ExhibitItem> _exhibitList = [];
@@ -41,7 +47,12 @@ class ExhibitProvider with ChangeNotifier {
   List<ExhibitThemeItemModel> get exhibitThemeItem => _exhibitThemeItem;
 
   String get language => _language;
-  ExhibitContentsDataModel get exhibitContentData => _exhibitContentData;
+  ExhibitContentsDataModel get exhibitHighlightDataOne => _exhibitHighlightDataOne;
+  ExhibitContentsDataModel get exhibitHighlightDataTwo => _exhibitHighlightDataTwo;
+  ExhibitContentsDataModel get exhibitHighlightDataThree => _exhibitHighlightDataThree;
+  ExhibitContentsDataModel get exhibitContentDataOne => _exhibitContentDataOne;
+  ExhibitContentsDataModel get exhibitContentDataTwo => _exhibitContentDataTwo;
+  ExhibitContentsDataModel get exhibitContentDataThree => _exhibitContentDataThree;
 
   get exhibitList => _exhibitList;
   get exhibitItem => _exhibitItem;
@@ -129,16 +140,39 @@ class ExhibitProvider with ChangeNotifier {
   }
 
   //전시유물, 전시물 목록 API조회
-  Future<void> setExhibitContentDataSel(String type) async {
+  Future<void> setExhibitContentDataSel(String type, String exhibitionType) async {
     _loading = true;
     init();
-    Response resp;
+    Response respOne;
+    Response respTwo;
+    Response respThree;
     Dio dio = new Dio();
 
     try {
-      resp = await dio.get(BASE_URL + '/contentsData.do', queryParameters: {"contentsType": type});
-      final jsonData = json.decode('{"data": $resp}');
-      _exhibitContentData = ExhibitContentsDataModel.fromJson(jsonData);
+      respOne = await dio.get(
+        BASE_URL + '/contentsData.do',
+        queryParameters: {"contentsType": type, "exhibitionType": exhibitionType, "highlightYN": 'Y'}
+      );
+      final jsonData = json.decode('{"data": $respOne}');
+      _exhibitContentDataOne = ExhibitContentsDataModel.fromJson(jsonData);
+
+      respTwo = await dio.get(
+        BASE_URL + '/contentsData.do',
+        queryParameters: {"contentsType": type.isEmpty ? 'B' : type, "exhibitionType": exhibitionType }
+      );
+
+      final jsonDataTwo = json.decode('{"data": $respTwo}');
+      _exhibitContentDataTwo = ExhibitContentsDataModel.fromJson(jsonDataTwo);
+
+      if (type.isEmpty) {
+        respThree = await dio.get(
+            BASE_URL + '/contentsData.do',
+            queryParameters: {"contentsType": "A", "exhibitionType": exhibitionType }
+        );
+        final jsonThree = json.decode('{"data": $respThree}');
+        _exhibitContentDataThree = ExhibitContentsDataModel.fromJson(jsonThree);
+      }
+
       _loading = false;
       notifyListeners();
     } catch(error) {
@@ -160,10 +194,20 @@ class ExhibitProvider with ChangeNotifier {
 
       _exhibitThemeItem = List.generate(_exhibitThemeData.data.length, (index) {
         ETM.Data _data = _exhibitThemeData.data[index];
-
+        print("###  _data.exhibitionNameEng: ${ _data.exhibitionName}");
         return ExhibitThemeItemModel(
-          title: util.getTextByLanguage(_data, 'exhibition_name', _language),
-          subTitle: util.getTextByLanguage(_data, 'sub_name', _language),
+          title: _data.exhibitionName,
+          titleEng: _data.exhibitionNameEng,
+          titleChn: _data.exhibitionNameChn,
+          titleJpn: _data.exhibitionNameJpn,
+          subTitle: _data.subName,
+          subTitleEng: _data.subNameEng,
+          subTitleChn: _data.subNameChn,
+          subTitleJpn: _data.subNameJpn,
+          content: _data.content,
+          contentChn: _data.contentChn,
+          contentEng: _data.contentEng,
+          contentJpn: _data.contentJpn,
           imgPath: _data.listBackground,
           isOpen: false
         );
@@ -173,6 +217,45 @@ class ExhibitProvider with ChangeNotifier {
       notifyListeners();
     } catch(error) {
       print("##### setExhibitContentDataSel: $error}");
+    }
+  }
+
+  // 하이라이트 전시물 목록
+  Future<void> setExhibitHighlightListSel () async {
+    _loading = true;
+    init();
+    Response respOne;
+    Response respTwo;
+    Response respThree;
+    Dio dio = new Dio();
+
+    try {
+      respOne = await dio.get(
+          BASE_URL + '/contentsData.do',
+          queryParameters: {"contentsType": "B", "highlightYN": 'Y'}
+      );
+      final jsonData = json.decode('{"data": $respOne}');
+      _exhibitHighlightDataOne = ExhibitContentsDataModel.fromJson(jsonData);
+
+      respTwo = await dio.get(
+          BASE_URL + '/contentsData.do',
+          queryParameters: {"contentsType": "A", "highlightYN": 'Y', "exhibitionType": "A"}
+      );
+      final jsonDataTwo = json.decode('{"data": $respTwo}');
+      _exhibitHighlightDataTwo = ExhibitContentsDataModel.fromJson(jsonDataTwo);
+
+      respThree = await dio.get(
+          BASE_URL + '/contentsData.do',
+          queryParameters: {"contentsType": "A", "highlightYN": 'Y', "exhibitionType": "B"}
+      );
+      final jsonDataThree = json.decode('{"data": $respThree}');
+      _exhibitHighlightDataThree = ExhibitContentsDataModel.fromJson(jsonDataThree);
+
+      _loading = false;
+      notifyListeners();
+    } catch (error) {
+      _loading = false;
+      print("##### setExhibitHighlightListSel error: ${error}");
     }
   }
 }

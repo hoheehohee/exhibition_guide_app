@@ -10,3 +10,5 @@ const permanentImage = "https://monthlyart.com/wp-content/uploads/2020/07/Kukje-
 
 const FOOTER_ADDRESS = "주소 : 48532 부산 남구 홍곡로320번길 100 (대연동 산 204-1) TEL. 051-629-8600";
 const FOOTER_COPY = "COPYRIGHT © National Memorial Museum of Forced Mobilization under Japanese Occupation.ALL RIGHT RESERVED.";
+
+const IMAGE_ERROR = "https://3kllhk1ibq34qk6sp3bhtox1-wpengine.netdna-ssl.com/wp-content/uploads/2017/12/screen-shot-2017-11-16-at-3.50.20-pm-1.png";

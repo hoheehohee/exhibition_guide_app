@@ -1,3 +1,4 @@
+import 'package:exhibition_guide_app/constant.dart';
 import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,32 +24,35 @@ class LanguageView extends StatelessWidget {
               Container(
                   width: double.infinity,
                   height: 60,
-                  color: Colors.black12,
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: _languageItem('中文', 'cn')
-              ),
-              Container(
-                  width: double.infinity,
-                  height: 60,
-                  color: Colors.black26,
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: _languageItem('ENGLISH', 'en')
-              ),
-              Container(
-                  width: double.infinity,
-                  height: 60,
-                  color: Colors.black12,
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: _languageItem('日本語', 'ja')
-              ),
-              Container(
-                  width: double.infinity,
-                  height: 60,
-                  color: Colors.black26,
+                  color: Color(0xff365871),
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child:
                   _languageItem('한국어', 'ko')
-              )
+              ),
+              SizedBox(height: 1),
+              Container(
+                  width: double.infinity,
+                  height: 60,
+                  color: Color(0xff365871),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: _languageItem('ENGLISH', 'en')
+              ),
+              SizedBox(height: 1),
+              Container(
+                  width: double.infinity,
+                  height: 60,
+                  color: Color(0xff365871),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: _languageItem('中文', 'cn')
+              ),
+              SizedBox(height: 1),
+              Container(
+                  width: double.infinity,
+                  height: 60,
+                  color: Color(0xff365871),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: _languageItem('日本語', 'ja')
+              ),
             ],
           )
         ),
@@ -64,7 +68,7 @@ class LanguageView extends StatelessWidget {
           '언어 설정',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.black26,
+        backgroundColor: backgroundColor,
         leading: Builder(
             builder: (BuildContext context) => (
                 IconButton(
@@ -83,12 +87,12 @@ class LanguageView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(title),
+        Text(title, style: TextStyle(fontSize: 18),),
         IconButton(
           icon: (
             _language.language == language
-              ? Icon(Icons.check_circle_outline, color: Colors.orange)
-              : Icon(Icons.radio_button_off)
+              ? Image.asset("assets/images/button/btn-check-on.png")
+              : Image.asset("assets/images/button/btn-check-off.png")
           ),
           onPressed: () {
             _language.setLanguage(language);

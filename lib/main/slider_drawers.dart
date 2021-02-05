@@ -4,8 +4,9 @@ import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
 import 'package:exhibition_guide_app/exhibit/permanent_exhibit_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
-import 'package:exhibition_guide_app/language/language_view.dart';
+import 'package:exhibition_guide_app/setting/language_view.dart';
 import 'package:exhibition_guide_app/mypage/mypage_view.dart';
+import 'package:exhibition_guide_app/setting/setting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,8 +21,9 @@ class SliderDrawers extends StatelessWidget {
     { 'title': '기획전', 'idx': 3 },
     { 'title': '공지사항', 'idx': 4 },
     { 'title': '이용설정', 'idx': 5 },
-    { 'title': '이용예약신청', 'idx': 6 },
-    { 'title': '마이페이지', 'idx': 7 },
+    { 'title': '언어설정', 'idx': 6 },
+    { 'title': '이용예약신청', 'idx': 7 },
+    { 'title': '마이페이지', 'idx': 8 },
   ];
 
   @override
@@ -70,6 +72,7 @@ class SliderDrawers extends StatelessWidget {
                         appBarTitle: '전시유물',
                         contentType: 'B',
                         contentTitle: "전시유물",
+                        exhibitionType: 'A',
                         contentIconPath: "assets/images/icon/icon-main-relics.png",
                       ));
                       break;
@@ -78,14 +81,24 @@ class SliderDrawers extends StatelessWidget {
                         appBarTitle: '상설전시',
                         contentType: 'A',
                         contentTitle: "상설전시",
+                        exhibitionType: 'A',
                         contentIconPath: "assets/images/icon/icon-main-sangsul.png",
                       ));
                       break;
-                    case 3: Get.to(MainView()); break;
+                    case 3:
+                      Get.offAll(ExhibitListView(
+                        appBarTitle: "기획전시",
+                        contentType: "",
+                        contentTitle: "",
+                        exhibitionType: 'B',
+                        contentIconPath: "",
+                      ));
+                      break;
                     case 4: Get.to(CustomerCenterView()); break;
-                    case 5: Get.to(LanguageView()); break;
-                    case 6: Get.to(BookingView()); break;
-                    case 7: Get.to(MyPageView(0)); break;
+                    case 5: Get.to(SettingView()); break;
+                    case 6: Get.to(LanguageView()); break;
+                    case 7: Get.to(BookingView()); break;
+                    case 8: Get.to(MyPageView(0)); break;
                   }
                 },
                 child: Row(

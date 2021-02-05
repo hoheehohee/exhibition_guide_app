@@ -1,5 +1,10 @@
+import 'package:exhibition_guide_app/commons/exhibit_view_bottom.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
+import 'package:exhibition_guide_app/message.dart';
+import 'package:exhibition_guide_app/model/exhibit_theme_item_model.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
+import 'package:exhibition_guide_app/provider/setting_provider.dart';
+import 'package:exhibition_guide_app/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +29,8 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
   var mqd;
   var mqw;
   var mqh;
+  ExhibitProvider _exhibitProv ;
+  SettingProvider _settingProv;
   bool show = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -42,9 +49,12 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
     mqh = mqd.size.height;
+    _exhibitProv = Provider.of<ExhibitProvider>(context);
+    _settingProv = Provider.of<SettingProvider>(context);
     return Scaffold(
       key: _scaffoldKey,
       appBar: _appBar(),
+      bottomNavigationBar: ExhibitViewBottom(),
       backgroundColor: backgroundColor,
       endDrawer: Drawer(
           child: Container(
@@ -58,10 +68,7 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
             padding: EdgeInsets.all(mqw * 0.05),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _dataItem(),
-                _dataItem()
-              ],
+              children: _dataItem(),
             )
         ),
       )
@@ -84,71 +91,88 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
     );
   }
 
-  Widget _dataItem() {
-    return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            onTap: () {
-              setState(() {
-                show = !show;
-              });
-            },
-            child: Container(
-              width: double.infinity,
-              height: show ? mqh * 0.22 : mqh * 0.17,
-              decoration: BoxDecoration(
-                  borderRadius: (
-                      show
-                          ? BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0))
-                          : BorderRadius.circular(8.0)
+  List<Widget> _dataItem() {
+    if (_exhibitProv.exhibitThemeItem.length == 0) return [Container()];
+    List<Widget> result = [];
+
+    _exhibitProv.exhibitThemeItem.forEach((ExhibitThemeItemModel item) {
+      result.add(
+          Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      item.isOpen = !item.isOpen;
+                    });
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: item.isOpen ? mqh * 0.22 : mqh * 0.17,
+                    decoration: BoxDecoration(
+                        borderRadius: (
+                            item.isOpen
+                                ? BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0))
+                                : BorderRadius.circular(8.0)
+                        ),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            item.imgPath,
+                          ),
+                          onError: (dynamic error, StackTrace stackTrace) {
+                            setState(() {
+                              item.imgPath = IMAGE_ERROR;
+                            });
+                          }
+                        )
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: mqw * 0.03),
+                          child: Text(
+                            getTextByLanguage(item, 'title', _settingProv.language),
+                            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: mqw * 0.03),
+                          child: Text(
+                            getTextByLanguage(item, 'subTitle', _settingProv.language),
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        )
+                      ],
+                    )
                   ),
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRin2FtYAFZIK4Yv-fCVboJylGVZSS9u-lM3w&usqp=CAU",
-                      )
-                  )
-              ),
-              child: Align(
-                  alignment: Alignment(-0.75, 0.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "테스트 글씨",
-                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                item.isOpen ? (
+                    Container(
+                      width: double.infinity,
+                      height: mqh * 0.22,
+                      padding: EdgeInsets.all(mqw * 0.03),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8.0), bottomRight: Radius.circular(8.0))
                       ),
-                      SizedBox(height: 5,),
-                      Text(
-                        "테스트 글씨글씨글씨글씨",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      child: Text(
+                        getTextByLanguage(item, 'content', _settingProv.language),
+                        style: TextStyle(fontSize: 18),
                       ),
-                    ],
-                  )
-              ),
+                    )
+                ) : Container()
+              ],
             ),
-          ),
-          show ? (
-              Container(
-                width: double.infinity,
-                height: mqh * 0.22,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8.0), bottomRight: Radius.circular(8.0))
-                ),
-                child: Text(
-                  "sdgsdgsdgsdgsdfdsfsdfdsfsfssdfsfd",
-                  style: TextStyle(fontSize: 18),
-                ),
-              )
-          ) : Container()
-        ],
-      ),
-    );
+          )
+      );
+    });
+    return result;
   }
 }

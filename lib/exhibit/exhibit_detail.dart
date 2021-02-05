@@ -89,7 +89,6 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   }
 
   Widget _mainView() {
-    final _imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0g6e6r-vJ7ov7qryFzHHedU2Jd4s6ueRhDw&usqp=CAU";
     final _text = !_loading ? _exhibit.getTextByLanguage(-1, "content") : '';
 
     return Column(
@@ -155,22 +154,28 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
               children: [
                 SizedBox(width: 15,),
                 Container(
-                    width: 50,
-                    height: 32,
-                    decoration: BoxDecoration(
-                        color: Color(0xffA58C60),
-                        borderRadius: BorderRadius.all(Radius.circular(5))
+                  width: 50,
+                  height: 32,
+                  decoration: BoxDecoration(
+                      color: Color(0xffA58C60),
+                      borderRadius: BorderRadius.all(Radius.circular(5))
+                  ),
+                  child: Center(
+                    child: Text(
+                      _exhibit.exhibitItem != null ? getContentType(_exhibit.exhibitItem['contentsType']) : '',
+                      style: TextStyle(color: Colors.white, fontSize: 18, height: 1),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    child: Center(child:
-                    Text(
-                        _exhibit.exhibitItem != null ? getContentType(_exhibit.exhibitItem['contentsType']) : '',
-                        style: TextStyle(color: Colors.white, fontSize: 18, height: 1)))
+                  ),
                 ),
                 SizedBox(width: 15,),
-                Text(
+                Flexible(
+                  child: Text(
                     !_loading ? _exhibit.getTextByLanguage(-1, "title") : '',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff555657))
-                )
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff555657)),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           ),

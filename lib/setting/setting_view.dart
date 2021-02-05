@@ -1,3 +1,5 @@
+import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
+import 'package:exhibition_guide_app/constant.dart';
 import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,7 @@ class SettingView extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: _appBar(),
+        backgroundColor: backgroundColor,
         body: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,7 +32,7 @@ class SettingView extends StatelessWidget {
               _textSizeView(),  // 변경된 글자크 뷰 컴포넌트.
               _textSizeScroll(), // 글자크기 변경 스크롤 컴포넌트.
               SizedBox(height: 20,),
-              Padding( padding: EdgeInsets.all(10), child: Text('네트워크 사용') ),
+              Padding( padding: EdgeInsets.all(10), child: Text('데이터 네트워크 사용') ),
               _isNetwork()  // 네트워크 사용 유무
             ],
         ),
@@ -39,22 +42,19 @@ class SettingView extends StatelessWidget {
 
   Widget _appBar() {
     return AppBar(
-      elevation: 0.0,
+      // elevation: 0.0,
       centerTitle: true,
       title: Text(
         '설정',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      backgroundColor: Colors.black26,
-      leading: Builder(
-        builder: (BuildContext context) => (
-            IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                Get.back();
-              },
-            )
-        ),
+      backgroundColor: backgroundColor,
+      leading: CustomImageIconBtn(
+        px: 15.0,
+        iconPath: "assets/images/button/btn-back.png",
+        onAction: () {
+          Get.back();
+        },
       ),
     );
   }
@@ -64,14 +64,14 @@ class SettingView extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 70,
-      color: Colors.black26,
+      color: Color(0xff365871),
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('버전정보', style: TextStyle(fontSize: 18),),
-          Text('0.1', style: TextStyle(color: Colors.orange, fontSize: 18),)
+          Text('V 0.1', style: TextStyle(fontSize: 18),)
         ],
       ),
     );
@@ -82,7 +82,7 @@ class SettingView extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 100,
-      color: Colors.black12,
+      color: Color(0xff365871),
       child: Center(
         child: Text(
             '전시안내 설명은 아내의 선택한 글자 크기로\n변경되어 보여집니다.',
@@ -98,7 +98,7 @@ class SettingView extends StatelessWidget {
     return Container(
         width: double.infinity,
         height: 70,
-        color: Colors.black26,
+        color: Color(0xff2D4C62),
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -107,8 +107,9 @@ class SettingView extends StatelessWidget {
             Text('A'),
             Expanded(
               flex: 1,
-              child: Slider(
+              child: Slider.adaptive(
                 value: _settingProvider.fontSize,
+                inactiveColor: Colors.white,
                 min: 10,
                 max: 30,
                 onChanged: (double value) {
@@ -128,7 +129,7 @@ class SettingView extends StatelessWidget {
       width: double.infinity,
       height: 70,
       padding: EdgeInsets.symmetric(horizontal: 10),
-      color: Colors.black26,
+      color: Color(0xff365871),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -136,12 +137,10 @@ class SettingView extends StatelessWidget {
           Text('데이터 네트워크 (3G/LTE) 사용'),
           IconButton(
             padding: EdgeInsets.all(0),
-            icon: Icon(
+            icon:
               _settingProvider.isNetwork
-                  ? Icons.toggle_on_outlined
-                  : Icons.toggle_off_outlined,
-              size: 50,
-            ),
+                  ? Image.asset("assets/images/button/btn-toogle-on.png")
+                  : Image.asset("assets/images/button/btn-toogle-off.png"),
             onPressed: () {
               _settingProvider.setIsNetwork();
             },
