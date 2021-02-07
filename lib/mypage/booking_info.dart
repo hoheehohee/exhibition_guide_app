@@ -7,11 +7,11 @@ import 'package:get/get.dart';
 class BookingInfo extends StatelessWidget {
   //  [ '전체 신청내역 조회', '예약신청 내역', '신청승인 내역', '이용종료 내역', '신청취소 내역', '고객센터']
   final List<BookingStateMenu> _menuItems = [
-    BookingStateMenu.fromMap({ 'title': '전체 신청내역 조회', 'widget': BookingStateView() }),
-    BookingStateMenu.fromMap({ 'title': '예약신청 내역', 'widget': BookingStateView() }),
-    BookingStateMenu.fromMap({ 'title': '신청승인 내역', 'widget': BookingStateView() }),
-    BookingStateMenu.fromMap({ 'title': '이용종료 내역', 'widget': BookingStateView() }),
-    BookingStateMenu.fromMap({ 'title': '신청취소 내역', 'widget': BookingStateView() }),
+    BookingStateMenu.fromMap({ 'title': '전체 신청내역 조회', 'widget': BookingStateView(0) }),
+    BookingStateMenu.fromMap({ 'title': '예약신청 내역', 'widget': BookingStateView(1) }),
+    BookingStateMenu.fromMap({ 'title': '신청승인 내역', 'widget': BookingStateView(2) }),
+    BookingStateMenu.fromMap({ 'title': '이용종료 내역', 'widget': BookingStateView(3) }),
+    BookingStateMenu.fromMap({ 'title': '신청취소 내역', 'widget': BookingStateView(4) }),
     BookingStateMenu.fromMap({ 'title': '고객센터', 'widget': CustomerCenterView() }),
   ];
   @override
@@ -119,7 +119,7 @@ class BookingInfo extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
-                                      Text('OOO\n신청', textAlign: TextAlign.center),
+                                      Text('도슨트\n신청', textAlign: TextAlign.center),
                                       Text('0', style: TextStyle(color: Colors.orange))
                                     ]
                                 ),
@@ -128,7 +128,7 @@ class BookingInfo extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
-                                      Text('신청\n확인', textAlign: TextAlign.center),
+                                      Text('승인\n이용', textAlign: TextAlign.center),
                                       Text('0', style: TextStyle(color: Colors.orange))
                                     ]
                                 ),
@@ -137,25 +137,7 @@ class BookingInfo extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
-                                      Text('OOO\n진행', textAlign: TextAlign.center),
-                                      Text('0', style: TextStyle(color: Colors.orange))
-                                    ]
-                                ),
-                                Icon(Icons.arrow_forward_ios, color: Colors.grey),
-                                Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children:[
-                                      Text('OOO\n??', textAlign: TextAlign.center),
-                                      Text('0', style: TextStyle(color: Colors.orange))
-                                    ]
-                                ),
-                                Icon(Icons.arrow_forward_ios, color: Colors.grey),
-                                Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children:[
-                                      Text('OOO\n종료', textAlign: TextAlign.center),
+                                      Text('이용\n종료', textAlign: TextAlign.center),
                                       Text('0', style: TextStyle(color: Colors.orange))
                                     ]
                                 ),

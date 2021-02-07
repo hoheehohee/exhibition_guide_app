@@ -113,44 +113,6 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
                                     ]
                                 )
                             ),
-                            Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.all(10),
-                                child: ExpansionPanelList(
-                                  expansionCallback: (int index, bool isExpanded) {
-                                    setState(() {
-                                      _data[index].isExpanded = !isExpanded;
-                                    });
-                                  },
-                                  children: _data.map<ExpansionPanel>((QnA item) {
-                                    return ExpansionPanel(
-
-                                      headerBuilder: (BuildContext context, bool isExpanded) {
-                                        return ListTile(
-                                          title: InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                item.isExpanded = !item.isExpanded;
-                                              });
-                                            },
-                                            child: Text(item.headerValue),
-                                          )
-                                        );
-                                      },
-                                      body: ListTile(
-                                          title: Text(item.expandedValue),
-                                          subtitle: Text('To delete this panel, tap the trash can icon'),
-                                          trailing: Icon(Icons.delete),
-                                          onTap: () {
-                                            setState(() {
-                                              _data.removeWhere((currentItem) => item == currentItem);
-                                            });
-                                          }),
-                                      isExpanded: item.isExpanded,
-                                    );
-                                  }).toList(),
-                                )
-                            )
                             FaqListView()
                           ]
                       )
