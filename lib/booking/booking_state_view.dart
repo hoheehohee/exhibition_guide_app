@@ -199,9 +199,7 @@ class _BookingStateViewState extends State<BookingStateView> {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                      _mypage
-                                          .bookingList.data[index].applyNumber,
+                                  Text(_mypage.bookingList.data[index].applyNumber,
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontSize: 16,
@@ -214,9 +212,7 @@ class _BookingStateViewState extends State<BookingStateView> {
                                               CrossAxisAlignment.center,
                                           children: [
                                         Visibility(
-                                            visible: _mypage.bookingList
-                                                    .data[index].status ==
-                                                'N',
+                                            visible: _mypage.bookingList.data[index].status == 'N',
                                             child: Text(
                                                 getDday(_mypage.bookingList
                                                     .data[index].applyDate),
@@ -251,11 +247,7 @@ class _BookingStateViewState extends State<BookingStateView> {
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(30))),
                                             child: Center(
-                                                child: Text(
-                                                    getStatusText(_mypage
-                                                        .bookingList
-                                                        .data[index]
-                                                        .status),
+                                                child: Text(getStatusText(_mypage.bookingList.data[index].status),
                                                     style: TextStyle(
                                                         color: Colors.white))))
                                       ]))

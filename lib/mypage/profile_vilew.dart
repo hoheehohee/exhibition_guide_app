@@ -21,6 +21,34 @@ class _ProfileViewState extends State<ProfileView> {
     super.initState();
   }
 
+  String getSnsIcon(String snsType) {
+    print(snsType);
+    String icon = "";
+    switch (snsType) {
+      case "google":
+        {
+          icon = "assets/images/googe_icon.png";
+        }
+        break;
+      case "kakao":
+        {
+          icon = "assets/images/kakao_icon.png";
+        }
+        break;
+      case "naver":
+        {
+          icon = "assets/images/naver_icon.png";
+        }
+        break;
+      case "facebook":
+        {
+          icon = "assets/images/facebook_icon.png";
+        }
+        break;
+    }
+    return icon;
+  }
+
   @override
   Widget build(BuildContext context) {
     _social = Provider.of<SocialProvider>(context);
@@ -76,12 +104,12 @@ class _ProfileViewState extends State<ProfileView> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-            height: 100,
-            width: 100,
+            height: 50,
+            width: 50,
             margin: EdgeInsets.only(left: 30, right: 10),
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
-                child: Image.asset("assets/images/profile_sample.jpeg", fit: BoxFit.fill,)
+                child: Image.asset(getSnsIcon(_social.snsType), fit: BoxFit.fill,)
             )
         ),
         Column(
@@ -89,11 +117,7 @@ class _ProfileViewState extends State<ProfileView> {
           children: [
             Row(
               children: [
-                Text('아이유', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Image.asset("assets/images/kakao_icon.png")
-                ),
+                Text(_social.email, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 RaisedButton(
                   disabledColor: Colors.red,
                   disabledTextColor: Colors.black,
@@ -103,8 +127,6 @@ class _ProfileViewState extends State<ProfileView> {
               ],
             ),
             SizedBox(height: 10),
-            Text(_social.email, style: TextStyle(color: Colors.grey)),
-            Text('010-1234-5678', style: TextStyle(color: Colors.grey))
           ],
         )
       ],

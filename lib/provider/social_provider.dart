@@ -19,10 +19,12 @@ class SocialProvider with ChangeNotifier {
   String _error;
   bool _isSocialLogin = false;
   String _email;
+  String _snsType;
 
   String get error => _error;
   bool get isSocialLogin => _isSocialLogin;
   String get email => _email;
+  String get snsType => _snsType;
 
   // 카카오 로그인
   void kakaoLogin() async {
@@ -161,6 +163,7 @@ class SocialProvider with ChangeNotifier {
         await prefs.setString('loginId', map["loginID"]);
         await prefs.setString('email', data["email"]);
         _email = data["email"];
+        _snsType = data["snsType"];
         _isSocialLogin = true;
         notifyListeners();
       } else if(map["status"] == "B"){

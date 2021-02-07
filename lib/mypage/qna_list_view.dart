@@ -48,24 +48,69 @@ class _QnaListViewState extends State<QnaListView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Container(
+                  // child: Row(
+                  //     mainAxisAlignment:
+                  //     MainAxisAlignment.start,
+                  //     crossAxisAlignment:
+                  //     CrossAxisAlignment.center,
+                  //     children: [
+                  //     Text(
+                  //         list.data[index].questionsDate == null
+                  //             ? ''
+                  //             : DateFormat('yyyy. MM. dd').format(
+                  //                 DateFormat('yyyy-MM-dd')
+                  //                     .parse(list.data[index].questionsDate)),
+                  //         style: TextStyle(
+                  //             fontSize: 16, color: Colors.grey),
+                  //       ),
+                  //       Visibility(
+                  //           visible: 1==1,
+                  //           child: Text("답변완료",
+                  //               style: TextStyle(
+                  //                   color: Colors.grey,
+                  //                   fontSize: 16,
+                  //                   fontWeight:
+                  //                   FontWeight.w600))),
+                  //     ]
+                  // )),
+                  // Text(list.data[index].questions,
+                  // style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.grey)),
                   Padding(
                       padding: EdgeInsets.all(15),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            list.data[index].questionsDate == null
-                                ? ''
-                                : DateFormat('yyyy. MM. dd').format(
-                                    DateFormat('yyyy-MM-dd')
-                                        .parse(list.data[index].questionsDate)),
-                            style: TextStyle(
-                                fontSize: 16, color: Colors.grey),
-                          ),
-                          Text(list.data[index].questions,
+                          Row(children: [
+                            Text(
+                              list.data[index].questionsDate == null
+                                  ? ''
+                                  : DateFormat('yyyy. MM. dd').format(
+                                      DateFormat('yyyy-MM-dd').parse(
+                                          list.data[index].questionsDate)),
                               style:
-                                  TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.grey)),
+                                  TextStyle(fontSize: 16, color: Colors.grey),
+                            ),
+                            Visibility(
+                                visible: list.data[index].answers != null && list.data[index].answers != "" ,
+                                child: Container(
+                                    width: 70,
+                                    margin: EdgeInsets.only(left: 5),
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30))),
+                                    child: Center(
+                                        child: Text("답변완료",
+                                            style: TextStyle(
+                                                color: Colors.white)))))
+                          ]),
+                          Text(list.data[index].questions,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey)),
                         ],
                       )),
                   Divider(
@@ -73,10 +118,8 @@ class _QnaListViewState extends State<QnaListView> {
                   ),
                 ])),
         onTap: () {
-          Get.to(
-              QnaDetail(list.data[index].qnaID),
-              transition: Transition.fadeIn
-          );
+          Get.to(QnaDetail(list.data[index].qnaID),
+              transition: Transition.fadeIn);
         },
       )),
     );
