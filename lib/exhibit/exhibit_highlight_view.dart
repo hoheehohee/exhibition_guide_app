@@ -1,11 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
+import 'package:exhibition_guide_app/commons/exhibit_view_bottom.dart';
 import 'package:exhibition_guide_app/constant.dart';
-import 'package:exhibition_guide_app/guide/exhibition_directions_view.dart';
-import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
+import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart' as ECDM;
+import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart';
+import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
+import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import '../util.dart';
 import 'exhibit_detail.dart';
 
 class ExhibitHighlightView extends StatefulWidget {
@@ -15,32 +19,27 @@ class ExhibitHighlightView extends StatefulWidget {
 
 class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final List<String> imgList1 = [
-    'http://image.dongascience.com/Photo/2016/12/14830593296726.jpg',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRin2FtYAFZIK4Yv-fCVboJylGVZSS9u-lM3w&usqp=CAU',
-    'https://pds.joins.com//news/component/htmlphoto_mmdata/201712/02/7ff3ada7-1393-4da8-833d-ee5f877913d8.jpg',
-  ];
-  final List<String> imgList2 = [
-    'https://pds.joins.com//news/component/htmlphoto_mmdata/201712/02/7ff3ada7-1393-4da8-833d-ee5f877913d8.jpg',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRin2FtYAFZIK4Yv-fCVboJylGVZSS9u-lM3w&usqp=CAU'
-    'http://image.dongascience.com/Photo/2016/12/14830593296726.jpg',
-  ];
-  final List<String> imgList3 = [
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRin2FtYAFZIK4Yv-fCVboJylGVZSS9u-lM3w&usqp=CAU'
-    'http://image.dongascience.com/Photo/2016/12/14830593296726.jpg',
-    'https://pds.joins.com//news/component/htmlphoto_mmdata/201712/02/7ff3ada7-1393-4da8-833d-ee5f877913d8.jpg',
-  ];
+  ExhibitProvider _exhibitProv;
+  SettingProvider _settingProv;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    Future.microtask(() => {
+      Provider.of<ExhibitProvider>(context, listen: false).setExhibitHighlightListSel()
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    _exhibitProv = Provider.of<ExhibitProvider>(context);
+    _settingProv = Provider.of<SettingProvider>(context);
+
     return Scaffold(
       appBar: _appBar(),
-      bottomNavigationBar: _bottomButtons(),
+      bottomNavigationBar: ExhibitViewBottom(),
       key: _scaffoldKey,
       endDrawer: Drawer(
           child: Container(
@@ -62,19 +61,19 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     _exhibitList(
-                        images: imgList1,
+                        _exhibitProv.exhibitHighlightDataOne,
                         title: "전시유물",
                         iconPath: "assets/images/icon/icon-main-relics.png"
                     ),
                     SizedBox(height: 15,),
                     _exhibitList(
-                        images: imgList2,
+                        _exhibitProv.exhibitHighlightDataTwo,
                         title: '상설전시',
                         iconPath: "assets/images/icon/icon-main-sangsul.png"
                     ),
                     SizedBox(height: 15,),
                     _exhibitList(
-                        images: imgList3,
+                        _exhibitProv.exhibitHighlightDataThree,
                         title: '기획전시',
                         iconPath: "assets/images/icon/icon-main-plan.png"
                     ),
@@ -105,103 +104,6 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
     );
   }
 
-  Widget _bottomButtons() {
-    return Container(
-        height: 120,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              height: 50,
-              width: double.infinity,
-              color: Colors.black,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text("자동전시", style: TextStyle(fontSize: 18, color: Colors.white)),
-                      SizedBox(width: 5,),
-                      CustomImageIconBtn(
-                        px: 50.0,
-                        iconPath: "assets/images/toogle-main-on.png",
-                        onAction: () {},
-                      )
-                    ],
-                  ),
-                  SizedBox(width: 20,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text("음성지원 안내", style: TextStyle(fontSize: 18, color: Colors.white)),
-                      SizedBox(width: 5,),
-                      CustomImageIconBtn(
-                        px: 50.0,
-                        iconPath: "assets/images/toogle-main-on.png",
-                        onAction: () {},
-                      )
-                    ],
-                  ),
-                ],
-              )
-            ),
-            Container(
-              height: 70,
-              color: backgroundColor,
-              width: double.infinity,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _bottomBtn(
-                      title: '오시는길',
-                      iconPath: 'assets/images/icon/icon-location.png',
-                      onTapFunc: () {
-                        Get.to(ExhivitDirectionsView());
-                      },
-                    ),
-                    _bottomBtn(
-                      title: '전시관 지도',
-                      iconPath: 'assets/images/icon/icon-map.png',
-                      onTapFunc: () {
-                        Get.to(ExhibitionMapView());
-                      },
-                    ),
-                    _bottomBtn(
-                      title: '공지사항',
-                      iconPath: 'assets/images/icon/icon-notice.png',
-                      onTapFunc: () {},
-                    ),
-                  ]
-              )
-            )
-          ],
-        )
-    );
-  }
-
-  Widget _bottomBtn({ title, iconPath, onTapFunc }) {
-    return Container(
-      width: 80,
-      child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {
-              if (onTapFunc != null) onTapFunc();
-            },
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(iconPath, color: Colors.white, height: 28,),
-                Text(title, style: TextStyle(color: Colors.white))
-              ],
-            ),
-          )
-      ),
-    );
-  }
-
   Widget _textInput() {
     return Padding(
         padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
@@ -223,7 +125,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
     );
   }
 
-  Widget _exhibitList({title, iconPath , images}) {
+  Widget _exhibitList(ExhibitContentsDataModel list, {title, iconPath }) {
     return Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -246,16 +148,17 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
             CarouselSlider(
               options: CarouselOptions(
                 aspectRatio: 2.0,
+                enableInfiniteScroll: false,
                 // enlargeCenterPage: true,
               ),
-              items: _imageSliders(images),
+              items: _imageSliders(list.data, title),
             ),
           ],
         )
     );
   }
 
-  List<Widget> _imageSliders(List<String> imageList) {
+  List<Widget> _imageSliders(List<ECDM.Data> imageList, String title) {
     return imageList.map((item) => Container(
       child: Container(
         margin: EdgeInsets.all(5.0),
@@ -264,9 +167,14 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
             child: Stack(
               children: <Widget>[
                 InkWell(
-                  child: Image.network(item, fit: BoxFit.cover, width: 1000.0),
+                  child: Image.network(item.contentsImgFile, fit: BoxFit.cover, width: 1000.0),
                   onTap: () {
-                    Get.offAll(ExhibitDetail(2));
+                    Get.to(
+                      ExhibitDetail(
+                        item.idx,
+                        appbarTitle: title,
+                      )
+                    );
                   },
                 ),
                 Positioned(
@@ -286,7 +194,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
                     ),
                     padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     child: Text(
-                      'No. ${imageList.indexOf(item)} image',
+                      getTextByLanguage(item, 'title', _settingProv.language),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20.0,

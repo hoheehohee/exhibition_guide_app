@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:exhibition_guide_app/constant.dart';
-import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
-import 'package:exhibition_guide_app/util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../main/main_view.dart';
+import '../util.dart';
 import 'exhibit_all_list_view.dart';
 
 class ExhibitDetail extends StatefulWidget {
@@ -39,7 +38,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   void initState() {
     super.initState();
     Future.microtask(() => {
-      Provider.of<DevicesProvider>(context, listen: false).playAudio(),
+      // Provider.of<DevicesProvider>(context, listen: false).playAudio(),
       Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx)
     });
   }
@@ -90,7 +89,6 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   }
 
   Widget _mainView() {
-    final _imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0g6e6r-vJ7ov7qryFzHHedU2Jd4s6ueRhDw&usqp=CAU";
     final _text = !_loading ? _exhibit.getTextByLanguage(-1, "content") : '';
 
     return Column(
@@ -156,23 +154,28 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
               children: [
                 SizedBox(width: 15,),
                 Container(
-                    width: 50,
-                    height: 32,
-                    decoration: BoxDecoration(
-                        color: Color(0xffA58C60),
-                        borderRadius: BorderRadius.all(Radius.circular(5))
+                  width: 50,
+                  height: 32,
+                  decoration: BoxDecoration(
+                      color: Color(0xffA58C60),
+                      borderRadius: BorderRadius.all(Radius.circular(5))
+                  ),
+                  child: Center(
+                    child: Text(
+                      _exhibit.exhibitItem != null ? getContentType(_exhibit.exhibitItem['contentsType']) : '',
+                      style: TextStyle(color: Colors.white, fontSize: 18, height: 1),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    child: Center(child:
-                    Text(
-                        // !_loading ? getContentType(_exhibit.exhibitItem['contentsType']) : '',
-                        '유물',
-                        style: TextStyle(color: Colors.white, fontSize: 18, height: 1)))
+                  ),
                 ),
                 SizedBox(width: 15,),
-                Text(
+                Flexible(
+                  child: Text(
                     !_loading ? _exhibit.getTextByLanguage(-1, "title") : '',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff555657))
-                )
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff555657)),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           ),

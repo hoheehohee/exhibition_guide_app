@@ -83,9 +83,6 @@ class DevicesProvider with ChangeNotifier {
       await BeaconsPlugin.setDisclosureDialogMessage(
           title: "Need Location Permission",
           message: "This app collects location data to work with beacons.");
-
-      //Only in case, you want the dialog to be shown again. By Default, dialog will never be shown if permissions are granted.
-      // await BeaconsPlugin.clearDisclosureDialogShowFlag(false);
     }
     await BeaconsPlugin.listenToBeacons(beaconEventsController);
 
