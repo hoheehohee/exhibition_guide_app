@@ -28,12 +28,14 @@ class Data {
   String applyNumber;
   String applyDate;
   String applyTime;
+  String applyID;
   String status;
 
   Data(
       {this.applyNumber,
         this.applyDate,
         this.applyTime,
+        this.applyID,
         this.status,
       });
 
@@ -41,6 +43,7 @@ class Data {
     applyNumber = json['applyNumber'];
     applyDate = json['applyDate'];
     applyTime = json['applyTime'];
+    applyID = json['applyID'];
     status = json['status'];
   }
 
@@ -49,6 +52,7 @@ class Data {
     data['applyNumber'] = this.applyNumber;
     data['applyDate'] = this.applyDate;
     data['applyTime'] = this.applyTime;
+    data['applyID'] = this.applyID;
     return data;
   }
 }

@@ -134,6 +134,18 @@ class MyPageProvider with ChangeNotifier {
       print('##### getFaqListSel Error: $error');
     }
   }
+
+  Future<String> setApplyCancel(String applyID) async {
+    Response resp;
+
+    try{
+      resp = await dio.get(BASE_URL + '/applyStateUpdateData.do?loginID=3se61vr220cidol826d5&applyID=${applyID}');
+      var map = Map<String, dynamic>.from(json.decode(resp.toString()));
+      return map['state'];
+    }catch(error) {
+      print('##### getFaqListSel Error: $error');
+    }
+  }
 }
 
 

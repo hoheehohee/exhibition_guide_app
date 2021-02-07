@@ -68,6 +68,33 @@ class _BookingStateViewState extends State<BookingStateView> {
     return "D${difference > 0 ? "+${difference}" : difference}";
   }
 
+  Future<void> _showMyDialog(String message) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('알림'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _mypage = Provider.of<MyPageProvider>(context);
@@ -158,16 +185,18 @@ class _BookingStateViewState extends State<BookingStateView> {
                                     status = newValue;
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => BookingStateView(newValue)),
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              BookingStateView(newValue)),
                                     );
                                   });
                                 },
                                 items: <Map>[
-                                  {'idx':0, 'text':'전체 신청내역 조회'},
-                                  {'idx':1, 'text':'예약신청 내역'},
-                                  {'idx':2, 'text':'신청승인 내역'},
-                                  {'idx':3, 'text':'이용종료 내역'},
-                                  {'idx':4, 'text':'신청취소 내역'},
+                                  {'idx': 0, 'text': '전체 신청내역 조회'},
+                                  {'idx': 1, 'text': '예약신청 내역'},
+                                  {'idx': 2, 'text': '신청승인 내역'},
+                                  {'idx': 3, 'text': '이용종료 내역'},
+                                  {'idx': 4, 'text': '신청취소 내역'},
                                 ].map((Map value) {
                                   return DropdownMenuItem<int>(
                                     value: value['idx'],
@@ -195,11 +224,11 @@ class _BookingStateViewState extends State<BookingStateView> {
                                         color: Colors.grey.withOpacity(0.3)))),
                             padding: EdgeInsets.all(10),
                             child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(_mypage.bookingList.data[index].applyNumber,
+                                  Text(
+                                      _mypage.bookingList.data[index].applyNumber,
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontSize: 16,
@@ -214,31 +243,37 @@ class _BookingStateViewState extends State<BookingStateView> {
                                         Visibility(
                                             visible: _mypage.bookingList.data[index].status == 'N',
                                             child: Text(
-                                                getDday(_mypage.bookingList
-                                                    .data[index].applyDate),
+                                                getDday(_mypage.bookingList.data[index].applyDate),
                                                 style: TextStyle(
                                                     color: Colors.grey,
                                                     fontSize: 16,
                                                     fontWeight:
                                                         FontWeight.w600))),
-                                        Visibility(
-                                            visible: _mypage.bookingList
-                                                    .data[index].status ==
-                                                'N',
-                                            child: Container(
-                                                width: 60,
-                                                margin:
-                                                    EdgeInsets.only(left: 5),
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.orange),
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(30))),
-                                                child: Center(
-                                                    child: Text('신청취소',
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .orange))))),
+                                        GestureDetector(
+                                            onTap: () async{
+                                              var state = await _mypage.setApplyCancel(_mypage.bookingList.data[index].applyID);
+                                              if(state == "Y"){
+                                                _showMyDialog("취소되었습니다.");
+                                              }else{
+                                                _showMyDialog("취소가 되지 않았습니다.");
+                                              }
+                                            },
+                                            child: Visibility(
+                                                visible: _mypage.bookingList.data[index].status == 'N',
+                                                child: Container(
+                                                    width: 60,
+                                                    margin: EdgeInsets.only(
+                                                        left: 5),
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.orange),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    30))),
+                                                    child: Center(
+                                                        child: Text('신청취소', style: TextStyle(color: Colors.orange)))))),
                                         Container(
                                             width: 70,
                                             margin: EdgeInsets.only(left: 5),
@@ -247,7 +282,11 @@ class _BookingStateViewState extends State<BookingStateView> {
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(30))),
                                             child: Center(
-                                                child: Text(getStatusText(_mypage.bookingList.data[index].status),
+                                                child: Text(
+                                                    getStatusText(_mypage
+                                                        .bookingList
+                                                        .data[index]
+                                                        .status),
                                                     style: TextStyle(
                                                         color: Colors.white))))
                                       ]))
