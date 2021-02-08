@@ -28,7 +28,7 @@ class Data {
   String applyNumber;
   String applyDate;
   String applyTime;
-  String applyID;
+  int applyID;
   String status;
 
   Data(

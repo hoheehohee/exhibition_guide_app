@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:exhibition_guide_app/message.dart';
+import 'package:exhibition_guide_app/model/applyCount_model.dart';
 import 'package:exhibition_guide_app/model/booking_list_model.dart';
 import 'package:exhibition_guide_app/model/faq_list_model.dart';
 import 'package:exhibition_guide_app/model/qna_list_model.dart';
@@ -19,6 +20,8 @@ class MyPageProvider with ChangeNotifier {
   QnaListModel _qnaList = QnaListModel.fromJson({"data": []});
   FaqListModel _faqList = FaqListModel.fromJson({"data": []});
   BookingListModel _bookingList = BookingListModel.fromJson({"data": []});
+  ApplyCountModel _applyCount = ApplyCountModel.fromJson({});
+  ApplyCountModel _applyCountLatest = ApplyCountModel.fromJson({});
   var _qnaItem = null;
 
   bool get loading => _loading;
@@ -26,6 +29,8 @@ class MyPageProvider with ChangeNotifier {
   QnaListModel get qnaList => _qnaList;
   FaqListModel get faqList => _faqList;
   BookingListModel get bookingList => _bookingList;
+  ApplyCountModel get applyCount => _applyCount;
+  ApplyCountModel get applyCountLatest => _applyCountLatest;
   get qnaItem => _qnaItem;
 
   // 1:1문의하기 목록 조회
@@ -107,10 +112,10 @@ class MyPageProvider with ChangeNotifier {
     }
   }
 
-  Future<void> setBookingStatListSel(int status) async {
+  Future<void> setBookingStatListSel(int status, int monthCount) async {
     _loading = true;
     Response resp;
-    // N:신청, C:취소, AC:관리자취소, Y:승인, B:완료
+    //N:신청, C:취소, AC:관리자취소, Y:승인, B:완료
     String statusGubun = "";
     switch(status) {
       case 1: { statusGubun = "N"; }
@@ -126,24 +131,57 @@ class MyPageProvider with ChangeNotifier {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String loginId = prefs.getString('loginId');
-      resp = await dio.get(BASE_URL + '/applyListData.do', queryParameters: { "loginID": loginId, "PAGE_INDEX":1, "PAGE_ROW":100 });
+      // String loginId = "3se61vr220cidol826d5";
+      resp = await dio.get(BASE_URL + '/applyListData.do', queryParameters: { "loginID": loginId, "PAGE_INDEX":1, "PAGE_ROW":100, "monthCount": monthCount});
       final jsonData = json.decode("$resp");
       _bookingList = BookingListModel.fromJson(jsonData);
       print(_bookingList);
       _loading = false;
       notifyListeners();
     }catch(error) {
-      print('##### getFaqListSel Error: $error');
+      print('##### setBookingStatListSel Error: $error');
     }
   }
 
-  Future<String> setApplyCancel(String applyID) async {
+  Future<String> setApplyCancel(int applyID) async {
     Response resp;
 
     try{
       resp = await dio.get(BASE_URL + '/applyStateUpdateData.do?loginID=3se61vr220cidol826d5&applyID=${applyID}');
       var map = Map<String, dynamic>.from(json.decode(resp.toString()));
       return map['state'];
+    }catch(error) {
+      print('##### getFaqListSel Error: $error');
+    }
+  }
+
+  Future<void> setApplyCount() async {
+    Response resp;
+
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      // String loginId = prefs.getString('loginId');
+      String loginId = "3se61vr220cidol826d5";
+
+      resp = await dio.get(BASE_URL + '/applyMypageCount.do', queryParameters: { "loginID": loginId});
+      _applyCount = ApplyCountModel.fromJson(jsonDecode(resp.toString()));
+      notifyListeners();
+    }catch(error) {
+      print('##### getFaqListSel Error: $error');
+    }
+  }
+
+  Future<void> setApplyCountLatest() async {
+    Response resp;
+
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      // String loginId = prefs.getString('loginId');
+      String loginId = "3se61vr220cidol826d5";
+
+      resp = await dio.get(BASE_URL + '/applyMypageCount.do', queryParameters: { "loginID": loginId, "monthCount": 3});
+      _applyCountLatest = ApplyCountModel.fromJson(jsonDecode(resp.toString()));
+      notifyListeners();
     }catch(error) {
       print('##### getFaqListSel Error: $error');
     }

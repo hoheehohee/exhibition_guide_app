@@ -1,10 +1,18 @@
 import 'package:exhibition_guide_app/booking/booking_state_view.dart';
 import 'package:exhibition_guide_app/crm/customer_center_view.dart';
+import 'package:exhibition_guide_app/model/applyCount_model.dart';
 import 'package:exhibition_guide_app/model/booking_model.dart';
+import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
-class BookingInfo extends StatelessWidget {
+class BookingInfo extends StatefulWidget {
+  @override
+  _BookingInfoState createState() => _BookingInfoState();
+}
+
+class _BookingInfoState extends State<BookingInfo> {
   //  [ '전체 신청내역 조회', '예약신청 내역', '신청승인 내역', '이용종료 내역', '신청취소 내역', '고객센터']
   final List<BookingStateMenu> _menuItems = [
     BookingStateMenu.fromMap({ 'title': '전체 신청내역 조회', 'widget': BookingStateView(0) }),
@@ -14,8 +22,22 @@ class BookingInfo extends StatelessWidget {
     BookingStateMenu.fromMap({ 'title': '신청취소 내역', 'widget': BookingStateView(4) }),
     BookingStateMenu.fromMap({ 'title': '고객센터', 'widget': CustomerCenterView() }),
   ];
+
+  MyPageProvider _mypage;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() => {Provider.of<MyPageProvider>(context, listen: false).setApplyCount()});
+    Future.microtask(() => {Provider.of<MyPageProvider>(context, listen: false).setApplyCountLatest()});
+  }
+
   @override
   Widget build(BuildContext context) {
+    _mypage = Provider.of<MyPageProvider>(context);
+    final ApplyCountModel applyCount = _mypage.applyCount;
+    final ApplyCountModel applyCountLatest = _mypage.applyCountLatest;
     return Container(
         color: Colors.white,
         child: Column(
@@ -37,7 +59,7 @@ class BookingInfo extends StatelessWidget {
                                   children: [
                                     Icon(Icons.image_outlined),
                                     SizedBox(height: 10),
-                                    Text('예약신청 중')
+                                    Text('예약신청 ${applyCount.applyCount}')
                                   ]
                               )
                           ),
@@ -61,7 +83,7 @@ class BookingInfo extends StatelessWidget {
                                     children: [
                                       Icon(Icons.image_outlined),
                                       SizedBox(height: 10),
-                                      Text('예약중 1')
+                                      Text('예약중 ${applyCount.applyNow}')
                                     ]
                                 )
                             )
@@ -79,7 +101,7 @@ class BookingInfo extends StatelessWidget {
                                     children: [
                                       Icon(Icons.image_outlined),
                                       SizedBox(height: 10),
-                                      Text('이용종료 10')
+                                      Text('이용종료 ${applyCount.applyEnd}')
                                     ]
                                 )
                             )
@@ -120,7 +142,7 @@ class BookingInfo extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text('도슨트\n신청', textAlign: TextAlign.center),
-                                      Text('0', style: TextStyle(color: Colors.orange))
+                                      Text(applyCountLatest.applyCount.toString(), style: TextStyle(color: Colors.orange))
                                     ]
                                 ),
                                 Icon(Icons.arrow_forward_ios, color: Colors.grey),
@@ -129,7 +151,7 @@ class BookingInfo extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text('승인\n이용', textAlign: TextAlign.center),
-                                      Text('0', style: TextStyle(color: Colors.orange))
+                                      Text(applyCountLatest.applyCount.toString(), style: TextStyle(color: Colors.orange))
                                     ]
                                 ),
                                 Icon(Icons.arrow_forward_ios, color: Colors.grey),
@@ -138,7 +160,7 @@ class BookingInfo extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text('이용\n종료', textAlign: TextAlign.center),
-                                      Text('0', style: TextStyle(color: Colors.orange))
+                                      Text(applyCountLatest.applyEnd.toString(), style: TextStyle(color: Colors.orange))
                                     ]
                                 ),
                               ]

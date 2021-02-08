@@ -16,14 +16,14 @@ class BookingStateView extends StatefulWidget {
 class _BookingStateViewState extends State<BookingStateView> {
   MyPageProvider _mypage;
   int status;
+  int monthCount = 3;
 
   @override
   void initState() {
     super.initState();
     status = widget.status;
     Future.microtask(() => {
-          Provider.of<MyPageProvider>(context, listen: false)
-              .setBookingStatListSel(status)
+          Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, monthCount)
         });
   }
 
@@ -60,12 +60,14 @@ class _BookingStateViewState extends State<BookingStateView> {
   }
 
   String getDday(String date) {
-    var result = date.split('-');
-    final birthday = DateTime(
-        int.parse(result[0]), int.parse(result[1]), int.parse(result[2]));
-    final now = DateTime.now();
-    final difference = now.difference(birthday).inDays;
-    return "D${difference > 0 ? "+${difference}" : difference}";
+      var result = date.split('-');
+      final birthday = DateTime(
+          int.parse(result[0]), int.parse(result[1]), int.parse(result[2]));
+      final now = DateTime.now();
+      final difference = now
+          .difference(birthday)
+          .inDays;
+      return "D${difference > 0 ? "+${difference}" : difference}";
   }
 
   Future<void> _showMyDialog(String message) async {
@@ -94,6 +96,15 @@ class _BookingStateViewState extends State<BookingStateView> {
       },
     );
   }
+
+  // void reloadData(newStatus) {
+  //   setState(() {
+  //     Future.microtask(() => {
+  //       Provider.of<MyPageProvider>(context, listen: false)
+  //           .setBookingStatListSel(newStatus, 0)
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -141,24 +152,29 @@ class _BookingStateViewState extends State<BookingStateView> {
                                   border: Border.all(
                                       color: Colors.grey.withOpacity(0.3))),
                               child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                value: '3개월',
-                                // hint: Center(child: Text('국적 선택')),
+                                  child: DropdownButton<int>(
+                                value: monthCount,
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 iconSize: 24,
                                 isExpanded: true,
                                 dropdownColor: Colors.white,
                                 onChanged: (newValue) {
-                                  print('$newValue');
+                                  monthCount = newValue;
+                                  setState(() {
+                                    monthCount;
+                                  });
+                                  Future.microtask(() => {
+                                    Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, newValue)
+                                  });
                                 },
-                                items: <String>[
-                                  '3개월',
-                                  '6개월',
-                                  '1년'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Center(child: Text(value)),
+                                items: <Map>[
+                                  {'idx': 3, 'text': '3개월'},
+                                  {'idx': 6, 'text': '6개월'},
+                                  {'idx': 9, 'text': '12개월'},
+                                ].map((Map value) {
+                                  return DropdownMenuItem<int>(
+                                    value: value['idx'],
+                                    child: Center(child: Text(value['text'])),
                                   );
                                 }).toList(),
                               )))),
@@ -180,15 +196,12 @@ class _BookingStateViewState extends State<BookingStateView> {
                                 isExpanded: true,
                                 dropdownColor: Colors.white,
                                 onChanged: (newValue) {
-                                  print(newValue);
+                                  status = newValue;
                                   setState(() {
-                                    status = newValue;
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              BookingStateView(newValue)),
-                                    );
+                                    status;
+                                    Future.microtask(() => {
+                                      Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, monthCount)
+                                    });
                                   });
                                 },
                                 items: <Map>[
