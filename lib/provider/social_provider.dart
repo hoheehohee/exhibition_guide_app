@@ -27,18 +27,19 @@ class SocialProvider with ChangeNotifier {
   String get snsType => _snsType;
 
   // 카카오 로그인
-  void kakaoLogin() async {
+  Future<Map> kakaoLogin() async {
     print("##### kakaoLogin");
     try{
       FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();
       final result = await kakaoSignIn.logIn();
-      KakaoToken token = await (kakaoSignIn.currentToken);
-      Map data = {"authType": "k", "accessToken": token.accessToken};
-
-      _log("kakaoLogin", token.accessToken, result, data);
+      final KakaoAccountResult account = result.account;
+      Map data = {"snsType": "kakao", "email": account.userEmail};
+      print("KKK");
+      print(data);
+      // _log("kakaoLogin", token.accessToken, result, data);
       //토큰 디바이스 로컬에 저장
-      socialTokeSave(token.accessToken);
-      // checkServer(data);
+      data["check"] = checkServer(data);
+      return data;
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
       print("##### kakaoLogin error: $e");
@@ -94,7 +95,7 @@ class SocialProvider with ChangeNotifier {
   }
 
   // 페이스북 로그인
-  void facebookLogin() async {
+  Future<Map> facebookLogin() async {
     try {
       final fb = FacebookLogin();
       // Log in
@@ -110,7 +111,8 @@ class SocialProvider with ChangeNotifier {
 
         _log("facebookLogin", accessToken.token, data, res);
         //토큰 디바이스 로컬에 저장
-        socialTokeSave(accessToken.token);
+        data["check"] = checkServer(data);
+        return data;
         // checkServer(data);
       }
     } catch(e) {
@@ -182,8 +184,7 @@ class SocialProvider with ChangeNotifier {
     Response resp;
 
     try {
-      print("${_BASE_URL}userCheckData.do?snsType=naver&email=harbris@naver.com");
-      resp = await dio.get("${_BASE_URL}userCheckData.do?snsType=naver&email=harbris@naver.com");
+      resp = await dio.get("${_BASE_URL}userCheckData.do?snsType=${data['snsType']}&email=${data['email']}");
       var map = Map<String, dynamic>.from(json.decode(resp.toString()));
 
       if(map["status"] == "Y"){
@@ -193,11 +194,17 @@ class SocialProvider with ChangeNotifier {
         _email = data["email"];
         _isSocialLogin = true;
       } else {
-
+        resp = await dio.get("${_BASE_URL}userJoinData.do?snsType=${data['snsType']}&email=${data['email']}");
+        if(map["status"] == "Y"){
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('loginId', map["loginID"]);
+          await prefs.setString('email', data["email"]);
+          _email = data["email"];
+          _snsType = data["snsType"];
+          _isSocialLogin = true;
+        }
       }
-
-      // return map["status"];
-      return "J";
+      return "Y";
     }catch(error){
       print('##### joinServer: $error');
     }

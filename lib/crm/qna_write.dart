@@ -16,7 +16,7 @@ class QnaWrite extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: new Text("알림"),
-          content: SingleChildScrollView(child:new Text("저장되었습니다.")),
+          content: SingleChildScrollView(child:new Text("문의가 등록되었습니다.")),
           actions: <Widget>[
             new FlatButton(
               child: new Text("닫기"),

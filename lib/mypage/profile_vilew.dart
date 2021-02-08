@@ -27,7 +27,7 @@ class _ProfileViewState extends State<ProfileView> {
     switch (snsType) {
       case "google":
         {
-          icon = "assets/images/googe_icon.png";
+          icon = "assets/images/google_icon.png";
         }
         break;
       case "kakao":
@@ -104,8 +104,8 @@ class _ProfileViewState extends State<ProfileView> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-            height: 50,
-            width: 50,
+            height: 30,
+            width: 30,
             margin: EdgeInsets.only(left: 30, right: 10),
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),

@@ -156,7 +156,8 @@ class _AgreeDialogViewState extends State<AgreeDialogView>{
                   } else {
                     Map data = {"snsType": widget.snsType, "email": widget.email};
                     var join = await _social.joinServer(data);
-                    if(join == "J"){
+                    if(join == "Y"){
+                      await _showMyDialog("회원가입이 완료되었습니다");
                       Get.to(MyPageView(0));
                     }
                   }

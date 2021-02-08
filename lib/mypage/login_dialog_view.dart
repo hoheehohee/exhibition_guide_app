@@ -75,8 +75,11 @@ class _LoginDialogViewState extends State<LoginDialogView> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               MaterialButton(
-                  onPressed: () {
-                    _social.kakaoLogin();
+                  onPressed: () async {
+                    var login = await _social.kakaoLogin();
+                    if (login == null && login["check"] == "N") {
+                      Get.dialog(AgreeDialogView(login['snsType'], login['email']));
+                    }
                   },
                   color: kKakaoColor,
                   minWidth: double.infinity,
@@ -122,8 +125,11 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                 height: 12,
               ),
               MaterialButton(
-                onPressed: () {
-                  _social.facebookLogin();
+                onPressed: () async {
+                  var login = await _social.facebookLogin();
+                  if (login["check"] == "N") {
+                    Get.dialog(AgreeDialogView(login['snsType'], login['email']));
+                  }
                 },
                 color: kFacebookColor,
                 minWidth: double.infinity,
