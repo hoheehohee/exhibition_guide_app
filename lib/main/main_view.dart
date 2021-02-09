@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:exhibition_guide_app/booking/booking_view.dart';
 import 'package:exhibition_guide_app/commons/custom_main_button.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
@@ -312,7 +313,9 @@ class _MainViewState extends State<MainView> {
                               imgPath: 'assets/images/icon/icon-main-notice.png',
                             ),
                             CustomMainButton(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(BookingView());
+                              },
                               title: "도슨트예약",
                               imgPath: 'assets/images/icon/icon-main-docent.png',
                             ),

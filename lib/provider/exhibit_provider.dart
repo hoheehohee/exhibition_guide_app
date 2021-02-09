@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:exhibition_guide_app/booking/booking_result_view.dart';
+import 'package:exhibition_guide_app/model/booking_reg_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_list_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_theme_item_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_theme_model.dart' as ETM;
-import 'package:exhibition_guide_app/util.dart' as util;
+import 'package:get/get.dart' as Getx;
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +19,7 @@ class ExhibitProvider with ChangeNotifier {
   bool _loading = false;
   bool _isAutoExhibit = false;
   bool _isPermanentExhibition = false;
+  bool _isConsent = false;
 
   var _language;
   var _exhibitItem = null;
@@ -27,8 +30,9 @@ class ExhibitProvider with ChangeNotifier {
   ExhibitContentsDataModel _exhibitContentDataOne = ExhibitContentsDataModel.fromJson({"data": []});
   ExhibitContentsDataModel _exhibitContentDataTwo = ExhibitContentsDataModel.fromJson({"data": []});
   ExhibitContentsDataModel _exhibitContentDataThree = ExhibitContentsDataModel.fromJson({"data": []});
-
   ETM.ExhibitThemeModel _exhibitThemeData = ETM.ExhibitThemeModel.fromJson({"data": []});
+
+  BookingRegModel _bookingRegData = BookingRegModel.fromJson({});
 
   List<ExhibitItem> _exhibitList = [];
   List<ExhibitThemeItemModel> _exhibitThemeItem = [];
@@ -43,6 +47,7 @@ class ExhibitProvider with ChangeNotifier {
   bool get isPermanentExhibition => _isPermanentExhibition;
   bool get isAutoExhibit => _isAutoExhibit;
   bool get isAudio => _isAudio;
+  bool get isConsent => _isConsent;
   List get imageList => _imgList;
   List<ExhibitThemeItemModel> get exhibitThemeItem => _exhibitThemeItem;
 
@@ -53,6 +58,8 @@ class ExhibitProvider with ChangeNotifier {
   ExhibitContentsDataModel get exhibitContentDataOne => _exhibitContentDataOne;
   ExhibitContentsDataModel get exhibitContentDataTwo => _exhibitContentDataTwo;
   ExhibitContentsDataModel get exhibitContentDataThree => _exhibitContentDataThree;
+
+  BookingRegModel get bookingRegData => _bookingRegData;
 
   get exhibitList => _exhibitList;
   get exhibitItem => _exhibitItem;
@@ -296,7 +303,79 @@ class ExhibitProvider with ChangeNotifier {
       notifyListeners();
     } catch (error) {
       _loading = false;
-      print("##### setExhibitHighlightListSel error: ${error}");
+      print("##### setExhibitHighlightListSel error: $error");
+    }
+  }
+
+  // 이용예약신청 데이터 form
+  void setBookingData(String key, value) {
+    final temp = _bookingRegData.toJson();
+    try{
+      if (key == 'isConsent') {
+        _isConsent = !_isConsent;
+      } else {
+        temp[key] = value;
+        _bookingRegData = BookingRegModel.fromJson(temp);
+      }
+
+    }catch(error) {
+      print("#### error: $error");
+    }
+
+    print("_bookingRegData.toJson(): ${_bookingRegData.toJson()}");
+    notifyListeners();
+  }
+
+  // 이용예약신청 데이터 form 초기화
+  void setBookingDataInitial() {
+    _bookingRegData = BookingRegModel.fromJson({});
+  }
+
+  Future<void> setBookingRegCall() async {
+    _loading = true;
+    Response resp;
+    Dio dio = new Dio();
+
+    try{
+      _bookingRegData.loginID = '3se61vr220cidol826d5';
+      // resp = await dio.get(
+      //   BASE_URL + "/applyInsertData.do",
+      //   queryParameters: _bookingRegData.toJson(),
+      // );
+      //
+      // final result = jsonDecode(resp.toString());
+      //
+      // _loading = false;
+      //
+      // if (result["state"] == 'Y') setBookingDetSelCall(result["applyID"]);
+      _loading = false;
+      setBookingDetSelCall("20");
+
+    }catch(error) {
+      _loading = false;
+      print("##### setBookingRegCall error: $error");
+    }
+  }
+
+  Future<void> setBookingDetSelCall(String applyID) async {
+    Response resp;
+    Dio dio = new Dio();
+    final loginID = '3se61vr220cidol826d5';
+
+    try{
+      resp = await dio.get(
+        BASE_URL + "/applyDetailData.do",
+        queryParameters: {"applyID": applyID, "loginID": loginID},
+      );
+      print("######## result11");
+      final result = json.decode(resp.toString());
+      print("######## result: $result");
+      _bookingRegData = BookingRegModel.fromJson(result);
+
+      Getx.Get.offAll(BookingResultView());
+
+    } catch(error) {
+      print("##### setBookingDetSelCall error: $error");
     }
   }
 }
