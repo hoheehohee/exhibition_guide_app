@@ -1,26 +1,128 @@
 import 'package:exhibition_guide_app/main/main_view.dart';
+import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
-class BookingStateView extends StatelessWidget {
+class BookingStateView extends StatefulWidget {
+  BookingStateView(this.status);
+
+  final int status;
+
+  @override
+  _BookingStateViewState createState() => _BookingStateViewState();
+}
+
+class _BookingStateViewState extends State<BookingStateView> {
+  MyPageProvider _mypage;
+  int status;
+  int monthCount = 3;
+
+  @override
+  void initState() {
+    super.initState();
+    status = widget.status;
+    Future.microtask(() => {
+          Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, monthCount)
+        });
+  }
+
+  String getStatusText(String status) {
+    String statusText = "";
+    switch (status) {
+      case "N":
+        {
+          statusText = "신청";
+        }
+        break;
+      case "C":
+        {
+          statusText = "취소";
+        }
+        break;
+      case "AC":
+        {
+          statusText = "관리자취소";
+        }
+        break;
+      case "Y":
+        {
+          statusText = "승인";
+        }
+        break;
+      case "B":
+        {
+          statusText = "완료";
+        }
+        break;
+    }
+    return statusText;
+  }
+
+  String getDday(String date) {
+      var result = date.split('-');
+      final birthday = DateTime(
+          int.parse(result[0]), int.parse(result[1]), int.parse(result[2]));
+      final now = DateTime.now();
+      final difference = now
+          .difference(birthday)
+          .inDays;
+      return "D${difference > 0 ? "+${difference}" : difference}";
+  }
+
+  Future<void> _showMyDialog(String message) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('알림'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // void reloadData(newStatus) {
+  //   setState(() {
+  //     Future.microtask(() => {
+  //       Provider.of<MyPageProvider>(context, listen: false)
+  //           .setBookingStatListSel(newStatus, 0)
+  //     });
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
+    _mypage = Provider.of<MyPageProvider>(context);
     return Scaffold(
       appBar: AppBar(
           title: Text("신청상세정보"),
           leading: Builder(
               builder: (BuildContext context) => (IconButton(
-                  icon: Icon(Icons.arrow_back_ios), onPressed: () {
+                  icon: Icon(Icons.arrow_back_ios),
+                  onPressed: () {
                     Get.back();
-              }))),
+                  }))),
           actions: [
             IconButton(
               icon: Icon(Icons.home_outlined),
               onPressed: () {
-                Get.offAll(
-                  MainView(),
-                  transition: Transition.fadeIn
-                );
+                Get.offAll(MainView(), transition: Transition.fadeIn);
               },
             )
           ]),
@@ -50,24 +152,29 @@ class BookingStateView extends StatelessWidget {
                                   border: Border.all(
                                       color: Colors.grey.withOpacity(0.3))),
                               child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                value: '3개월',
-                                // hint: Center(child: Text('국적 선택')),
+                                  child: DropdownButton<int>(
+                                value: monthCount,
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 iconSize: 24,
                                 isExpanded: true,
                                 dropdownColor: Colors.white,
                                 onChanged: (newValue) {
-                                  print('$newValue');
+                                  monthCount = newValue;
+                                  setState(() {
+                                    monthCount;
+                                  });
+                                  Future.microtask(() => {
+                                    Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, newValue)
+                                  });
                                 },
-                                items: <String>[
-                                  '3개월',
-                                  '6개월',
-                                  '1년'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Center(child: Text(value)),
+                                items: <Map>[
+                                  {'idx': 3, 'text': '3개월'},
+                                  {'idx': 6, 'text': '6개월'},
+                                  {'idx': 9, 'text': '12개월'},
+                                ].map((Map value) {
+                                  return DropdownMenuItem<int>(
+                                    value: value['idx'],
+                                    child: Center(child: Text(value['text'])),
                                   );
                                 }).toList(),
                               )))),
@@ -81,33 +188,39 @@ class BookingStateView extends StatelessWidget {
                                   border: Border.all(
                                       color: Colors.grey.withOpacity(0.3))),
                               child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                value: '전체 신청내역 조회',
+                                  child: DropdownButton<int>(
+                                value: status,
                                 // hint: Center(child: Text('국적 선택')),
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 iconSize: 24,
                                 isExpanded: true,
                                 dropdownColor: Colors.white,
                                 onChanged: (newValue) {
-                                  print('$newValue');
+                                  status = newValue;
+                                  setState(() {
+                                    status;
+                                    Future.microtask(() => {
+                                      Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, monthCount)
+                                    });
+                                  });
                                 },
-                                items: <String>[
-                                  '전체 신청내역 조회',
-                                  '예약신청 내역',
-                                  '신청승인 내역',
-                                  '이용종료 내역',
-                                  '신청취소 내역'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Center(child: Text(value)),
+                                items: <Map>[
+                                  {'idx': 0, 'text': '전체 신청내역 조회'},
+                                  {'idx': 1, 'text': '예약신청 내역'},
+                                  {'idx': 2, 'text': '신청승인 내역'},
+                                  {'idx': 3, 'text': '이용종료 내역'},
+                                  {'idx': 4, 'text': '신청취소 내역'},
+                                ].map((Map value) {
+                                  return DropdownMenuItem<int>(
+                                    value: value['idx'],
+                                    child: Center(child: Text(value['text'])),
                                   );
                                 }).toList(),
                               ))))
                     ])),
             Expanded(
                 child: ListView.builder(
-              itemCount: 10,
+              itemCount: _mypage.bookingList.bookingCount,
               itemBuilder: (BuildContext context, int index) => (Container(
                   height: 150,
                   width: double.infinity,
@@ -124,11 +237,11 @@ class BookingStateView extends StatelessWidget {
                                         color: Colors.grey.withOpacity(0.3)))),
                             padding: EdgeInsets.all(10),
                             child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text('20201224-174013',
+                                  Text(
+                                      _mypage.bookingList.data[index].applyNumber,
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontSize: 16,
@@ -140,33 +253,53 @@ class BookingStateView extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                        Text('D-20',
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600)),
+                                        Visibility(
+                                            visible: _mypage.bookingList.data[index].status == 'N',
+                                            child: Text(
+                                                getDday(_mypage.bookingList.data[index].applyDate),
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w600))),
+                                        GestureDetector(
+                                            onTap: () async{
+                                              var state = await _mypage.setApplyCancel(_mypage.bookingList.data[index].applyID);
+                                              if(state == "Y"){
+                                                _showMyDialog("취소되었습니다.");
+                                              }else{
+                                                _showMyDialog("취소가 되지 않았습니다.");
+                                              }
+                                            },
+                                            child: Visibility(
+                                                visible: _mypage.bookingList.data[index].status == 'N',
+                                                child: Container(
+                                                    width: 60,
+                                                    margin: EdgeInsets.only(
+                                                        left: 5),
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.orange),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    30))),
+                                                    child: Center(
+                                                        child: Text('신청취소', style: TextStyle(color: Colors.orange)))))),
                                         Container(
-                                            width: 60,
+                                            width: 70,
                                             margin: EdgeInsets.only(left: 5),
                                             decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.orange),
+                                                color: Colors.grey,
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(30))),
                                             child: Center(
-                                                child: Text('OOOO',
-                                                    style: TextStyle(
-                                                        color:
-                                                            Colors.orange)))),
-                                        Container(
-                                            width: 60,
-                                            margin: EdgeInsets.only(left: 5),
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(30))),
-                                            child: Center(
-                                                child: Text('OOOO',
+                                                child: Text(
+                                                    getStatusText(_mypage
+                                                        .bookingList
+                                                        .data[index]
+                                                        .status),
                                                     style: TextStyle(
                                                         color: Colors.white))))
                                       ]))
@@ -177,19 +310,20 @@ class BookingStateView extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text('2020.12.31',
+                                  Text(
+                                      _mypage.bookingList.data[index].applyDate,
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600)),
                                   SizedBox(width: 10),
                                   Icon(Icons.access_time),
                                   SizedBox(width: 5),
-                                  Text('17시',
+                                  Text(
+                                      '${_mypage.bookingList.data[index].applyTime}시',
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600)),
                                   SizedBox(width: 5),
-                                  Icon(Icons.account_circle)
                                 ])),
                         Padding(
                           padding: EdgeInsets.only(left: 10),

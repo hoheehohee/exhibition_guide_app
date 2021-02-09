@@ -1,5 +1,6 @@
 import 'package:exhibition_guide_app/booking/booking_view.dart';
 import 'package:exhibition_guide_app/crm/customer_center_view.dart';
+import 'package:exhibition_guide_app/crm/notice_list_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
 import 'package:exhibition_guide_app/exhibit/permanent_exhibit_view.dart';
@@ -99,6 +100,13 @@ class SliderDrawers extends StatelessWidget {
                     case 6: Get.to(LanguageView()); break;
                     case 7: Get.to(BookingView()); break;
                     case 8: Get.to(MyPageView(0)); break;
+                    case 1: Get.to(ExhibitListView()); break;
+                    case 2: Get.to(ExhibitionMapView()); break;
+                    case 3: Get.to(MainView()); break;
+                    case 4: Get.to(NoticeListView()); break;
+                    case 5: Get.to(LanguageView()); break;
+                    case 6: Get.to(BookingView()); break;
+                    case 7: Get.to(MyPageView(0)); break;
                   }
                 },
                 child: Row(

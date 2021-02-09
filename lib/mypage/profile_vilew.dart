@@ -3,6 +3,7 @@ import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login_dialog_view.dart';
 
@@ -18,6 +19,34 @@ class _ProfileViewState extends State<ProfileView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+  }
+
+  String getSnsIcon(String snsType) {
+    print(snsType);
+    String icon = "";
+    switch (snsType) {
+      case "google":
+        {
+          icon = "assets/images/google_icon.png";
+        }
+        break;
+      case "kakao":
+        {
+          icon = "assets/images/kakao_icon.png";
+        }
+        break;
+      case "naver":
+        {
+          icon = "assets/images/naver_icon.png";
+        }
+        break;
+      case "facebook":
+        {
+          icon = "assets/images/facebook_icon.png";
+        }
+        break;
+    }
+    return icon;
   }
 
   @override
@@ -69,17 +98,18 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _loginView() {
+    _social = Provider.of<SocialProvider>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-            height: 100,
-            width: 100,
+            height: 30,
+            width: 30,
             margin: EdgeInsets.only(left: 30, right: 10),
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
-                child: Image.asset("assets/images/profile_sample.jpeg", fit: BoxFit.fill,)
+                child: Image.asset(getSnsIcon(_social.snsType), fit: BoxFit.fill,)
             )
         ),
         Column(
@@ -87,16 +117,16 @@ class _ProfileViewState extends State<ProfileView> {
           children: [
             Row(
               children: [
-                Text('아이유', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Image.asset("assets/images/kakao_icon.png")
+                Text(_social.email, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                RaisedButton(
+                  disabledColor: Colors.red,
+                  disabledTextColor: Colors.black,
+                  onPressed: () => _social.logout(),
+                  child: Text('로그아웃'),
                 )
               ],
             ),
             SizedBox(height: 10),
-            Text('iu@gmail.com', style: TextStyle(color: Colors.grey)),
-            Text('010-1234-5678', style: TextStyle(color: Colors.grey))
           ],
         )
       ],

@@ -1,6 +1,6 @@
-import 'package:exhibition_guide_app/crm/qna_view.dart';
+import 'package:exhibition_guide_app/crm/qna_write.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
-import 'package:exhibition_guide_app/model/crm_model.dart';
+import 'package:exhibition_guide_app/mypage/faq_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,21 +11,10 @@ class CustomerCenterView extends StatefulWidget {
 }
 
 class _CustomerCenterViewState extends State<CustomerCenterView> {
-  List<QnA> _data;
-  List<QnA> generateItems(int numberOfItems) {
-    return List.generate(numberOfItems, (int index) {
-      return QnA(
-        headerValue: 'Panel $index',
-        expandedValue: 'This is item number $index',
-      );
-    });
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _data = generateItems(8);
   }
 
   @override
@@ -116,7 +105,7 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
                                         child: Text('1:1문의하기', style: TextStyle(fontSize: 18, color: Colors.white)),
                                         onPressed: () {
                                           Get.to(
-                                            QnaView(),
+                                            QnaWrite(),
                                             transition: Transition.rightToLeft
                                           );
                                         },
@@ -124,44 +113,7 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
                                     ]
                                 )
                             ),
-                            Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.all(10),
-                                child: ExpansionPanelList(
-                                  expansionCallback: (int index, bool isExpanded) {
-                                    setState(() {
-                                      _data[index].isExpanded = !isExpanded;
-                                    });
-                                  },
-                                  children: _data.map<ExpansionPanel>((QnA item) {
-                                    return ExpansionPanel(
-
-                                      headerBuilder: (BuildContext context, bool isExpanded) {
-                                        return ListTile(
-                                          title: InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                item.isExpanded = !item.isExpanded;
-                                              });
-                                            },
-                                            child: Text(item.headerValue),
-                                          )
-                                        );
-                                      },
-                                      body: ListTile(
-                                          title: Text(item.expandedValue),
-                                          subtitle: Text('To delete this panel, tap the trash can icon'),
-                                          trailing: Icon(Icons.delete),
-                                          onTap: () {
-                                            setState(() {
-                                              _data.removeWhere((currentItem) => item == currentItem);
-                                            });
-                                          }),
-                                      isExpanded: item.isExpanded,
-                                    );
-                                  }).toList(),
-                                )
-                            )
+                            FaqListView()
                           ]
                       )
                   )
