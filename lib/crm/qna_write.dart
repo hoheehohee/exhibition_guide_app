@@ -1,3 +1,4 @@
+import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:exhibition_guide_app/provider/mypage_provider.dart';
@@ -6,6 +7,10 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class QnaWrite extends StatelessWidget {
+  var mqd;
+  var mqw;
+  var mqh;
+
   MyPageProvider _myPageProvider;
   final myController = TextEditingController();
 
@@ -32,9 +37,16 @@ class QnaWrite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    mqd = MediaQuery.of(context);
+    mqw = mqd.size.width;
+    mqh = mqd.size.height;
+
     _myPageProvider = Provider.of<MyPageProvider>(context);
     return  Scaffold(
-        appBar: _appBar(),
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(mqd.size.height * 0.07),
+            child: CustomDefaultAppbar(title: '고객센터')
+        ),
         body: GestureDetector(
           onTap: () {
             // 바깥을 눌렀을 때 keyboard close
