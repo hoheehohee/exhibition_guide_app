@@ -20,11 +20,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => MyPageProvider()),
         ChangeNotifierProvider(create: (context) => SettingProvider()),
         ChangeNotifierProvider(create: (context) => DevicesProvider()),
         ChangeNotifierProvider(create: (context) => SocialProvider()),
         ChangeNotifierProvider(create: (context) => ExhibitProvider()),
-        ChangeNotifierProvider(create: (context) => MyPageProvider())
+
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,

@@ -5,6 +5,7 @@ import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart' as ECDM;
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
+import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

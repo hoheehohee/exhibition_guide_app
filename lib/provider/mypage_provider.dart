@@ -11,7 +11,9 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class MyPageProvider with ChangeNotifier {
+
   final picker = ImagePicker();
   final Dio dio = new Dio();
 
@@ -19,10 +21,11 @@ class MyPageProvider with ChangeNotifier {
   File _image;
   QnaListModel _qnaList = QnaListModel.fromJson({"data": []});
   FaqListModel _faqList = FaqListModel.fromJson({"data": []});
-  BookingListModel _bookingList = BookingListModel.fromJson({"data": []});
-  ApplyCountModel _applyCount = ApplyCountModel.fromJson({});
-  ApplyCountModel _applyCountLatest = ApplyCountModel.fromJson({});
-  var _qnaItem = null;
+  BookingListModel _bookingList = BookingListModel.fromJson({"data": [], "dataCount": 0});
+  ApplyCountModel _applyCount;
+  ApplyCountModel _applyCountLatest;
+
+  var _qnaItem;
 
   bool get loading => _loading;
   String get imageName => _image != null ? '첨부파일 1' : '';
@@ -113,28 +116,32 @@ class MyPageProvider with ChangeNotifier {
   }
 
   Future<void> setBookingStatListSel(int status, int monthCount) async {
-    _loading = true;
-    Response resp;
-    //N:신청, C:취소, AC:관리자취소, Y:승인, B:완료
-    String statusGubun = "";
-    switch(status) {
-      case 1: { statusGubun = "N"; }
-      break;
-      case 2: { statusGubun = "Y"; }
-      break;
-      case 3: { statusGubun = "B"; }
-      break;
-      case 4: { statusGubun = "C"; }
-      break;
-    }
-
     try{
+      print("#### stateus: $status, #### mothCount: $monthCount}");
+      _loading = true;
+      Response resp;
+
+      //N:신청, C:취소, AC:관리자취소, Y:승인, B:완료
+      String statusGubun = "";
+      switch(status) {
+        case 1: { statusGubun = "N"; }
+        break;
+        case 2: { statusGubun = "Y"; }
+        break;
+        case 3: { statusGubun = "B"; }
+        break;
+        case 4: { statusGubun = "C"; }
+        break;
+      }
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String loginId = prefs.getString('loginId');
-      // String loginId = "3se61vr220cidol826d5";
+      // String loginId = prefs.getString('loginId');
+      String loginId = "3se61vr220cidol826d5";
       resp = await dio.get(BASE_URL + '/applyListData.do', queryParameters: { "loginID": loginId, "PAGE_INDEX":1, "PAGE_ROW":100, "monthCount": monthCount});
       final jsonData = json.decode("$resp");
+      print("######## $resp");
       _bookingList = BookingListModel.fromJson(jsonData);
+
       print(_bookingList);
       _loading = false;
       notifyListeners();
