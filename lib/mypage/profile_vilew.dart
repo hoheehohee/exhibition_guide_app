@@ -146,7 +146,10 @@ class _ProfileViewState extends State<ProfileView> {
       padding: EdgeInsets.symmetric(vertical: mqh * 0.03),
       child: InkWell(
         onTap: () {
-          print("#### onTap");
+          print("#### 로그인 / 가입");
+          Get.dialog(
+            LoginDialogView(),
+          );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

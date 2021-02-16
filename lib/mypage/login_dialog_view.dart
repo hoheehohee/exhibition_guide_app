@@ -12,57 +12,80 @@ class LoginDialogView extends StatefulWidget {
 }
 
 class _LoginDialogViewState extends State<LoginDialogView> {
+
+  var mqd;
+  var mqw;
+  var mqh;
+
   @override
   Widget build(BuildContext context) {
+    mqd = MediaQuery.of(context);
+    mqw = mqd.size.width;
+    mqh = mqd.size.height;
     final _social = Provider.of<SocialProvider>(context);
 
     if (_social.isSocialLogin) {
       Get.back();
     }
 
-    return Container(
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(30),
-            topLeft: Radius.circular(30),
-          )),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+    return Material(
+        type: MaterialType.transparency,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.only(top: 50),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
+              )),
+          child: Stack(
             children: [
-              Material(
-                color: Colors.white,
-                child: IconButton(
-                  splashRadius: 20,
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: Icon(Icons.clear),
+              Positioned.fill(
+                child: Image.asset(
+                  "assets/images/img-back.png",
+                  fit: BoxFit.fitWidth,
+                  alignment: Alignment.bottomLeft,
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Align(
-                  alignment: Alignment(-0.2, 1),
-                  child: Text('로그인',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          decoration: TextDecoration.none)),
-                ),
-              )
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Material(
+                        color: Colors.white,
+                        child: IconButton(
+                          splashRadius: 20,
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: Icon(Icons.clear),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Align(
+                          alignment: Alignment(-0.2, 1),
+                          child: Text('로그인',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.none)),
+                        ),
+                      )
+                    ],
+                  ),
+                  _socialButtons(context)
+                ],
+              ),
             ],
-          ),
-          _socialButtons(context)
-        ],
-      ),
+          )
+        )
     );
   }
 
@@ -70,10 +93,30 @@ class _LoginDialogViewState extends State<LoginDialogView> {
     final _social = Provider.of<SocialProvider>(context);
     return Center(
       child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 36, vertical: 150),
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              SizedBox(height: mqh * 0.05),
+              Image.asset("assets/images/sns-logo.png", height: mqh * 0.13,),
+              SizedBox(height: mqh * 0.04),
+              Container(
+                height: mqh * 0.07,
+                width: mqw * 0.5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                  border: Border.all(color: Colors.grey.withOpacity(0.3), width: 2),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset("assets/images/icon/icon-thunder.png", height: mqh * 0.04,),
+                    SizedBox(width: mqw * 0.02,),
+                    Text("3초만에 빠른 회원가입", style: TextStyle(fontSize: 14, color: Colors.black),)
+                  ],
+                ),
+              ),
+              SizedBox(height: mqh * 0.02),
               MaterialButton(
                   onPressed: () async {
                     var login = await _social.kakaoLogin();
@@ -83,18 +126,20 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                   },
                   color: kKakaoColor,
                   minWidth: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: EdgeInsets.symmetric(vertical: mqh * 0.02),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/images/kakao_icon.png"),
+                      Image.asset("assets/images/icon/icon-kakao.png", width: mqw * 0.07, fit: BoxFit.fill,),
                       SizedBox(width: 8),
-                      Text('Sign up With KaKao',
-                          style: TextStyle(
-                            fontSize: 16,
-                          )),
+                      Text(
+                        '카카오톡으로 계속하기',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )),
                     ],
                   )),
               SizedBox(
@@ -109,16 +154,21 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                   },
                   color: kNaverColor,
                   minWidth: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: EdgeInsets.symmetric(vertical: mqh * 0.02),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/images/naver_icon.png"),
+                      Image.asset("assets/images/icon/icon-naver.png",width: mqw * 0.06, fit: BoxFit.fill,),
                       SizedBox(width: 8),
-                      Text('Sign up With Naver',
-                          style: TextStyle(fontSize: 16, color: kWhiteColor)),
+                      Text(
+                        '네이버로 계속하기',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                        )),
                     ],
                   )),
               SizedBox(
@@ -133,17 +183,21 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                 },
                 color: kFacebookColor,
                 minWidth: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 16),
+                padding: EdgeInsets.symmetric(vertical: mqh * 0.02),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
+                  borderRadius: BorderRadius.circular(8)),
                 child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Image.asset("assets/images/facebook_logo.png"),
-                  SizedBox(width: 8),
-                  Text(
-                    "Sign up with Facebook",
-                    style: TextStyle(fontSize: 16, color: kWhiteColor),
-                  )
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Image.asset("assets/images/icon/icon-facebook.png", width: mqw * 0.035, fit: BoxFit.fill,),
+                    SizedBox(width: 8),
+                    Text(
+                      "페이스북으로 계속하기",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                      ),
+                    )
                 ]),
               ),
               SizedBox(
@@ -157,20 +211,23 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                           AgreeDialogView(login['snsType'], login['email']));
                     }
                   },
-                  color: kWhiteColor,
+                  color: Color(0xffE5E6E7),
                   minWidth: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: EdgeInsets.symmetric(vertical: mqh * 0.02),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/images/google_icon.png"),
+                      Image.asset("assets/images/icon/icon-google.png", width: mqw * 0.06, fit: BoxFit.fill,),
                       SizedBox(width: 8),
-                      Text('Sign up With Google',
-                          style: TextStyle(
-                            fontSize: 16,
-                          )),
+                      Text(
+                        'Google로 계속하기',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ],
                   )),
             ],
