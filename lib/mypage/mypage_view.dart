@@ -1,3 +1,4 @@
+import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/mypage/profile_vilew.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,10 @@ class MyPageView extends StatefulWidget {
 class _MyPageViewState extends State<MyPageView> {
   int tabIndex;
 
+  var mqd;
+  var mqw;
+  var mqh;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -23,8 +28,15 @@ class _MyPageViewState extends State<MyPageView> {
 
   @override
   Widget build(BuildContext context) {
+    mqd = MediaQuery.of(context);
+    mqw = mqd.size.width;
+    mqh = mqd.size.height;
+
     return Scaffold(
-      appBar: _appBar(),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(mqd.size.height * 0.07),
+          child: CustomDefaultAppbar(title: '마이페이지')
+      ),
       body: Center(
           child: Container(
               color: Colors.white,
@@ -37,7 +49,7 @@ class _MyPageViewState extends State<MyPageView> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                            height: 50,
+                            height: mqh * 0.1,
                             width: double.infinity,
                             decoration: BoxDecoration(
                                 border: Border(
@@ -56,36 +68,12 @@ class _MyPageViewState extends State<MyPageView> {
                       ])))),
     );
   }
-
-  Widget _appBar() {
-    return AppBar(
-        title: Text("마이페이지"),
-        leading: Builder(
-            builder: (BuildContext context) => (IconButton(
-                icon: Icon(Icons.arrow_back_ios), onPressed: () {
-              Get.back();
-            }))),
-        actions: [
-          IconButton(
-            padding: EdgeInsets.zero,
-            icon: Icon(Icons.home_outlined),
-            onPressed: () {
-              Get.offAll(
-                  MainView(),
-                  transition: Transition.fadeIn
-              );
-            },
-          )
-        ]
-    );
-  }
-
   // 프로필, 신청현황
   Widget _tabBar() {
     return TabBar(
-        unselectedLabelColor:
-        Colors.black.withOpacity(0.3),
-        indicatorColor: Colors.orange,
+        unselectedLabelColor: Colors.black.withOpacity(0.3),
+        indicatorColor: Color(0xffB19664),
+        indicatorWeight: mqw * 0.01,
         onTap: (index) {
           setState(() {
             tabIndex = index;

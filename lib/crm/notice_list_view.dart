@@ -60,7 +60,6 @@ class _NoticeListViewState extends State<NoticeListView> {
                   ),
                   child: InkWell(
                     onTap: () {
-                      print("### tap");
                       Get.to(NoticeDetailView(1), transition: Transition.fadeIn);
                     },
                     child: Row(
