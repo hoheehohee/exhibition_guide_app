@@ -1,4 +1,4 @@
-const BASE_URL = "http://115.144.53.222:8081/ilje";
+const BASE_URL = "http://220.95.107.101";
 const TEST_LOGIN_TOKEN = "p2102f13ay6h0pzajqx2";
 const downloadMessage = "전시될 이미지와\n 음성안내를 받으시겠습니까?\n(무료 Wi-Fi존에서 다운로드를 권장합니다.)\n\n Wi-Fi가 아닌 네트워크에 접속하시어\n 다운로드 시 가입된 요금에 따라 데이터 요금이 부과될 수 있습니다.";
 

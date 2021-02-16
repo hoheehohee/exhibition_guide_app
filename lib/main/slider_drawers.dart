@@ -95,18 +95,11 @@ class SliderDrawers extends StatelessWidget {
                         contentIconPath: "",
                       ));
                       break;
-                    case 4: Get.to(CustomerCenterView()); break;
+                    case 4: Get.to(NoticeListView()); break;
                     case 5: Get.to(SettingView()); break;
                     case 6: Get.to(LanguageView()); break;
                     case 7: Get.to(BookingView()); break;
                     case 8: Get.to(MyPageView(0)); break;
-                    case 1: Get.to(ExhibitListView()); break;
-                    case 2: Get.to(ExhibitionMapView()); break;
-                    case 3: Get.to(MainView()); break;
-                    case 4: Get.to(NoticeListView()); break;
-                    case 5: Get.to(LanguageView()); break;
-                    case 6: Get.to(BookingView()); break;
-                    case 7: Get.to(MyPageView(0)); break;
                   }
                 },
                 child: Row(

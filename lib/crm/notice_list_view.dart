@@ -1,3 +1,5 @@
+import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
+import 'package:exhibition_guide_app/crm/notice_detail_view.dart';
 import 'package:exhibition_guide_app/crm/qna_write.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/model/crm_model.dart';
@@ -11,6 +13,11 @@ class NoticeListView extends StatefulWidget {
 }
 
 class _NoticeListViewState extends State<NoticeListView> {
+
+  var mqd;
+  var mqw;
+  var mqh;
+
   List<QnA> _data;
   List<QnA> generateItems(int numberOfItems) {
     return List.generate(numberOfItems, (int index) {
@@ -30,30 +37,14 @@ class _NoticeListViewState extends State<NoticeListView> {
 
   @override
   Widget build(BuildContext context) {
+    mqd = MediaQuery.of(context);
+    mqw = mqd.size.width;
+    mqh = mqd.size.height;
+
     return Scaffold(
-      appBar: AppBar(
-          title: Text("공지사항"),
-          leading: Builder(
-              builder: (BuildContext context) => (
-                  IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        Get.back();
-                      }
-                  )
-              )
-          ),
-          actions:[
-            IconButton(
-              icon: Icon(Icons.home_outlined),
-              onPressed: () {
-                Get.offAll(
-                  MainView(),
-                  transition: Transition.fadeIn
-                );
-              },
-            )
-          ]
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(mqd.size.height * 0.07),
+          child: CustomDefaultAppbar(title: '공지사항')
       ),
       body: Center(
         child: Column(
@@ -61,25 +52,43 @@ class _NoticeListViewState extends State<NoticeListView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                  height: 60,
+                  height: mqh * 0.12,
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border(bottom: BorderSide(color: Colors.grey)),
                   ),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: Icon(Icons.notifications_none_outlined, color: Colors.orange)
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: Text('운영시간: 평일 09:00 ~ 18:00 (월요일 제외)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
-                        )
-                      ]
+                  child: InkWell(
+                    onTap: () {
+                      print("### tap");
+                      Get.to(NoticeDetailView(1), transition: Transition.fadeIn);
+                    },
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('2020-12-04', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xff7E7F80))),
+                                  SizedBox(height: mqh * 0.01,),
+                                  Text(
+                                    '[휴관안내] 국립일제강제동원역사관(12,10(목요일) 휴관합니다)',
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                ],
+                              )
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(right: 5),
+                              child: Image.asset("assets/images/icon/icon-arrow-notice.png", height: mqh * 0.03,)
+                          ),
+                        ]
+                    ),
                   )
               )
             ]
