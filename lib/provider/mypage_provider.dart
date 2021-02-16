@@ -43,7 +43,8 @@ class MyPageProvider with ChangeNotifier {
 
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String loginId = prefs.getString('loginId');
+      // String loginId = prefs.getString('loginId');
+      String loginId = "3se61vr220cidol826d5";
       resp = await dio.get(BASE_URL + '/qnaListData.do', queryParameters: { "loginID": loginId });
       final jsonData = json.decode("$resp");
       _qnaList = QnaListModel.fromJson(jsonData);

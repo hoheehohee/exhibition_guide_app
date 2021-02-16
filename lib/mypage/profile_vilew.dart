@@ -107,37 +107,21 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget _loginView() {
     _social = Provider.of<SocialProvider>(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-            height: 30,
-            width: 30,
-            margin: EdgeInsets.only(left: 30, right: 10),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.asset(getSnsIcon(_social.snsType), fit: BoxFit.fill,)
-            )
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(_social.email, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                RaisedButton(
-                  disabledColor: Colors.red,
-                  disabledTextColor: Colors.black,
-                  onPressed: () => _social.logout(),
-                  child: Text('로그아웃'),
-                )
-              ],
-            ),
-            SizedBox(height: 10),
-          ],
-        )
-      ],
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: mqh * 0.01, horizontal: mqw * 0.05),
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          // Image.asset(getSnsIcon(_social.snsType), fit: BoxFit.fill,)
+          // SizedBox(width: mqw * 0.03,),
+          // Text(_social.email, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Image.asset(getSnsIcon("kakao"), fit: BoxFit.fill,),
+          SizedBox(width: mqw * 0.03,),
+          Text("test@gmai.com", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+
+        ],
+      )
     );
   }
 
