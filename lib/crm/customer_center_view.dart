@@ -1,4 +1,5 @@
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
+import 'package:exhibition_guide_app/crm/qna_detail.dart';
 import 'package:exhibition_guide_app/crm/qna_write.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/mypage/faq_list_view.dart';
@@ -101,6 +102,7 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
                                         onPressed: () {
                                           Get.to(
                                             QnaWrite(),
+                                            // QnaDetail(),
                                             transition: Transition.rightToLeft
                                           );
                                         },

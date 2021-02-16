@@ -43,6 +43,7 @@ class QnaWrite extends StatelessWidget {
 
     _myPageProvider = Provider.of<MyPageProvider>(context);
     return  Scaffold(
+        backgroundColor: Color(0xffE9E9E9),
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(mqd.size.height * 0.07),
             child: CustomDefaultAppbar(title: '고객센터')
@@ -57,13 +58,13 @@ class QnaWrite extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                    height: 60,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border(bottom: BorderSide(color: Colors.grey)),
-                    ),
-                    child: _title() // 문의글 타이틀
+                  height: 60,
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(bottom: BorderSide(color: Colors.grey)),
+                  ),
+                  child: _title() // 문의글 타이틀
                 ),
                 Expanded(
                     child: _inputForm() // 입력폼
@@ -75,48 +76,24 @@ class QnaWrite extends StatelessWidget {
     );
   }
 
-  Widget _appBar() {
-    return AppBar(
-        title: Text("1:1 문의하기"),
-        leading: Builder(
-            builder: (BuildContext context) => (
-                IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Get.back();
-                    }
-                )
-            )
-        ),
-        actions:[
-          IconButton(
-            icon: Icon(Icons.home_outlined),
-            onPressed: () {
-              Get.offAll(
-                  MainView(),
-                  transition: Transition.fadeIn
-              );
-            },
-          )
-        ]
-    );
-  }
-
   // 문의글 타이틀
   Widget _title() {
-    return Row(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: mqw * 0.02),
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-              padding: EdgeInsets.only(right: 10),
-              child: Icon(Icons.comment, color: Colors.orange)
+          Image.asset(
+            "assets/images/icon/icon-edit.png",
+            width: mqw * 0.06,
           ),
-          Expanded(
-              flex: 1,
-              child: Text('문의글 입력', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
-          )
-        ]
+          SizedBox(width: mqw * 0.03,),
+          Text(
+              "문의글 입력",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)
+          ),
+        ],
+      ),
     );
   }
 
@@ -152,15 +129,15 @@ class QnaWrite extends StatelessWidget {
   Widget _submitButton(BuildContext context) {
     return Container(
         width: double.infinity,
-        height: 50,
+        height: mqh * 0.08,
         margin: EdgeInsets.only(bottom: 18, left: 10, right: 10),
         // color: Colors.green,
         child: RaisedButton(
-          color: Colors.black54,
+          color: Color(0xff293F52),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5.0),
           ),
-          child: Text('문의하기', style: TextStyle(fontSize: 18, color: Colors.white)),
+          child: Text('문의글 등록', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),
           onPressed: () async{
             var status = await _myPageProvider.setQna(myController.text);
             if(status == "Y") {
