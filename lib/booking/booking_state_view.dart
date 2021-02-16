@@ -1,3 +1,4 @@
+import 'package:exhibition_guide_app/booking/booking_detail_view.dart';
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
@@ -247,116 +248,121 @@ class _BookingStateViewState extends State<BookingStateView> {
               width: double.infinity,
               color: Colors.white,
               margin: EdgeInsets.all(10),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        decoration: BoxDecoration(
-                            border: Border(bottom: BorderSide(color: Colors.grey.withOpacity(0.3)))
-                        ),
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              // 예약번호
-                              Text(
-                                  _mypage.bookingList.data[index].applyNumber,
-                                  style: TextStyle( color: Colors.black54, fontSize: 16, fontWeight: FontWeight.w600)
-                              ),
-                              Container(
-                                  child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        // d-day 날짜
-                                        Visibility(
-                                          visible: _mypage.bookingList.data[index].status == 'N',
-                                          child: Text(
-                                            getDday(_mypage.bookingList.data[index].applyDate),
-                                            style: TextStyle( color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w600)
-                                          )
-                                        ),
-                                        GestureDetector(
-                                            onTap: () async{
-                                              var state = await _mypage.setApplyCancel(_mypage.bookingList.data[index].applyID);
-                                              if(state == "Y"){
-                                                _showMyDialog("취소되었습니다.");
-                                              }else{
-                                                _showMyDialog("취소가 되지 않았습니다.");
-                                              }
-                                            },
-                                            // 신청 취소
-                                            child: Visibility(
+              child: InkWell(
+                onTap: () {
+                  Get.to(BookingDetailView());
+                },
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          decoration: BoxDecoration(
+                              border: Border(bottom: BorderSide(color: Colors.grey.withOpacity(0.3)))
+                          ),
+                          padding: EdgeInsets.all(10),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // 예약번호
+                                Text(
+                                    _mypage.bookingList.data[index].applyNumber,
+                                    style: TextStyle( color: Colors.black54, fontSize: 16, fontWeight: FontWeight.w600)
+                                ),
+                                Container(
+                                    child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          // d-day 날짜
+                                          Visibility(
                                               visible: _mypage.bookingList.data[index].status == 'N',
-                                              child: Container(
-                                                  width: 70,
-                                                  height: 25,
-                                                  margin: EdgeInsets.only(left: 5),
-                                                  padding: EdgeInsets.all(3),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(color: Color(0xffA58C60), width: 2),
-                                                  ),
-                                                  child: Center(
-                                                    child: Text('신청취소', style: TextStyle(color: Color(0xffA58C60))
-                                                    )
+                                              child: Text(
+                                                  getDday(_mypage.bookingList.data[index].applyDate),
+                                                  style: TextStyle( color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w600)
+                                              )
+                                          ),
+                                          GestureDetector(
+                                              onTap: () async{
+                                                var state = await _mypage.setApplyCancel(_mypage.bookingList.data[index].applyID);
+                                                if(state == "Y"){
+                                                  _showMyDialog("취소되었습니다.");
+                                                }else{
+                                                  _showMyDialog("취소가 되지 않았습니다.");
+                                                }
+                                              },
+                                              // 신청 취소
+                                              child: Visibility(
+                                                  visible: _mypage.bookingList.data[index].status == 'N',
+                                                  child: Container(
+                                                      width: 70,
+                                                      height: 25,
+                                                      margin: EdgeInsets.only(left: 5),
+                                                      padding: EdgeInsets.all(3),
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(color: Color(0xffA58C60), width: 2),
+                                                      ),
+                                                      child: Center(
+                                                          child: Text('신청취소', style: TextStyle(color: Color(0xffA58C60))
+                                                          )
+                                                      )
                                                   )
                                               )
-                                            )
-                                        ),
-                                        // 신청 상태
-                                        Container(
-                                          width: 70,
-                                          height: 25,
-                                          margin: EdgeInsets.only(left: 5),
-                                          padding: EdgeInsets.all(3),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey,
                                           ),
-                                          child: Center(
-                                            child: Text(
-                                              getStatusText(_mypage.bookingList.data[index].status),
-                                              style: TextStyle(color: Colors.white)
-                                            )
+                                          // 신청 상태
+                                          Container(
+                                              width: 70,
+                                              height: 25,
+                                              margin: EdgeInsets.only(left: 5),
+                                              padding: EdgeInsets.all(3),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey,
+                                              ),
+                                              child: Center(
+                                                  child: Text(
+                                                      getStatusText(_mypage.bookingList.data[index].status),
+                                                      style: TextStyle(color: Colors.white)
+                                                  )
+                                              )
                                           )
-                                        )
-                                      ]
-                                  )
-                              )
-                            ]
-                        )
-                    ),
-                    // 신청 날짜와 시간
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            _mypage.bookingList.data[index].applyDate,
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)
-                          ),
-                          SizedBox(width: 10),
-                          Image.asset("assets/images/icon/icon-time.png", width: mqw * 0.04,),
-                          SizedBox(width: 5),
-                          Text(
-                            '${_mypage.bookingList.data[index].applyTime}시',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)
-                          ),
-                          SizedBox(width: 5),
-                        ]
-                      )
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        '전체 전시해설, 살성전시실, 전시유물, 기타/기획전',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black54),
+                                        ]
+                                    )
+                                )
+                              ]
+                          )
                       ),
-                    )
-                  ]
+                      // 신청 날짜와 시간
+                      Container(
+                          padding: EdgeInsets.all(10),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                    _mypage.bookingList.data[index].applyDate,
+                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)
+                                ),
+                                SizedBox(width: 10),
+                                Image.asset("assets/images/icon/icon-time.png", width: mqw * 0.04,),
+                                SizedBox(width: 5),
+                                Text(
+                                    '${_mypage.bookingList.data[index].applyTime}시',
+                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)
+                                ),
+                                SizedBox(width: 5),
+                              ]
+                          )
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                          '전체 전시해설, 살성전시실, 전시유물, 기타/기획전',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black54),
+                        ),
+                      )
+                    ]
+                ),
               )
             )
           ),
