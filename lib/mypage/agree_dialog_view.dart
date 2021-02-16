@@ -1,10 +1,6 @@
-import 'package:exhibition_guide_app/provider/social_provider.dart';
+import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart' hide Response;
-import 'package:provider/provider.dart';
-
-import '../constant.dart';
-import 'mypage_view.dart';
+import 'package:get/get.dart';
 
 class AgreeDialogView extends StatefulWidget {
   final String snsType;
@@ -15,172 +11,269 @@ class AgreeDialogView extends StatefulWidget {
   _AgreeDialogViewState createState() => _AgreeDialogViewState();
 }
 
-class _AgreeDialogViewState extends State<AgreeDialogView>{
-  SocialProvider _social;
-  var _checkbox_all = false;
-  var _checkbox_email = false;
-  var _checkbox_coll = false;
-  var _checkbox_use = false;
-  var _checkbox_third = false;
+class _AgreeDialogViewState extends State<AgreeDialogView> {
+  var mqd;
+  var mqw;
+  var mqh;
 
-  Future<void> _showMyDialog(String message) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('알림'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(message),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('확인'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  bool allCheck = false;
+  bool collect = false;
+  bool use = false;
+  bool retention = false;
+  bool email = false;
 
   @override
   Widget build(BuildContext context) {
-    _social = Provider.of<SocialProvider>(context, listen: false);
-    return new Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        padding: EdgeInsets.only(top:40),
-        child: Column(
+    mqd = MediaQuery.of(context);
+    mqw = mqd.size.width;
+    mqh = mqd.size.height;
+
+    return Material(
+      type: MaterialType.transparency,
+      child: Container(
+        padding: EdgeInsets.all(20),
+        margin: EdgeInsets.only(top: 50),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20),
+          )
+        ),
+        child: Stack(
           children: [
-            Material(
-              color: Colors.white,
-              child: IconButton(
-                splashRadius: 20,
-                onPressed: () {
-                  Get.back();
-                },
-                icon: Icon(Icons.clear),
+            Positioned.fill(
+              child: Image.asset(
+                "assets/images/img-back.png",
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.bottomLeft,
               ),
             ),
-            Row(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Checkbox(
-                  value: _checkbox_all,
-                  onChanged: (value) {
+                _appBar(),
+                _arrgeForm(),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _appBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Material(
+          color: Colors.white,
+          child: IconButton(
+            splashRadius: 20,
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(Icons.clear),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _arrgeForm() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Image.asset("assets/images/sns-logo.png", height: mqh * 0.13,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CustomImageIconBtn(
+                  px: 25.0,
+                  iconPath: (
+                    allCheck || (collect && use && retention)
+                      ? "assets/images/button/btn-all-check-on.png"
+                      : "assets/images/button/btn-all-check-off.png"
+                  ),
+                  onAction: () {
                     setState(() {
-                      _checkbox_email = !_checkbox_all;
-                      _checkbox_coll = !_checkbox_all;
-                      _checkbox_use = !_checkbox_all;
-                      _checkbox_third = !_checkbox_all;
-                      _checkbox_all = !_checkbox_all;
+                      collect = !allCheck;
+                      use = !allCheck;
+                      retention = !allCheck;
+                      allCheck = !allCheck;
                     });
                   },
                 ),
-                Text('전체동의하기'),
+                Text("전체동의하기", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))
               ],
             ),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(
+                top: mqh * 0.02,
+                bottom: mqh * 0.02,
+                right: mqw * 0.03
+              ),
+              decoration: BoxDecoration(
+                color: Color(0xffE5E6E7),
+                borderRadius: BorderRadius.circular(5.0)
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CustomImageIconBtn(
+                        px: 25.0,
+                        iconPath: (
+                          collect
+                            ? "assets/images/button/btn-radio-on.png"
+                            : "assets/images/button/btn-radio-off.png"
+                        ),
+                        onAction: () {
+                          setState(() {
+                            collect = !collect;
+                          });
+                        },
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: mqh * 0.02),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("수집항목", style: TextStyle(fontSize: 16)),
+                              SizedBox(height: 3),
+                              Text("- 이메일", style: TextStyle(fontSize: 13),)
+                            ],
+                          ),
+                        ),
+                      ),
+                      Text('[필수]'),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CustomImageIconBtn(
+                        px: 25.0,
+                        iconPath: (
+                          use
+                            ? "assets/images/button/btn-radio-on.png"
+                            : "assets/images/button/btn-radio-off.png"
+                        ),
+                        onAction: () {
+                          setState(() {
+                            use = !use;
+                          });
+                        },
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: mqh * 0.02),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("수집 및 이용 목적", style: TextStyle(fontSize: 16)),
+                              SizedBox(height: 3),
+                              Text("- 예약신청 및 문의 앱의 원할한 사용을 위한 동의", style: TextStyle(fontSize: 13),)
+                            ],
+                          ),
+                        ),
+                      ),
+                      Text('[필수]'),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CustomImageIconBtn(
+                        px: 25.0,
+                        iconPath: (
+                          retention
+                            ? "assets/images/button/btn-radio-on.png"
+                            : "assets/images/button/btn-radio-off.png"
+                        ),
+                        onAction: () {
+                          setState(() {
+                            retention = !retention;
+                          });
+                        },
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: mqh * 0.02),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("보유 및 이용 기간", style: TextStyle(fontSize: 16)),
+                              SizedBox(height: 3),
+                              Text("- 서비스 탈퇴 시 또는 1년 동안 미이용 시", style: TextStyle(fontSize: 13),)
+                            ],
+                          ),
+                        ),
+                      ),
+                      Text('[필수]'),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: mqh * 0.05),
             Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Checkbox(
-                  value: _checkbox_email,
-                  onChanged: (value) {
-                    setState(() {
-                      _checkbox_email = !_checkbox_email;
-                    });
-                  },
-                ),
-                Text('수집항목'),
+                Text("회원가입 동의정책", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))
               ],
             ),
-            Row(
-              children: [
-                Checkbox(
-                  value: _checkbox_coll,
-                  onChanged: (value) {
-                    setState(() {
-                      _checkbox_coll = !_checkbox_coll;
-                    });
-                  },
-                ),
-                Text('수집 및 이용 목적'),
-              ],
-            ),
-            Row(
-              children: [
-                Checkbox(
-                  value: _checkbox_use,
-                  onChanged: (value) {
-                    setState(() {
-                      _checkbox_use = !_checkbox_use;
-                    });
-                  },
-                ),
-                Text('보유 및 이용 기간'),
-              ],
-            ),
-            Row(
-              children: [
-                Text('회원가입 동의정책'),
-              ],
-            ),
-            Row(
-              children: [
-                Checkbox(
-                  value: _checkbox_third,
-                  onChanged: (value) {
-                    setState(() {
-                      _checkbox_third = !_checkbox_third;
-                    });
-                  },
-                ),
-                Text('이메일 제3자 동의'),
-              ],
-            ),
-            MaterialButton(
-                onPressed: () async {
-                  if(!_checkbox_email){
-                    _showMyDialog("이메일 동의해주세요.");
-                  } else if(!_checkbox_coll){
-                    _showMyDialog("수집항목 동의해주세요.");
-                  } else if(!_checkbox_use){
-                    _showMyDialog("이용목 동의해주세요.");
-                  } else if(!_checkbox_third){
-                    _showMyDialog("이용기간 동의해주세요.");
-                  } else {
-                    Map data = {"snsType": widget.snsType, "email": widget.email};
-                    var join = await _social.joinServer(data);
-                    if(join == "Y"){
-                      await _showMyDialog("회원가입이 완료되었습니다");
-                      Get.to(MyPageView(0));
-                    }
-                  }
-                },
-                color: kKakaoColor,
-                minWidth: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 8),
-                    Text('동의후 계속',
-                        style: TextStyle(
-                          fontSize: 16,
-                        )),
-                  ],
-                )),
+            SizedBox(height: mqh * 0.02),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(
+                  top: mqh * 0.005,
+                  bottom: mqh * 0.005,
+                  right: mqw * 0.03
+              ),
+              decoration: BoxDecoration(
+                  color: Color(0xffE5E6E7),
+                  borderRadius: BorderRadius.circular(5.0)
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CustomImageIconBtn(
+                    px: 25.0,
+                    iconPath: (
+                        email
+                            ? "assets/images/button/btn-radio-on.png"
+                            : "assets/images/button/btn-radio-off.png"
+                    ),
+                    onAction: () {
+                      setState(() {
+                        email = !email;
+                      });
+                    },
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Text("이메일 제3자 동의", style: TextStyle(fontSize: 16)),
+                  ),
+                  Text('[필수]'),
+                ],
+              ),
+            )
           ],
         ),
       ),
     );
   }
 }
-

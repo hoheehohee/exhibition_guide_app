@@ -52,40 +52,44 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Material(
-                        color: Colors.white,
-                        child: IconButton(
-                          splashRadius: 20,
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: Icon(Icons.clear),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Align(
-                          alignment: Alignment(-0.2, 1),
-                          child: Text('로그인',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.none)),
-                        ),
-                      )
-                    ],
-                  ),
+                  _appBar(),
                   _socialButtons(context)
                 ],
               ),
             ],
           )
         )
+    );
+  }
+
+  Widget _appBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Material(
+          color: Colors.white,
+          child: IconButton(
+            splashRadius: 20,
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(Icons.clear),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Align(
+            alignment: Alignment(-0.2, 1),
+            child: Text('로그인',
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    decoration: TextDecoration.none)),
+          ),
+        )
+      ],
     );
   }
 
@@ -119,10 +123,14 @@ class _LoginDialogViewState extends State<LoginDialogView> {
               SizedBox(height: mqh * 0.02),
               MaterialButton(
                   onPressed: () async {
-                    var login = await _social.kakaoLogin();
-                    if (login == null && login["check"] == "N") {
-                      Get.dialog(AgreeDialogView(login['snsType'], login['email']));
-                    }
+                    // var login = await _social.kakaoLogin();
+                    // if (login == null && login["check"] == "N") {
+                    //   Get.dialog(AgreeDialogView(login['snsType'], login['email']));
+                    // }
+                    Get.back();
+                    Get.dialog(
+                      AgreeDialogView('kakao', 'test@naver.com')
+                    );
                   },
                   color: kKakaoColor,
                   minWidth: double.infinity,
