@@ -124,7 +124,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
               MaterialButton(
                   onPressed: () async {
                     var login = await _social.kakaoLogin();
-                    if (login == null && login["check"] == "N") {
+                    if (login == null || login["check"] == "N") {
                       AgreeDialogView(login['snsType'], login['email']);
                     }
                   },

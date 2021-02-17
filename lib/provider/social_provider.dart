@@ -13,7 +13,7 @@ import 'package:get/route_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const _BASE_URL = 'http://115.144.53.222:8081/ilje/';
+const _BASE_URL = 'http://220.95.107.101/';
 
 class SocialProvider with ChangeNotifier {
   String _error;
@@ -34,8 +34,6 @@ class SocialProvider with ChangeNotifier {
       final result = await kakaoSignIn.logIn();
       final KakaoAccountResult account = result.account;
       Map data = {"snsType": "kakao", "email": account.userEmail};
-      print("KKK");
-      print(data);
       data["check"] = await checkServer(data);
       return data;
     } catch(e) {
