@@ -46,7 +46,6 @@ android {
         versionName flutterVersionName
     }
 
-/*
     signingConfigs {
         debug {
             storeFile file('C:\\Users\\kwakyoungho\\.android\\debug.keystore')
@@ -55,7 +54,6 @@ android {
             keyPassword 'java202009!!'
         }
     }
-*/
 
 
     buildTypes {

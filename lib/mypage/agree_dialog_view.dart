@@ -304,7 +304,41 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
                   Text('[필수]'),
                 ],
               ),
-            )
+            ),
+            MaterialButton(
+                onPressed: () async {
+                  if(!email){
+                    _showMyDialog("이메일 동의해주세요.");
+                  } else if(!collect){
+                    _showMyDialog("수집항목 동의해주세요.");
+                  } else if(!use){
+                    _showMyDialog("이용항목 동의해주세요.");
+                  } else if(!retention){
+                    _showMyDialog("이용기간 동의해주세요.");
+                  } else {
+                    Map data = {"snsType": widget.snsType, "email": widget.email};
+                    var join = await _social.joinServer(data);
+                    if(join == "Y"){
+                      await _showMyDialog("회원가입이 완료되었습니다");
+                      Get.to(MyPageView(0));
+                    }
+                  }
+                },
+                color: kKakaoColor,
+                minWidth: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 8),
+                    Text('동의후 계속',
+                        style: TextStyle(
+                          fontSize: 16,
+                        )),
+                  ],
+                )),
           ],
         ),
       ),
