@@ -32,8 +32,10 @@ class _BookingInfoState extends State<BookingInfo> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.microtask(() => {Provider.of<MyPageProvider>(context, listen: false).setApplyCount()});
-    // Future.microtask(() => {Provider.of<MyPageProvider>(context, listen: false).setApplyCountLatest()});
+    Future.microtask(() => {
+      Provider.of<MyPageProvider>(context, listen: false).setApplyCount(),
+      Provider.of<MyPageProvider>(context, listen: false).setApplyCountLatest()
+    });
   }
 
   @override
@@ -43,8 +45,6 @@ class _BookingInfoState extends State<BookingInfo> {
     mqh = mqd.size.height;
 
     _mypage = Provider.of<MyPageProvider>(context);
-    // final ApplyCountModel applyCount = _mypage.applyCount;
-    // final ApplyCountModel applyCountLatest = _mypage.applyCountLatest;
     return Container(
         color: Colors.white,
         child: Column(
@@ -67,8 +67,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                   children: [
                                     Image.asset("assets/images/icon/icon-note.png", width: mqw * 0.05,),
                                     SizedBox(height: 10),
-                                    // Text('예약신청 ${applyCount.applyCount}')
-                                    Text('예약신청 0')
+                                    Text('예약신청 ${_mypage.applyCount.applyCount}')
                                   ]
                               )
                           ),
@@ -93,8 +92,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     children: [
                                       Image.asset("assets/images/icon/icon-comment-picture.png", width: mqw * 0.05,),
                                       SizedBox(height: 10),
-                                      // Text('예약중 ${applyCount.applyNow}')
-                                      Text('예약중 0')
+                                      Text('예약중 ${_mypage.applyCount.applyNow}')
                                     ]
                                 )
                             )
@@ -113,8 +111,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     children: [
                                       Image.asset("assets/images/icon/icon-picture-ok.png", width: mqw * 0.05,),
                                       SizedBox(height: 10),
-                                      // Text('이용종료 ${applyCount.applyEnd}')
-                                      Text('이용종료 0')
+                                      Text('이용종료 ${_mypage.applyCount.applyEnd}')
                                     ]
                                 )
                             )
@@ -131,7 +128,7 @@ class _BookingInfoState extends State<BookingInfo> {
                     )
                 ),
                 child: Container(
-                    height: 100,
+                    height: 120,
                     width: double.infinity,
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -155,8 +152,8 @@ class _BookingInfoState extends State<BookingInfo> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text('도슨트\n신청', textAlign: TextAlign.center),
-                                      // Text(applyCountLatest.applyCount.toString(), style: TextStyle(color: Colors.orange))
-                                      Text('0', style: TextStyle(color: Color(0xffA48C60)))
+                                      Text(_mypage.applyCountLatest.applyCount.toString(), style: TextStyle(color: Color(0xffA48C60)))
+                                      // Text("0", style: TextStyle(color: Color(0xffA48C60)))
                                     ]
                                 ),
                                 Icon(Icons.arrow_forward_ios, color: Colors.grey),
@@ -165,8 +162,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text('이용\n예정', textAlign: TextAlign.center),
-                                      // Text(applyCountLatest.applyCount.toString(), style: TextStyle(color: Colors.orange))
-                                      Text('0', style: TextStyle(color: Color(0xffA48C60)))
+                                      Text(_mypage.applyCountLatest.applyCount.toString(), style: TextStyle(color: Colors.orange))
                                     ]
                                 ),
                                 Icon(Icons.arrow_forward_ios, color: Colors.grey),
@@ -175,8 +171,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text('이용\n종료', textAlign: TextAlign.center),
-                                      // Text(applyCountLatest.applyEnd.toString(), style: TextStyle(color: Colors.orange))
-                                      Text('0', style: TextStyle(color: Color(0xffA48C60)))
+                                      Text(_mypage.applyCountLatest.applyEnd.toString(), style: TextStyle(color: Colors.orange))
                                     ]
                                 ),
                               ]

@@ -1,3 +1,5 @@
+import 'package:exhibition_guide_app/booking/booking_check.dart';
+import 'package:exhibition_guide_app/booking/booking_view.dart';
 import 'package:exhibition_guide_app/mypage/qna_list_view.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
@@ -189,7 +191,7 @@ class _ProfileViewState extends State<ProfileView> {
           flex: 1,
           child: InkWell(
             onTap: () {
-              print("### 예약신청");
+              Get.to(BookingView());
             },
             child: Container(
               height: mqh * 0.13,

@@ -136,8 +136,8 @@ class MyPageProvider with ChangeNotifier {
       }
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      // String loginId = prefs.getString('loginId');
-      String loginId = "3se61vr220cidol826d5";
+      String loginId = prefs.getString('loginId');
+      // String loginId = "3se61vr220cidol826d5";
       resp = await dio.get(BASE_URL + '/applyListData.do', queryParameters: { "loginID": loginId, "PAGE_INDEX":1, "PAGE_ROW":100, "monthCount": monthCount});
       final jsonData = json.decode("$resp");
       print("######## $resp");
@@ -168,11 +168,13 @@ class MyPageProvider with ChangeNotifier {
 
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      // String loginId = prefs.getString('loginId');
-      String loginId = "3se61vr220cidol826d5";
+      String loginId = prefs.getString('loginId');
+      // String loginId = "3se61vr220cidol826d5";
 
-      resp = await dio.get(BASE_URL + '/applyMypageCount.do', queryParameters: { "loginID": loginId});
-      _applyCount = ApplyCountModel.fromJson(jsonDecode(resp.toString()));
+      if(loginId != null) {
+        resp = await dio.get(BASE_URL + '/applyMypageCount.do', queryParameters: { "loginID": loginId});
+        _applyCount = ApplyCountModel.fromJson(jsonDecode(resp.toString()));
+      }
       notifyListeners();
     }catch(error) {
       print('##### getFaqListSel Error: $error');
@@ -184,11 +186,13 @@ class MyPageProvider with ChangeNotifier {
 
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      // String loginId = prefs.getString('loginId');
-      String loginId = "3se61vr220cidol826d5";
+      String loginId = prefs.getString('loginId');
+      // String loginId = "3se61vr220cidol826d5";
 
-      resp = await dio.get(BASE_URL + '/applyMypageCount.do', queryParameters: { "loginID": loginId, "monthCount": 3});
-      _applyCountLatest = ApplyCountModel.fromJson(jsonDecode(resp.toString()));
+      if(loginId != null) {
+        resp = await dio.get(BASE_URL + '/applyMypageCount.do', queryParameters: { "loginID": loginId, "monthCount": 3});
+        _applyCountLatest = ApplyCountModel.fromJson(jsonDecode(resp.toString()));
+      }
       notifyListeners();
     }catch(error) {
       print('##### getFaqListSel Error: $error');
