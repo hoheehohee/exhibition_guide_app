@@ -11,6 +11,7 @@ import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _BASE_URL = 'http://220.95.107.101/';
@@ -30,10 +31,9 @@ class SocialProvider with ChangeNotifier {
   Future<Map> kakaoLogin() async {
     print("##### kakaoLogin");
     try{
-      FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();
-      final result = await kakaoSignIn.logIn();
-      final KakaoAccountResult account = result.account;
-      Map data = {"snsType": "kakao", "email": account.userEmail};
+      String authCode = await AuthCodeClient.instance.request(); // via browser
+      AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
+      Map data = {"snsType": "kakao", "email": token.accessToken};
       data["check"] = await checkServer(data);
       return data;
     } catch(e) {
@@ -92,6 +92,7 @@ class SocialProvider with ChangeNotifier {
   // 페이스북 로그인
   Future<Map> facebookLogin() async {
     try {
+      Dio dio = new Dio();
       final fb = FacebookLogin();
       // Log in
       final res = await fb.logIn(permissions: [
@@ -101,8 +102,10 @@ class SocialProvider with ChangeNotifier {
 
       if (res.status == FacebookLoginStatus.success) {
         final FacebookAccessToken accessToken = res.accessToken;
-        print('Access token: ${accessToken.token}');
-        Map data = {"authType": "facebook", "email": res.accessToken.permissions.};
+        final resp = await dio.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${accessToken.token}');
+        var info = Map<String, dynamic>.from(json.decode(resp.toString()));
+        Map data = {"snsType": "facebook", "email": info['email']};
         //토큰 디바이스 로컬에 저장
         data["check"] = await checkServer(data);
         return data;
