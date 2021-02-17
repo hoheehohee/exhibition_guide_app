@@ -215,8 +215,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                   onPressed: () async {
                     var login = await _social.googleLogin();
                     if (login["check"] == "N") {
-                      Get.dialog(
-                          AgreeDialogView(login['snsType'], login['email']));
+                      Get.dialog(AgreeDialogView(login['snsType'], login['email']));
                     }
                   },
                   color: Color(0xffE5E6E7),

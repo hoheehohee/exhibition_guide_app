@@ -36,9 +36,7 @@ class SocialProvider with ChangeNotifier {
       Map data = {"snsType": "kakao", "email": account.userEmail};
       print("KKK");
       print(data);
-      // _log("kakaoLogin", token.accessToken, result, data);
-      //토큰 디바이스 로컬에 저장
-      data["check"] = checkServer(data);
+      data["check"] = await checkServer(data);
       return data;
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
@@ -64,7 +62,7 @@ class SocialProvider with ChangeNotifier {
       GoogleSignInAuthentication auth = await acc.authentication;
       Map data = {"snsType": "google", "email": acc.email};
       _log("googleLogin", auth.accessToken, data, auth);
-      data["check"] = checkServer(data);
+      data["check"] = await checkServer(data);
       return data;
 
     } catch(e) {
@@ -82,7 +80,6 @@ class SocialProvider with ChangeNotifier {
       final NaverLoginResult result = await FlutterNaverLogin.logIn();
       NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
       Map data = {"snsType": "naver", "email": result.account.email};
-      _log("naverLogin", res.accessToken, data, result);
       data["check"] = checkServer(data);
       return data;
     } catch(e) {

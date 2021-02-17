@@ -1,6 +1,11 @@
 import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
+import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+
+import '../constant.dart';
+import 'mypage_view.dart';
 
 class AgreeDialogView extends StatefulWidget {
   final String snsType;
@@ -21,6 +26,34 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
   bool use = false;
   bool retention = false;
   bool email = false;
+  SocialProvider _social;
+
+  Future<void> _showMyDialog(String message) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('알림'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +116,7 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
   }
 
   Widget _arrgeForm() {
+    _social = Provider.of<SocialProvider>(context, listen: false);
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
