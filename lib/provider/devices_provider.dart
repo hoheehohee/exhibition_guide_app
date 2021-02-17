@@ -218,6 +218,7 @@ class DevicesProvider with ChangeNotifier {
 
   //오디오 재생
   void playAudio() async {
+    print("#####_playing $_playing");
     if (_playing) {
       // pause song
       var  res = await audioPlayer.pause();
@@ -226,24 +227,18 @@ class DevicesProvider with ChangeNotifier {
       }
     } else {
       // play song
-      // var res = await audioPlayer.play('https://luan.xyz/files/audio/ambient_c_motion.mp3');
-      var res = await audioPlayer.play("http://220.95.107.101/fileDownload.do?filename=JustDancePatrickPatrikios_1611988697944.mp3&folder=contents");
-      // var res = await audioPlayer.play(_audioUrl);
+      var res = await audioPlayer.play(_audioUrl);
       if (res == 1) {
         setPlaying(true);
       }
     }
 
     audioPlayer.onDurationChanged.listen((Duration dd) {
-      print("########1111 dd: ${duration.inSeconds.toDouble()} |||| ${duration.inSeconds.toDouble() == 0}");
       duration = dd;
-
       notifyListeners();
     });
 
     audioPlayer.onAudioPositionChanged.listen((Duration dd) {
-      print("####### dd ${duration.inSeconds.toDouble()}");
-      print("##########33 dd2: ${position.inSeconds.toDouble()}");
       position = dd;
       notifyListeners();
     });
@@ -251,11 +246,10 @@ class DevicesProvider with ChangeNotifier {
 
   // 오디오 정지
   void stopAudio() async {
-    position = new Duration();
-    duration = new Duration();
+    duration = Duration(seconds: 0);
+    position = Duration(seconds: 0);
 
     audioPlayer.stop();
-    audioPlayer.release();
     setPlaying(false);
 
     notifyListeners();
@@ -263,12 +257,14 @@ class DevicesProvider with ChangeNotifier {
 
   // 전시물 상세 동영상 지정
   void setExhibitDetVideo(String url) {
-    _dataSourceList.add(
+    List<BetterPlayerDataSource> temp = [];
+    temp.add(
       BetterPlayerDataSource(
-        BetterPlayerDataSourceType.network,
-        url
+          BetterPlayerDataSourceType.network,
+          url
       ),
     );
+    _dataSourceList = temp;
   }
 
 }

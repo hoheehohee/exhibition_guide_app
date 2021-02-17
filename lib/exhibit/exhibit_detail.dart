@@ -217,7 +217,8 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                       px: 40.0,
                       onAction: () async {
                         _device.stopAudio();
-                        await _device.setExhibitDetVideo('http://115.144.53.222:8081/ilje/fileDownload.do?folder=contents&filename=Nature42420_1611988753438.mp4');
+                        print("##### _exhibit.exhibitItem.videoFile: ${_exhibit.exhibitItem['videoFile']}");
+                        await _device.setExhibitDetVideo(_exhibit.exhibitItem['videoFile']);
                         Get.to(ExhibitVideoView());
                       },
                       iconPath: 'assets/images/icon/icon-movie.png',
@@ -354,8 +355,6 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
 
   // 오디오 재생 슬라이드
   Widget _audioSlider() {
-    print("#####: ${_device.position.inSeconds.toDouble()}");
-    print("#####: ${_device.duration.inSeconds.toDouble()}");
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
         thumbShape: RoundSliderThumbShape(enabledThumbRadius: 0.0),
