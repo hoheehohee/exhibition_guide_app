@@ -153,7 +153,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                   onPressed: () async {
                     var login = await _social.naverLogin();
                     if (login["check"] == "N") {
-                      Get.dialog(AgreeDialogView(login['snsType'], login['email']));
+                      AgreeDialogView(login['snsType'], login['email']);
                     }
                   },
                   color: kNaverColor,
