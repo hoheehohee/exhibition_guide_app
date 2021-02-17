@@ -5,8 +5,8 @@ import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart' as ECDM;
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
-import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:exhibition_guide_app/provider/setting_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +19,7 @@ class ExhibitHighlightView extends StatefulWidget {
 }
 
 class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
+  AppLocalizations _locals;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   ExhibitProvider _exhibitProv;
   SettingProvider _settingProv;
@@ -35,6 +36,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
 
   @override
   Widget build(BuildContext context) {
+    _locals = AppLocalizations.of(context);
     _exhibitProv = Provider.of<ExhibitProvider>(context);
     _settingProv = Provider.of<SettingProvider>(context);
 
@@ -63,19 +65,19 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
                   children: [
                     _exhibitList(
                         _exhibitProv.exhibitHighlightDataOne,
-                        title: "전시유물",
+                        title: _locals.menu2,
                         iconPath: "assets/images/icon/icon-main-relics.png"
                     ),
                     SizedBox(height: 15,),
                     _exhibitList(
                         _exhibitProv.exhibitHighlightDataTwo,
-                        title: '상설전시',
+                        title: _locals.menu3,
                         iconPath: "assets/images/icon/icon-main-sangsul.png"
                     ),
                     SizedBox(height: 15,),
                     _exhibitList(
                         _exhibitProv.exhibitHighlightDataThree,
-                        title: '기획전시',
+                        title: _locals.menu4,
                         iconPath: "assets/images/icon/icon-main-plan.png"
                     ),
                     SizedBox(height: 15,),
@@ -92,7 +94,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
   Widget _appBar() {
     return AppBar(
       backgroundColor: backgroundColor,
-      title: Text('하이라이트', style: TextStyle(color: Colors.white),),
+      title: Text(_locals.menu1, style: TextStyle(color: Colors.white),),
       actions:[
         IconButton(
           icon: new Icon(Icons.menu, size: 30, color: Colors.white,),
@@ -117,7 +119,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
               filled: true,
               fillColor: Color(0xffC3C3C3),
               border: OutlineInputBorder(),
-              hintText: "전시품명을 검색하세요",
+              hintText: _locals.hr4,
               hintStyle: TextStyle(color: Color(0xff5B5B5B), fontSize: 18),
               prefixIcon: Icon(Icons.search, size: 30,),
             ),

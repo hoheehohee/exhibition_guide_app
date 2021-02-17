@@ -3,9 +3,9 @@ import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login_dialog_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileView extends StatefulWidget {
   @override
@@ -18,6 +18,7 @@ class _ProfileViewState extends State<ProfileView> {
   var mqh;
 
   SocialProvider _social;
+  AppLocalizations _locals;
 
   @override
   void initState() {
@@ -60,6 +61,7 @@ class _ProfileViewState extends State<ProfileView> {
     mqh = mqd.size.height;
 
     _social = Provider.of<SocialProvider>(context);
+    _locals = AppLocalizations.of(context);
     return Container(
         color: Colors.white,
         child: Column(
@@ -86,7 +88,7 @@ class _ProfileViewState extends State<ProfileView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('내 문의글', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(_locals.mypage10, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         Material(
                           color: Colors.white,
                           child: IconButton(
@@ -159,13 +161,13 @@ class _ProfileViewState extends State<ProfileView> {
               children: [
                 Row(
                   children: [
-                    Text('로그인 · 가입', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text(_locals.mypage1, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     SizedBox(width: 10,),
                     Image.asset("assets/images/icon/icon-login-arrow.png", height: mqh * 0.02,)
                   ],
                 ),
                 SizedBox(height: 10),
-                Text('로그인하시면 더 많은 서비스를\n이용하실 수 있습니다.', style: TextStyle(color: Colors.grey)),
+                Text(_locals.mypage2, style: TextStyle(color: Colors.grey)),
                 // SizedBox(height: 10),
               ],
             )
@@ -198,7 +200,7 @@ class _ProfileViewState extends State<ProfileView> {
                 children: [
                   Image.asset("assets/images/icon/icon-alarm-g.png", width: mqw * 0.07,),
                   SizedBox(width: 20,),
-                  Text("예약신청", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)
+                  Text(_locals.as3, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)
                 ],
               ),
             ),
@@ -224,7 +226,7 @@ class _ProfileViewState extends State<ProfileView> {
                 children: [
                   Image.asset("assets/images/icon/icon-edit.png", width: mqw * 0.07,),
                   SizedBox(width: 20,),
-                  Text("문의글", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)
+                  Text(_locals.mypage5, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)
                 ],
               ),
             ),
@@ -241,7 +243,7 @@ class _ProfileViewState extends State<ProfileView> {
       children: [
         Container(
           margin: EdgeInsets.symmetric(vertical: mqw * 0.02),
-          child: Text('신청정보', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          child: Text(_locals.mypage6, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         ),
         Container(
           margin: EdgeInsets.only(top: 10),
@@ -260,7 +262,7 @@ class _ProfileViewState extends State<ProfileView> {
                   children: [
                     Text('1', style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
                     SizedBox(height: 10,),
-                    Text('예약신청', style: TextStyle(fontSize: 16),)
+                    Text(_locals.as3, style: TextStyle(fontSize: 13),)
                   ],
                 ),
                 VerticalDivider(color: Colors.black12, thickness: 3, indent: 10, endIndent: 10,),
@@ -269,7 +271,7 @@ class _ProfileViewState extends State<ProfileView> {
                   children: [
                     Text('1', style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
                     SizedBox(height: 10,),
-                    Text('이용중', style: TextStyle(fontSize: 16),)
+                    Text(_locals.as4, style: TextStyle(fontSize: 13),)
                   ],
                 ),
                 VerticalDivider(color: Colors.black12, thickness: 3, indent: 10, endIndent: 10,),
@@ -278,7 +280,7 @@ class _ProfileViewState extends State<ProfileView> {
                   children: [
                     Text('1', style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
                     SizedBox(height: 10,),
-                    Text('이용완료', style: TextStyle(fontSize: 16),)
+                    Text(_locals.as8, style: TextStyle(fontSize: 13),)
                   ],
                 ),
               ],

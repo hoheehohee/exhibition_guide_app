@@ -1,5 +1,5 @@
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
-import 'package:exhibition_guide_app/main/main_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +12,7 @@ class QnaWrite extends StatelessWidget {
   var mqh;
 
   MyPageProvider _myPageProvider;
+  AppLocalizations _locals;
   final myController = TextEditingController();
 
   void _showDialog(BuildContext context) {
@@ -42,11 +43,13 @@ class QnaWrite extends StatelessWidget {
     mqh = mqd.size.height;
 
     _myPageProvider = Provider.of<MyPageProvider>(context);
+    _locals = AppLocalizations.of(context);
+
     return  Scaffold(
         backgroundColor: Color(0xffE9E9E9),
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(mqd.size.height * 0.07),
-            child: CustomDefaultAppbar(title: '고객센터')
+            child: CustomDefaultAppbar(title: _locals.customer1)
         ),
         body: GestureDetector(
           onTap: () {
@@ -89,7 +92,7 @@ class QnaWrite extends StatelessWidget {
           ),
           SizedBox(width: mqw * 0.03,),
           Text(
-              "문의글 입력",
+              _locals.qna2,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)
           ),
         ],
@@ -108,14 +111,14 @@ class QnaWrite extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('문의내용', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(_locals.qna3, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(height: 10),
               Expanded(
                 child: TextField(
                   maxLines: 30,
                   textInputAction: TextInputAction.newline,
                   decoration: InputDecoration(
-                    hintText: "문의하실 내용을 남겨주세요.",
+                    hintText: _locals.qna4,
                     border: OutlineInputBorder(),
                   ),
                   controller: myController,
@@ -137,7 +140,7 @@ class QnaWrite extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5.0),
           ),
-          child: Text('문의글 등록', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),
+          child: Text(_locals.qna5, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),
           onPressed: () async{
             var status = await _myPageProvider.setQna(myController.text);
             if(status == "Y") {

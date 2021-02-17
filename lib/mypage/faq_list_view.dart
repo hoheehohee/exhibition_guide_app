@@ -3,6 +3,7 @@ import 'package:exhibition_guide_app/model/faq_list_model.dart' as FLM;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:exhibition_guide_app/provider/mypage_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FaqListView extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _FaqListViewState extends State<FaqListView> {
   var mqh;
 
   MyPageProvider _mypage;
+  AppLocalizations _locals;
 
   @override
   void initState() {
@@ -31,6 +33,7 @@ class _FaqListViewState extends State<FaqListView> {
 
     final loading = _mypage.loading;
     final FaqListModel list = _mypage.faqList;
+    _locals = AppLocalizations.of(context);
 
     // 로딩중이면서 목록이 없을 때
     if (loading && (list.data.length == 0)) {
@@ -73,7 +76,7 @@ class _FaqListViewState extends State<FaqListView> {
         ),
         child: Align(
           alignment: Alignment.centerLeft,
-          child: Text("자주하는 질문", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          child: Text(_locals.customer5, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         )
       )
     ];

@@ -1,10 +1,13 @@
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExhivitDirectionsView extends StatelessWidget {
   var mqd;
   var mqw;
   var mqh;
+  AppLocalizations _locals;
+
   @override
   Widget build(BuildContext context) {
 
@@ -12,10 +15,12 @@ class ExhivitDirectionsView extends StatelessWidget {
     mqw = mqd.size.width;
     mqh = mqd.size.height;
 
+    _locals = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(mqd.size.height * 0.07),
-          child: CustomDefaultAppbar(title: '오시는 길')
+          child: CustomDefaultAppbar(title: _locals.main9)
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -30,9 +35,9 @@ class ExhivitDirectionsView extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      addressForm('주소', '부산광역시 남구 홍곡로 320번길 100', 'assets/images/icon/icon-location-map.png'),
+                      addressForm(_locals.map1, '부산광역시 남구 홍곡로 320번길 100', 'assets/images/icon/icon-location-map.png'),
                       SizedBox(height: mqw * 0.05,),
-                      addressForm('연락처', '051-629-8600', 'assets/images/icon/icon-tel.png'),
+                      addressForm(_locals.bk9, '051-629-8600', 'assets/images/icon/icon-tel.png'),
                     ],
                   )
               ),
@@ -49,7 +54,7 @@ class ExhivitDirectionsView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("교통안내", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),),
+                      Text(_locals.map2, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),),
                       SizedBox(height: 15,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -65,13 +70,13 @@ class ExhivitDirectionsView extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('지하철 이용 ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                Text(_locals.map3, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                                 SizedBox(height: mqh * 0.02,),
-                                Text('부산역 방면 :  부산역(1호선)→서면역(2호선으로 환승)→못골역(2호선, 1번출구)→남구9(마을버스 환승)', style: TextStyle(fontSize: 18),),
+                                Text(_locals.map4, style: TextStyle(fontSize: 18),),
                                 SizedBox(height: mqh * 0.02,),
-                                Text('고속터미널 방면 :  노포동역(1호선)→서면역(2호선 환승)→못골역(2호선, 1번출구)→남구9(마을버스 환승)', style: TextStyle(fontSize: 18),),
+                                Text(_locals.map5, style: TextStyle(fontSize: 18),),
                                 SizedBox(height: mqh * 0.02,),
-                                Text('서부시외버스 터미널 방면 :  사상역(2호선)→못골역(2호선, 1번출구)→남구9(마을버스 환승)', style: TextStyle(fontSize: 18),)
+                                Text(_locals.map6, style: TextStyle(fontSize: 18),)
                               ],
                             )
                           )
@@ -92,9 +97,9 @@ class ExhivitDirectionsView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('버스 이용 시 ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                              Text(_locals.map7, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                               SizedBox(height: mqh * 0.02,),
-                              Text('부산역 방면 :  부산역(134번)→석포초등학교 정류장 하차(도보 약10분) 부산역(27, 40, 41번)→남구청', style: TextStyle(fontSize: 18),),
+                              Text(_locals.map8, style: TextStyle(fontSize: 18),),
                             ],
                           )
                           )

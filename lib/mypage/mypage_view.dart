@@ -1,8 +1,7 @@
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
-import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/mypage/profile_vilew.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import 'booking_info.dart';
 
@@ -19,6 +18,8 @@ class _MyPageViewState extends State<MyPageView> {
   var mqw;
   var mqh;
 
+  AppLocalizations _locals;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -31,11 +32,12 @@ class _MyPageViewState extends State<MyPageView> {
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
     mqh = mqd.size.height;
+    _locals = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(mqd.size.height * 0.07),
-          child: CustomDefaultAppbar(title: '마이페이지')
+          child: CustomDefaultAppbar(title: _locals.menu8)
       ),
       body: Center(
           child: Container(
@@ -81,12 +83,12 @@ class _MyPageViewState extends State<MyPageView> {
         },
         tabs: [
           Center(
-              child: Text("프로필",
+              child: Text(_locals.as1,
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700))),
           Center(
-              child: Text("신청현황",
+              child: Text(_locals.as2,
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700))),

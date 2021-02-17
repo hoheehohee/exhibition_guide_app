@@ -1,5 +1,6 @@
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NoticeDetailView extends StatefulWidget {
   final int noticeIdx;
@@ -14,17 +15,19 @@ class _NoticeDetailViewState extends State<NoticeDetailView> {
   var mqd;
   var mqw;
   var mqh;
+  AppLocalizations _locals;
 
   @override
   Widget build(BuildContext context) {
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
     mqh = mqd.size.height;
+    _locals = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(mqd.size.height * 0.07),
-          child: CustomDefaultAppbar(title: '공지사항')
+          child: CustomDefaultAppbar(title: _locals.main10)
       ),
       body: Container(
         color: Color(0xffE7E8E9),

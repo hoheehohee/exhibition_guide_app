@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../constant.dart';
 import 'agree_dialog_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginDialogView extends StatefulWidget {
   @override
@@ -16,12 +17,15 @@ class _LoginDialogViewState extends State<LoginDialogView> {
   var mqd;
   var mqw;
   var mqh;
+  AppLocalizations _locals;
 
   @override
   Widget build(BuildContext context) {
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
     mqh = mqd.size.height;
+
+    _locals = AppLocalizations.of(context);
     final _social = Provider.of<SocialProvider>(context);
 
     if (_social.isSocialLogin) {
@@ -81,7 +85,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
           flex: 1,
           child: Align(
             alignment: Alignment(-0.2, 1),
-            child: Text('로그인',
+            child: Text(_locals.main2,
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -116,7 +120,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                   children: [
                     Image.asset("assets/images/icon/icon-thunder.png", height: mqh * 0.04,),
                     SizedBox(width: mqw * 0.02,),
-                    Text("3초만에 빠른 회원가입", style: TextStyle(fontSize: 14, color: Colors.black),)
+                    Text(_locals.login1, style: TextStyle(fontSize: 14, color: Colors.black),)
                   ],
                 ),
               ),
@@ -143,7 +147,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                       Image.asset("assets/images/icon/icon-kakao.png", width: mqw * 0.07, fit: BoxFit.fill,),
                       SizedBox(width: 8),
                       Text(
-                        '카카오톡으로 계속하기',
+                        _locals.login2,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -171,7 +175,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                       Image.asset("assets/images/icon/icon-naver.png",width: mqw * 0.06, fit: BoxFit.fill,),
                       SizedBox(width: 8),
                       Text(
-                        '네이버로 계속하기',
+                          _locals.login3,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -199,7 +203,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                     Image.asset("assets/images/icon/icon-facebook.png", width: mqw * 0.035, fit: BoxFit.fill,),
                     SizedBox(width: 8),
                     Text(
-                      "페이스북으로 계속하기",
+                      _locals.login4,
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -230,7 +234,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                       Image.asset("assets/images/icon/icon-google.png", width: mqw * 0.06, fit: BoxFit.fill,),
                       SizedBox(width: 8),
                       Text(
-                        'Google로 계속하기',
+                        _locals.login5,
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

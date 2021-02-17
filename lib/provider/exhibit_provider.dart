@@ -80,7 +80,7 @@ class ExhibitProvider with ChangeNotifier {
     var l = '';
 
     if (_language == 'en') l = "_eng";
-    else if (_language == 'cn') l = "_chn";
+    else if (_language == 'zh') l = "_chn";
     else if (_language == 'ja') l = "_jpn";
 
     return index > -1 ? item.toJson()[key + l] : _exhibitItem[key + l];
