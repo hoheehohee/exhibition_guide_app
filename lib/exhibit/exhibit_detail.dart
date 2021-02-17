@@ -354,7 +354,8 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
 
   // 오디오 재생 슬라이드
   Widget _audioSlider() {
-    // print();
+    print("#####: ${_device.position.inSeconds.toDouble()}");
+    print("#####: ${_device.duration.inSeconds.toDouble()}");
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
         thumbShape: RoundSliderThumbShape(enabledThumbRadius: 0.0),
@@ -368,7 +369,8 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
       ),
       child: Slider(
         min: 0,
-        value: _device.position.inSeconds.toDouble(),
+        // value: _device.position.inSeconds.toDouble(),
+        value: _device.duration.inSeconds.toDouble() == 0 ? 0 : _device.position.inSeconds.toDouble(),
         max: _device.duration.inSeconds.toDouble() == 0 ? 1 : _device.duration.inSeconds.toDouble(),
         onChanged: (double value) {
           setState(() {
