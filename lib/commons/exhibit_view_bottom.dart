@@ -1,14 +1,18 @@
 import 'package:exhibition_guide_app/guide/exhibition_directions_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
+import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../constant.dart';
 import 'custom_image_icon_btn.dart';
 
 class ExhibitViewBottom extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    final _device = Provider.of<DevicesProvider>(context);
     return Container(
         height: 120,
         child: Column(
@@ -57,10 +61,10 @@ class ExhibitViewBottom extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _bottomBtn(
-                        title: '오시는길',
-                        iconPath: 'assets/images/icon/icon-location.png',
+                        title: 'QR코드',
+                        iconPath: 'assets/images/icon/icon-qrcode.png',
                         onTapFunc: () {
-                          Get.to(ExhivitDirectionsView());
+                          _device.scan();
                         },
                       ),
                       _bottomBtn(

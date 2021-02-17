@@ -210,6 +210,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                         setState(() {
                           _audioPlayShow = true;
                         });
+                        _device.setExhibitDetAudio(_exhibit.exhibitItem['voiceFile']);
                       },
                       iconPath: 'assets/images/icon/icon-headset.png',
                     ),
@@ -217,7 +218,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                       px: 40.0,
                       onAction: () async {
                         _device.stopAudio();
-                        await _device.setExhibitDetVideo('http://115.144.53.222:8081/ilje/fileDownload.do?folder=contents&filename=Nature42420_1611988753438.mp4');
+                        await _device.setExhibitDetVideo(_exhibit.exhibitItem['videoFile']);
                         Get.to(ExhibitVideoView());
                       },
                       iconPath: 'assets/images/icon/icon-movie.png',
@@ -316,6 +317,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                 _imageIconBtn(
                   px: 30.0,
                   onAction: () {
+                    _device.setExhibitDetAudio(_exhibit.exhibitItem['voiceFile']);
                     _device.playAudio();
                   },
                   iconPath: (
@@ -354,7 +356,6 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
 
   // 오디오 재생 슬라이드
   Widget _audioSlider() {
-    // print();
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
         thumbShape: RoundSliderThumbShape(enabledThumbRadius: 0.0),
@@ -368,7 +369,8 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
       ),
       child: Slider(
         min: 0,
-        value: _device.position.inSeconds.toDouble(),
+        // value: _device.position.inSeconds.toDouble(),
+        value: _device.duration.inSeconds.toDouble() == 0 ? 0 : _device.position.inSeconds.toDouble(),
         max: _device.duration.inSeconds.toDouble() == 0 ? 1 : _device.duration.inSeconds.toDouble(),
         onChanged: (double value) {
           setState(() {

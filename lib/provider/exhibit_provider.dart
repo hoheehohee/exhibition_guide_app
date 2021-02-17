@@ -135,7 +135,7 @@ class ExhibitProvider with ChangeNotifier {
     init();
     Response resp;
     Dio dio = new Dio();
-
+    print("##### idx: ${idx}");
     try{
       resp = await dio.get(BASE_URL + '/contentsDataDetail.do', queryParameters: {"idx": idx});
       _exhibitItem = jsonDecode(resp.toString());
