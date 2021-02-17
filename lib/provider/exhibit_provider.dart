@@ -337,17 +337,18 @@ class ExhibitProvider with ChangeNotifier {
     Dio dio = new Dio();
 
     try{
-      _bookingRegData.loginID = '3se61vr220cidol826d5';
-      // resp = await dio.get(
-      //   BASE_URL + "/applyInsertData.do",
-      //   queryParameters: _bookingRegData.toJson(),
-      // );
-      //
-      // final result = jsonDecode(resp.toString());
-      //
-      // _loading = false;
-      //
-      // if (result["state"] == 'Y') setBookingDetSelCall(result["applyID"]);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      _bookingRegData.loginID = prefs.getString('loginId');
+      resp = await dio.get(
+        BASE_URL + "/applyInsertData.do",
+        queryParameters: _bookingRegData.toJson(),
+      );
+
+      final result = jsonDecode(resp.toString());
+
+      _loading = false;
+
+      if (result["state"] == 'Y') setBookingDetSelCall(result["applyID"]);
       _loading = false;
       setBookingDetSelCall("20");
 
@@ -360,7 +361,8 @@ class ExhibitProvider with ChangeNotifier {
   Future<void> setBookingDetSelCall(String applyID) async {
     Response resp;
     Dio dio = new Dio();
-    final loginID = '3se61vr220cidol826d5';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final loginID = prefs.getString('loginId');
 
     try{
       resp = await dio.get(
