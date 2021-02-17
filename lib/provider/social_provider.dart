@@ -31,9 +31,10 @@ class SocialProvider with ChangeNotifier {
   Future<Map> kakaoLogin() async {
     print("##### kakaoLogin");
     try{
-      String authCode = await AuthCodeClient.instance.request(); // via browser
-      AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
-      Map data = {"snsType": "kakao", "email": token.accessToken};
+      FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();
+      final result = await kakaoSignIn.logIn();
+      final KakaoAccountResult account = result.account;
+      Map data = {"snsType": "kakao", "email": account.userEmail};
       data["check"] = await checkServer(data);
       return data;
     } catch(e) {
