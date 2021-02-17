@@ -210,6 +210,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                         setState(() {
                           _audioPlayShow = true;
                         });
+                        _device.setExhibitDetAudio(_exhibit.exhibitItem['voiceFile']);
                       },
                       iconPath: 'assets/images/icon/icon-headset.png',
                     ),
@@ -217,7 +218,6 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                       px: 40.0,
                       onAction: () async {
                         _device.stopAudio();
-                        print("##### _exhibit.exhibitItem.videoFile: ${_exhibit.exhibitItem['videoFile']}");
                         await _device.setExhibitDetVideo(_exhibit.exhibitItem['videoFile']);
                         Get.to(ExhibitVideoView());
                       },
@@ -317,6 +317,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                 _imageIconBtn(
                   px: 30.0,
                   onAction: () {
+                    _device.setExhibitDetAudio(_exhibit.exhibitItem['voiceFile']);
                     _device.playAudio();
                   },
                   iconPath: (

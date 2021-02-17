@@ -153,12 +153,9 @@ class DevicesProvider with ChangeNotifier {
       _language = prefs.getString('language');
 
       resp = await dio.get(BASE_URL + '/beaconSearchOne.do', queryParameters: {
-        // "UUID": beaconData.uuid,
-        // "Major": beaconData.major,
-        // "Minor": beaconData.minor,
-        "UUID": "FDA50693-A4E2-4FB1-AFCF-C6EB07647825",
-        "Major": "10004",
-        "Minor": "54460"
+        "UUID": beaconData.uuid,
+        "Major": beaconData.major,
+        "Minor": beaconData.minor,
       });
       final jsonData = json.decode("$resp");
       _exhibitItem = ExhibitItemModel.fromJson(jsonData);
@@ -265,6 +262,10 @@ class DevicesProvider with ChangeNotifier {
       ),
     );
     _dataSourceList = temp;
+  }
+
+  void setExhibitDetAudio(String url) {
+    _audioUrl = url;
   }
 
 }
