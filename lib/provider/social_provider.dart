@@ -102,11 +102,9 @@ class SocialProvider with ChangeNotifier {
       if (res.status == FacebookLoginStatus.success) {
         final FacebookAccessToken accessToken = res.accessToken;
         print('Access token: ${accessToken.token}');
-        Map data = {"authType": "f", "accessToken": accessToken.token};
-
-        _log("facebookLogin", accessToken.token, data, res);
+        Map data = {"authType": "facebook", "email": res.accessToken.permissions.};
         //토큰 디바이스 로컬에 저장
-        data["check"] = checkServer(data);
+        data["check"] = await checkServer(data);
         return data;
         // checkServer(data);
       }
