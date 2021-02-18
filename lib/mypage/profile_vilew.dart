@@ -1,3 +1,6 @@
+import 'package:exhibition_guide_app/booking/booking_check.dart';
+import 'package:exhibition_guide_app/booking/booking_view.dart';
+import 'package:exhibition_guide_app/crm/qna_write.dart';
 import 'package:exhibition_guide_app/mypage/qna_list_view.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
@@ -115,13 +118,15 @@ class _ProfileViewState extends State<ProfileView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // Image.asset(getSnsIcon(_social.snsType), fit: BoxFit.fill,)
-          // SizedBox(width: mqw * 0.03,),
-          // Text(_social.email, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Image.asset(getSnsIcon("kakao"), fit: BoxFit.fill,),
+          Image.asset(getSnsIcon(_social.snsType), fit: BoxFit.fill,),
           SizedBox(width: mqw * 0.03,),
-          Text("test@gmai.com", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-
+          Text(_social.email, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          RaisedButton(
+            disabledColor: Colors.red,
+            disabledTextColor: Colors.black,
+            onPressed: () => _social.logout(),
+            child: Text('로그아웃'),
+          )
         ],
       )
     );
@@ -186,7 +191,7 @@ class _ProfileViewState extends State<ProfileView> {
           flex: 1,
           child: InkWell(
             onTap: () {
-              print("### 예약신청");
+              Get.to(BookingView());
             },
             child: Container(
               height: mqh * 0.13,
@@ -210,7 +215,7 @@ class _ProfileViewState extends State<ProfileView> {
           flex: 1,
           child: InkWell(
             onTap: () {
-              print("### 문의글");
+              Get.to(QnaWrite());
             },
             child: Container(
               height: mqh * 0.13,

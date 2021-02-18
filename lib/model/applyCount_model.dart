@@ -10,7 +10,6 @@ class ApplyCountModel {
   int applyNow;
 
   ApplyCountModel.fromJson(Map<String, dynamic> json) {
-    print(json);
       this.applyCount = json['data']['apply_count'];
       this.applyEnd = json['data']['apply_end'];
       this.applyNow = json['data']['apply_now'];

@@ -11,9 +11,10 @@ import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const _BASE_URL = 'http://115.144.53.222:8081/ilje/';
+const _BASE_URL = 'http://220.95.107.101/';
 
 class SocialProvider with ChangeNotifier {
   String _error;
@@ -34,11 +35,11 @@ class SocialProvider with ChangeNotifier {
       final result = await kakaoSignIn.logIn();
       final KakaoAccountResult account = result.account;
       Map data = {"snsType": "kakao", "email": account.userEmail};
-      print("KKK");
-      print(data);
-      // _log("kakaoLogin", token.accessToken, result, data);
-      //토큰 디바이스 로컬에 저장
-      data["check"] = checkServer(data);
+      if(data["email"] == null){
+        data["check"] = "C";
+      } else {
+        data["check"] = await checkServer(data);
+      }
       return data;
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
@@ -64,7 +65,11 @@ class SocialProvider with ChangeNotifier {
       GoogleSignInAuthentication auth = await acc.authentication;
       Map data = {"snsType": "google", "email": acc.email};
       _log("googleLogin", auth.accessToken, data, auth);
-      data["check"] = checkServer(data);
+      if(data["email"] == null){
+        data["check"] = "C";
+      } else {
+        data["check"] = await checkServer(data);
+      }
       return data;
 
     } catch(e) {
@@ -82,14 +87,17 @@ class SocialProvider with ChangeNotifier {
       final NaverLoginResult result = await FlutterNaverLogin.logIn();
       NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
       Map data = {"snsType": "naver", "email": result.account.email};
-      _log("naverLogin", res.accessToken, data, result);
-      data["check"] = checkServer(data);
+      if(data["email"] == null){
+        data["check"] = "C";
+      } else {
+        data["check"] = await checkServer(data);
+      }
       return data;
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
       print("##### naverLogin error: $e");
-      _isSocialLogin = true;
-      // _isSocialLogin = false;
+      // _isSocialLogin = true;
+      _isSocialLogin = false;
       notifyListeners();
     }
   }
@@ -97,6 +105,7 @@ class SocialProvider with ChangeNotifier {
   // 페이스북 로그인
   Future<Map> facebookLogin() async {
     try {
+      Dio dio = new Dio();
       final fb = FacebookLogin();
       // Log in
       final res = await fb.logIn(permissions: [
@@ -106,12 +115,16 @@ class SocialProvider with ChangeNotifier {
 
       if (res.status == FacebookLoginStatus.success) {
         final FacebookAccessToken accessToken = res.accessToken;
-        print('Access token: ${accessToken.token}');
-        Map data = {"authType": "f", "accessToken": accessToken.token};
-
-        _log("facebookLogin", accessToken.token, data, res);
+        final resp = await dio.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${accessToken.token}');
+        var info = Map<String, dynamic>.from(json.decode(resp.toString()));
+        Map data = {"snsType": "facebook", "email": info['email']};
         //토큰 디바이스 로컬에 저장
-        data["check"] = checkServer(data);
+        if(data["email"] == null){
+          data["check"] = "C";
+        } else {
+          data["check"] = await checkServer(data);
+        }
         return data;
         // checkServer(data);
       }

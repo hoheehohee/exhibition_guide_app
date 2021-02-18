@@ -1,7 +1,12 @@
 import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
+import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+
+import '../constant.dart';
+import 'mypage_view.dart';
 
 class AgreeDialogView extends StatefulWidget {
   final String snsType;
@@ -23,6 +28,34 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
   bool use = false;
   bool retention = false;
   bool email = false;
+  SocialProvider _social;
+
+  Future<void> _showMyDialog(String message) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('알림'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   AppLocalizations _locals;
 
@@ -88,6 +121,7 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
   }
 
   Widget _arrgeForm() {
+    _social = Provider.of<SocialProvider>(context, listen: false);
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -275,6 +309,37 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
                   Text(_locals.agree8),
                 ],
               ),
+            ),
+            SizedBox(height: mqh * 0.02,),
+            Container(
+                width: double.infinity,
+                height: mqh * 0.08,
+                // margin: EdgeInsets.only(bottom: 18, left: 10, right: 10),
+                child: RaisedButton(
+                  color: Color(0xff293F52),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child: Text('동의후 계속', style: TextStyle(fontSize: 20, color: Colors.white)),
+                  onPressed: () async {
+                      if(!email){
+                          _showMyDialog("이메일 동의해주세요.");
+                        } else if(!collect){
+                          _showMyDialog("수집항목 동의해주세요.");
+                        } else if(!use){
+                          _showMyDialog("이용항목 동의해주세요.");
+                        } else if(!retention){
+                          _showMyDialog("이용기간 동의해주세요.");
+                        } else {
+                          Map data = {"snsType": widget.snsType, "email": widget.email};
+                          var join = await _social.joinServer(data);
+                          if(join == "Y"){
+                            await _showMyDialog("회원가입이 완료되었습니다");
+                            Get.to(MyPageView(0));
+                          }
+                        }
+                  },
+                )
             )
           ],
         ),
