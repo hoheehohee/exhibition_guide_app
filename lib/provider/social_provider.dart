@@ -35,7 +35,7 @@ class SocialProvider with ChangeNotifier {
       final result = await kakaoSignIn.logIn();
       final KakaoAccountResult account = result.account;
       Map data = {"snsType": "kakao", "email": account.userEmail};
-      if(data[email] == null){
+      if(data["email"] == null){
         data["check"] = "C";
       } else {
         data["check"] = await checkServer(data);
@@ -65,7 +65,7 @@ class SocialProvider with ChangeNotifier {
       GoogleSignInAuthentication auth = await acc.authentication;
       Map data = {"snsType": "google", "email": acc.email};
       _log("googleLogin", auth.accessToken, data, auth);
-      if(data[email] == null){
+      if(data["email"] == null){
         data["check"] = "C";
       } else {
         data["check"] = await checkServer(data);
@@ -87,7 +87,7 @@ class SocialProvider with ChangeNotifier {
       final NaverLoginResult result = await FlutterNaverLogin.logIn();
       NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
       Map data = {"snsType": "naver", "email": result.account.email};
-      if(data[email] == null){
+      if(data["email"] == null){
         data["check"] = "C";
       } else {
         data["check"] = await checkServer(data);
@@ -120,7 +120,7 @@ class SocialProvider with ChangeNotifier {
         var info = Map<String, dynamic>.from(json.decode(resp.toString()));
         Map data = {"snsType": "facebook", "email": info['email']};
         //토큰 디바이스 로컬에 저장
-        if(data[email] == null){
+        if(data["email"] == null){
           data["check"] = "C";
         } else {
           data["check"] = await checkServer(data);

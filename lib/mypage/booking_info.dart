@@ -38,8 +38,6 @@ class _BookingInfoState extends State<BookingInfo> {
 
     _mypage = Provider.of<MyPageProvider>(context);
     _locals = AppLocalizations.of(context);
-    // final ApplyCountModel applyCount = _mypage.applyCount;
-    // final ApplyCountModel applyCountLatest = _mypage.applyCountLatest;
 
     final List<BookingStateMenu> _menuItems = [
       BookingStateMenu.fromMap({ 'title': _locals.as10, 'widget': BookingStateView(0) }),
@@ -73,8 +71,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     Image.asset("assets/images/icon/icon-note.png", width: mqw * 0.05,),
                                     SizedBox(height: 10),
                                     // Text('예약신청 ${applyCount.applyCount}')
-                                    Text("${_locals.as3} 0")
-                                    Text('예약신청 ${_mypage.applyCount.applyCount}')
+                                    Text("${_locals.as3} ${_mypage.applyCount.applyCount}")
                                   ]
                               )
                           ),
@@ -99,9 +96,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     children: [
                                       Image.asset("assets/images/icon/icon-comment-picture.png", width: mqw * 0.05,),
                                       SizedBox(height: 10),
-                                      // Text('예약중 ${applyCount.applyNow}')
-                                      Text("${_locals.as4} 0")
-                                      Text('예약중 ${_mypage.applyCount.applyNow}')
+                                      Text("${_locals.as4} ${_mypage.applyCount.applyNow}")
                                     ]
                                 )
                             )
@@ -120,8 +115,6 @@ class _BookingInfoState extends State<BookingInfo> {
                                     children: [
                                       Image.asset("assets/images/icon/icon-picture-ok.png", width: mqw * 0.05,),
                                       SizedBox(height: 10),
-                                      // Text('이용종료 ${applyCount.applyEnd}')
-                                      // Text("${_locals.as5} 0")
                                       Text('${_locals.as5} ${_mypage.applyCount.applyEnd}')
                                     ]
                                 )
@@ -162,12 +155,8 @@ class _BookingInfoState extends State<BookingInfo> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
-                                      Text('도슨트\n신청', textAlign: TextAlign.center),
-                                      Text(_mypage.applyCountLatest.applyCount.toString(), style: TextStyle(color: Color(0xffA48C60)))
-                                      // Text("0", style: TextStyle(color: Color(0xffA48C60)))
                                       Text(_locals.as7, textAlign: TextAlign.center),
-                                      // Text(applyCountLatest.applyCount.toString(), style: TextStyle(color: Colors.orange))
-                                      Text('0', style: TextStyle(color: Color(0xffA48C60)))
+                                      Text(_mypage.applyCountLatest.applyCount.toString(), style: TextStyle(color: Color(0xffA48C60)))
                                     ]
                                 ),
                                 Icon(Icons.arrow_forward_ios, color: Colors.grey),
@@ -176,10 +165,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text(_locals.as8, textAlign: TextAlign.center),
-                                      // Text(applyCountLatest.applyCount.toString(), style: TextStyle(color: Colors.orange))
-                                      Text('0', style: TextStyle(color: Color(0xffA48C60)))
-                                      Text('이용\n예정', textAlign: TextAlign.center),
-                                      Text(_mypage.applyCountLatest.applyCount.toString(), style: TextStyle(color: Colors.orange))
+                                      Text(_mypage.applyCountLatest.applyCount.toString(), style: TextStyle(color: Color(0xffA48C60)))
                                     ]
                                 ),
                                 Icon(Icons.arrow_forward_ios, color: Colors.grey),
@@ -187,11 +173,8 @@ class _BookingInfoState extends State<BookingInfo> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
-                                      Text('이용\n종료', textAlign: TextAlign.center),
-                                      Text(_mypage.applyCountLatest.applyEnd.toString(), style: TextStyle(color: Colors.orange))
                                       Text(_locals.as9, textAlign: TextAlign.center),
-                                      // Text(applyCountLatest.applyEnd.toString(), style: TextStyle(color: Colors.orange))
-                                      Text('0', style: TextStyle(color: Color(0xffA48C60)))
+                                      Text(_mypage.applyCountLatest.applyEnd.toString(), style: TextStyle(color: Color(0xffA48C60)))
                                     ]
                                 ),
                               ]
