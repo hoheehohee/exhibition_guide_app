@@ -13,8 +13,9 @@ class ExhibitViewBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _device = Provider.of<DevicesProvider>(context);
-    final _locals = AppLocalizations.of(context);
+    final DevicesProvider _deviceProv = Provider.of<DevicesProvider>(context);
+    final AppLocalizations _locals = AppLocalizations.of(context);
+
     return Container(
         height: 120,
         child: Column(
@@ -34,8 +35,14 @@ class ExhibitViewBottom extends StatelessWidget {
                         SizedBox(width: 5,),
                         CustomImageIconBtn(
                           px: 50.0,
-                          iconPath: "assets/images/toogle-main-on.png",
-                          onAction: () {},
+                          iconPath: (
+                            _deviceProv.isRunning
+                              ? 'assets/images/toogle-main-on.png'
+                              : 'assets/images/toogle-main-off.png'
+                          ),
+                          onAction: () {
+                            _deviceProv.becaonScan(!_deviceProv.isRunning);
+                          },
                         )
                       ],
                     ),
@@ -47,8 +54,14 @@ class ExhibitViewBottom extends StatelessWidget {
                         SizedBox(width: 5,),
                         CustomImageIconBtn(
                           px: 50.0,
-                          iconPath: "assets/images/toogle-main-on.png",
-                          onAction: () {},
+                          iconPath: (
+                            _deviceProv.autoPlayAudio
+                              ? 'assets/images/toogle-main-on.png'
+                              : 'assets/images/toogle-main-off.png'
+                          ),
+                          onAction: () {
+                            _deviceProv.setAutoPlayAudio(!_deviceProv.autoPlayAudio);
+                          },
                         )
                       ],
                     ),
@@ -66,7 +79,7 @@ class ExhibitViewBottom extends StatelessWidget {
                         title: 'QR코드',
                         iconPath: 'assets/images/icon/icon-qrcode.png',
                         onTapFunc: () {
-                          _device.scan();
+                          _deviceProv.scan();
                         },
                       ),
                       _bottomBtn(

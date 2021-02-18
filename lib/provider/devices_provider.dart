@@ -28,24 +28,38 @@ class DevicesProvider with ChangeNotifier {
   BeaconModel beaconData;
   BeaconContentModel _beaconContentList = BeaconContentModel.fromJson({"data": []});
   ExhibitItemModel _exhibitItem = ExhibitItemModel.fromJson({"data": null});
-  // List _dataSourceList = List<BetterPlayerDataSource>();
   List<BetterPlayerDataSource> _dataSourceList = [];
 
-  bool _beaconConnect = false;
-  String _qrCode = '';
   String _beaconResult = '';
   String _audioUrl = '';
   int _nrMessaggesReceived = 0;
 
   bool _playing = false; // 재성버튼 활성 default
   bool _isRunning = true;
+  bool _beaconConnect = false;
+  bool _autoPlayAudio = false;
 
   bool get isRunning => _isRunning;
   bool get isPlaying => _playing;
   bool get isBeaconConnect => _beaconConnect;
+  bool get autoPlayAudio => _autoPlayAudio;
   List get dataSourceList => _dataSourceList;
   BeaconModel get cBeaconData => beaconData;
   BeaconContentModel get beaconConteantList => _beaconContentList;
+
+  DevicesProvider() {
+    setDevicePreferences();
+  }
+
+  void setDevicePreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final deacon = prefs.getBool("beaconOnOff");
+    final audio = prefs.getBool("autoPlayAudio");
+    _isRunning = deacon;
+    _autoPlayAudio = audio;
+    becaonScan(deacon);
+    setAutoPlayAudio(audio);
+  }
 
   void setIsRunning(bool running) {
     _isRunning = running;
@@ -54,6 +68,7 @@ class DevicesProvider with ChangeNotifier {
 
   void setPlaying(bool py) {
     _playing = py;
+    notifyListeners();
   }
 
   void setBeaconConnect(bool type) {
@@ -62,13 +77,16 @@ class DevicesProvider with ChangeNotifier {
   }
 
   void becaonScan(bool type) async{
-    print("####becaonScan ${type}");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (type) {
       await BeaconsPlugin.startMonitoring;
     } else {
       await BeaconsPlugin.stopMonitoring;
     }
     _isRunning = type;
+    prefs.setBool("beaconOnOff", type);
+
     notifyListeners();
   }
 
@@ -78,6 +96,7 @@ class DevicesProvider with ChangeNotifier {
 
   void init() async {
     print("#####${Platform.isAndroid}");
+    if (!_isRunning) return;
 
     // 백그라운드에서 실행
     // await BeaconsPlugin.startMonitoring;
@@ -103,7 +122,6 @@ class DevicesProvider with ChangeNotifier {
         if (data.isNotEmpty) {
           _beaconResult = data;
           setBeaconConnect(true);
-          print("###### beacon data: $data");
           try{
             Map beacon = jsonDecode(data);
             beaconData = BeaconModel.fromJson(beacon);
@@ -120,8 +138,6 @@ class DevicesProvider with ChangeNotifier {
     onError: (error) {
       print("##### error: $error");
     });
-
-
 
     if (Platform.isAndroid) {
       BeaconsPlugin.channel.setMethodCallHandler((call) async {
@@ -175,10 +191,8 @@ class DevicesProvider with ChangeNotifier {
         Getx.Get.to(ExhibitDetail(idx));
       }
 
-      becaonScan(false);
-
     }catch(error) {
-      becaonScan(false);
+      // becaonScan(false);
       print("#### beaconContentSelCall error: $error");
     }
     notifyListeners();
@@ -200,10 +214,7 @@ class DevicesProvider with ChangeNotifier {
       Response resp;
       Dio dio = new Dio();
 
-      resp = await dio.get(
-        BASE_URL + '/QRSearch.do',
-        queryParameters: {"QRCode": code}
-      );
+      resp = await dio.get(code);
       Map<String, dynamic> result = jsonDecode(resp.toString());
 
       Getx.Get.to(ExhibitDetail(result['data']['idx']));
@@ -213,12 +224,18 @@ class DevicesProvider with ChangeNotifier {
     }
   }
 
+  void setAutoPlayAudio(bool type) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _autoPlayAudio = type;
+    prefs.setBool("autoPlayAudio", type);
+    notifyListeners();
+  }
+
   //오디오 재생
   void playAudio() async {
-    print("#####_playing $_playing");
     if (_playing) {
       // pause song
-      var  res = await audioPlayer.pause();
+      var res = await audioPlayer.pause();
       if (res == 1) {
         setPlaying(false);
       }

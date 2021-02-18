@@ -5,6 +5,7 @@ import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
+import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -29,8 +30,12 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
 
   IconData playBtn = Icons.play_arrow; // 재성 시 활성 icon
 
-  var _exhibit;
-  var _device;
+  var mqd;
+  var mqw;
+  var mqh;
+  ExhibitProvider _exhibit;
+  DevicesProvider _device;
+  SettingProvider _settingProv;
   bool _loading;
   bool _audioPlayShow = true;
 
@@ -41,13 +46,29 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
       // Provider.of<DevicesProvider>(context, listen: false).playAudio(),
       Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx)
     });
+
+    // 음성지원 안내가 on일 경우 자동 음성 안내 시작
+    Timer(
+      Duration(seconds: 3), () {
+        if (_device.autoPlayAudio && _exhibit.exhibitItem != null) {
+          final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+          _device.setExhibitDetAudio(audio);
+          _device.playAudio();
+        }
+      }
+    );
   }
 
 
   @override
   Widget build(BuildContext context) {
+    mqd = MediaQuery.of(context);
+    mqw = mqd.size.width;
+    mqh = mqd.size.height;
+
     _exhibit = Provider.of<ExhibitProvider>(context);
     _device = Provider.of<DevicesProvider>(context);
+    _settingProv = Provider.of<SettingProvider>(context);
     _loading = _exhibit.loading;
 
     return Scaffold(
@@ -210,7 +231,8 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                         setState(() {
                           _audioPlayShow = true;
                         });
-                        _device.setExhibitDetAudio(_exhibit.exhibitItem['voiceFile']);
+                        final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+                        _device.setExhibitDetAudio(audio);
                       },
                       iconPath: 'assets/images/icon/icon-headset.png',
                     ),
@@ -294,7 +316,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
 
   Widget _bottomButtons() {
     return Container(
-        height: 140,
+        height: mqh * 0.08,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -317,7 +339,8 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                 _imageIconBtn(
                   px: 30.0,
                   onAction: () {
-                    _device.setExhibitDetAudio(_exhibit.exhibitItem['voiceFile']);
+                    final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+                    _device.setExhibitDetAudio(audio);
                     _device.playAudio();
                   },
                   iconPath: (

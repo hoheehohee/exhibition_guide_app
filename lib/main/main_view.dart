@@ -27,6 +27,9 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   var _isSeeGuide = 'init';
+  var mqd;
+  var mqw;
+  var mqh;
   AppLocalizations _locals;
 
   @override
@@ -99,9 +102,11 @@ class _MainViewState extends State<MainView> {
 
   @override
   Widget build(BuildContext context) {
-    final _exhibitProv = Provider.of<ExhibitProvider>(context, listen: false);
     final _deviceProv = Provider.of<DevicesProvider>(context);
     _locals = AppLocalizations.of(context);
+    mqd = MediaQuery.of(context);
+    mqw = mqd.size.width;
+    mqh = mqd.size.height;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -115,18 +120,18 @@ class _MainViewState extends State<MainView> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-              height: 120,
+              height: mqh * 0.17,
               color: Colors.white,
               child: Container(
-                padding: EdgeInsets.only(left: 24, right: 24),
-                margin: EdgeInsets.only(top: 30),
+                padding: EdgeInsets.only(left: mqw * 0.06, right: mqw * 0.05),
+                margin: EdgeInsets.only(top: mqh * 0.05),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
                         'assets/images/logo.png',
-                        width: 116,
+                        width: mqw * 0.3,
                         // height: 63.5,
                         fit: BoxFit.fitWidth
                     ),
@@ -138,7 +143,7 @@ class _MainViewState extends State<MainView> {
                           children: [
                             Image.asset(
                               "assets/images/icon/icon-login.png",
-                              width: 22,
+                              width: mqw * 0.06,
                             ),
                             Text(
                               _locals.main2,
@@ -151,7 +156,7 @@ class _MainViewState extends State<MainView> {
                         },
                       ),
                     ),
-                    SizedBox(width: 10),
+                    SizedBox(width: mqw * 0.04),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -161,19 +166,19 @@ class _MainViewState extends State<MainView> {
                             _deviceProv.isBeaconConnect
                                 ? 'assets/images/icon/icon-bluetooth-on.png'
                                 : 'assets/images/icon/icon-bluetooth-off.png',
-                            width: 45,
+                            width: mqw * 0.11,
                             fit: BoxFit.fill,
                           ),
                           onTap: () {
                             _showMyDialog();
                           },
                         ),
-                        SizedBox(width: 5,),
+                        SizedBox(width: mqw * 0.01,),
                         InkWell(
                           borderRadius: BorderRadius.circular(50),
                           child: Image.asset(
                             'assets/images/button/btn-hamburger.png',
-                            width: 45,
+                            width: mqw * 0.11,
                             fit: BoxFit.fill,
                           ),
                           onTap: () {
@@ -186,200 +191,202 @@ class _MainViewState extends State<MainView> {
                 ),
               )
           ),
-          Expanded(child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/main-back.jpg"),
-                        fit: BoxFit.fitWidth
-                    )
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 40,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                                AppLocalizations.of(context).text1,
-                                style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold)),
-                            // Text(
-                            //     '싶으신가요?',
-                            //     style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
-                          ],
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 40),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomMainButton(
-                              onTap: () async {
-                                Get.offAll(ExhibitListView(
-                                  appBarTitle: _locals.main3,
-                                  contentType: 'B',
-                                  contentTitle: _locals.main3,
-                                  exhibitionType: 'A',
-                                  contentIconPath: "assets/images/icon/icon-main-relics.png",
-                                ));
-                              },
-                              title: _locals.main3,
-                              imgPath: 'assets/images/icon/icon-main-relics.png',
-                            ),
-                            CustomMainButton(
-                              onTap: () {
-                                Get.to(ExhibitHighlightView());
-                              },
-                              title: _locals.main4,
-                              imgPath: 'assets/images/icon/icon-main-highlight.png',
-                            ),
-                            CustomMainButton(
-                              onTap: () async {
-                                Get.offAll(ExhibitListView(
-                                  appBarTitle: _locals.main5,
-                                  contentType: 'A',
-                                  contentTitle: _locals.main5,
-                                  exhibitionType: 'A',
-                                  contentIconPath: "assets/images/icon/icon-main-sangsul.png",
-                                ));
-                              },
-                              title: _locals.main5,
-                              imgPath: 'assets/images/icon/icon-main-sangsul.png',
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomMainButton(
-                              onTap: () {
-                                Get.offAll(
-                                  ExhibitThemeView(
-                                    appBarTitle: _locals.main6,
-                                    location: 'A',
-                                  )
-                                );
-                              },
-                              title: _locals.main6,
-                              imgPath: 'assets/images/icon/icon-main-4f.png',
-                            ),
-                            CustomMainButton(
-                              onTap: () {
-                                Get.offAll(
-                                    ExhibitThemeView(
-                                      appBarTitle: _locals.main7,
-                                      location: 'B',
-                                    )
-                                );
-                              },
-                              title: _locals.main7,
-                              imgPath: 'assets/images/icon/icon-main-5f.png',
-                            ),
-                            CustomMainButton(
-                              onTap: () {
-                                Get.offAll(ExhibitListView(
-                                  appBarTitle: _locals.main8,
-                                  contentType: "",
-                                  contentTitle: "",
-                                  exhibitionType: 'B',
-                                  contentIconPath: "",
-                                ));
-                              },
-                              title: _locals.main8,
-                              imgPath: 'assets/images/icon/icon-main-plan.png',
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomMainButton(
-                              onTap: () {
-                                Get.to(ExhivitDirectionsView());
-                              },
-                              title: _locals.main9,
-                              imgPath: 'assets/images/icon/icon-main-location.png',
-                            ),
-                            CustomMainButton(
-                              onTap: () {
-                                Get.to(NoticeListView());
-                              },
-                              title: _locals.main10,
-                              imgPath: 'assets/images/icon/icon-main-notice.png',
-                            ),
-                            CustomMainButton(
-                              onTap: () {
-                                Get.to(BookingView());
-                              },
-                              title: _locals.main11,
-                              imgPath: 'assets/images/icon/icon-main-docent.png',
-                            ),
-                          ],
-                        ),
-                        Padding(
-                            padding: EdgeInsets.only(top: 20),
-                            child: SizedBox(
-                              width: 87,
-                              child: IconButton(
-                                padding: EdgeInsets.all(0),
-                                icon: Image.asset(
-                                  Provider.of<DevicesProvider>(context).isRunning
-                                    ? 'assets/images/toogle-main-on.png'
-                                    : 'assets/images/toogle-main-off.png',
-                                  width: 200,
-                                  fit: BoxFit.fill,
-                                ),
-                                onPressed: () {
-                                  // _device.becaonScan(!_device.isRunning);
+          Expanded(
+            flex: 1,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/main-back.jpg"),
+                          fit: BoxFit.fitWidth
+                      )
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(height: mqh * 0.04,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                  AppLocalizations.of(context).text1,
+                                  style: TextStyle(fontSize: 21, color: Colors.white, fontWeight: FontWeight.bold)),
+                              // Text(
+                              //     '싶으신가요?',
+                              //     style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(height: mqh * 0.05),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomMainButton(
+                                onTap: () async {
+                                  Get.offAll(ExhibitListView(
+                                    appBarTitle: _locals.main3,
+                                    contentType: 'B',
+                                    contentTitle: _locals.main3,
+                                    exhibitionType: 'A',
+                                    contentIconPath: "assets/images/icon/icon-main-relics.png",
+                                  ));
                                 },
+                                title: _locals.main3,
+                                imgPath: 'assets/images/icon/icon-main-relics.png',
                               ),
-                            )
-                        ),
-                        Text(
-                            _locals.main13,
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
-                        ),
-                        SizedBox(height: 17),
-                        Container(
-                          padding: EdgeInsets.only(top: 21, bottom: 20, left: 10, right: 10),
-                          color: Color(0xff253242).withOpacity(0.7),
-                          child: (
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(_locals.main14, style: TextStyle(fontSize: 15, color: Colors.white)),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    FOOTER_ADDRESS,
-                                    style: TextStyle(fontSize: 12, color: Colors.white),
-                                    textAlign: TextAlign.center,
+                              CustomMainButton(
+                                onTap: () {
+                                  Get.to(ExhibitHighlightView());
+                                },
+                                title: _locals.main4,
+                                imgPath: 'assets/images/icon/icon-main-highlight.png',
+                              ),
+                              CustomMainButton(
+                                onTap: () async {
+                                  Get.offAll(ExhibitListView(
+                                    appBarTitle: _locals.main5,
+                                    contentType: 'A',
+                                    contentTitle: _locals.main5,
+                                    exhibitionType: 'A',
+                                    contentIconPath: "assets/images/icon/icon-main-sangsul.png",
+                                  ));
+                                },
+                                title: _locals.main5,
+                                imgPath: 'assets/images/icon/icon-main-sangsul.png',
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: mqh * 0.01),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomMainButton(
+                                onTap: () {
+                                  Get.offAll(
+                                    ExhibitThemeView(
+                                      appBarTitle: _locals.main6,
+                                      location: 'A',
+                                    )
+                                  );
+                                },
+                                title: _locals.main6,
+                                imgPath: 'assets/images/icon/icon-main-4f.png',
+                              ),
+                              CustomMainButton(
+                                onTap: () {
+                                  Get.offAll(
+                                      ExhibitThemeView(
+                                        appBarTitle: _locals.main7,
+                                        location: 'B',
+                                      )
+                                  );
+                                },
+                                title: _locals.main7,
+                                imgPath: 'assets/images/icon/icon-main-5f.png',
+                              ),
+                              CustomMainButton(
+                                onTap: () {
+                                  Get.offAll(ExhibitListView(
+                                    appBarTitle: _locals.main8,
+                                    contentType: "",
+                                    contentTitle: "",
+                                    exhibitionType: 'B',
+                                    contentIconPath: "",
+                                  ));
+                                },
+                                title: _locals.main8,
+                                imgPath: 'assets/images/icon/icon-main-plan.png',
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: mqh * 0.01),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomMainButton(
+                                onTap: () {
+                                  Get.to(ExhivitDirectionsView());
+                                },
+                                title: _locals.main9,
+                                imgPath: 'assets/images/icon/icon-main-location.png',
+                              ),
+                              CustomMainButton(
+                                onTap: () {
+                                  Get.to(NoticeListView());
+                                },
+                                title: _locals.main10,
+                                imgPath: 'assets/images/icon/icon-main-notice.png',
+                              ),
+                              CustomMainButton(
+                                onTap: () {
+                                  Get.to(BookingView());
+                                },
+                                title: _locals.main11,
+                                imgPath: 'assets/images/icon/icon-main-docent.png',
+                              ),
+                            ],
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(top: mqh  * 0.02),
+                              child: SizedBox(
+                                width: 87,
+                                child: IconButton(
+                                  padding: EdgeInsets.all(0),
+                                  icon: Image.asset(
+                                    Provider.of<DevicesProvider>(context).isRunning
+                                      ? 'assets/images/toogle-main-on.png'
+                                      : 'assets/images/toogle-main-off.png',
+                                    width: mqw * 0.25,
+                                    fit: BoxFit.fill,
                                   ),
-                                  Text(
-                                    FOOTER_COPY,
-                                    style: TextStyle(fontSize: 10, color: Color(0xff5A6B7B)),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                                  onPressed: () {
+                                    _deviceProv.becaonScan(!_deviceProv.isRunning);
+                                  },
+                                ),
                               )
                           ),
-                        )
-                      ],
-                    )
-                  ],
-                )
+                          Text(
+                              _locals.main13,
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
+                          ),
+                          SizedBox(height: 17),
+                          Container(
+                            padding: EdgeInsets.only(top: 21, bottom: 20, left: 10, right: 10),
+                            color: Color(0xff253242).withOpacity(0.7),
+                            child: (
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(_locals.main14, style: TextStyle(fontSize: 15, color: Colors.white)),
+                                    SizedBox(height: mqh * 0.008),
+                                    Text(
+                                      FOOTER_ADDRESS,
+                                      style: TextStyle(fontSize: 12, color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      FOOTER_COPY,
+                                      style: TextStyle(fontSize: 10, color: Color(0xff5A6B7B)),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                )
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  )
+              ),
             ),
-          ),
           )
         ],
       ),

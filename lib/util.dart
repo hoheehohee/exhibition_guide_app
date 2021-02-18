@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // 언어별 텍스트
 String getTextByLanguage(item, String key, String language) {
-
   try {
     final _language = language;
     var l = "";

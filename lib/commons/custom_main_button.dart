@@ -12,9 +12,15 @@ class CustomMainButton extends StatelessWidget {
   final imgPath;
   final title;
 
+  var mqd;
+  var mqw;
+  var mqh;
 
   @override
   Widget build(BuildContext context) {
+    mqd = MediaQuery.of(context);
+    mqw = mqd.size.width;
+    mqh = mqd.size.height;
 
     return InkWell(
       onTap: () {
@@ -23,21 +29,22 @@ class CustomMainButton extends StatelessWidget {
         }
       },
       child: Container(
-        width: 100,
-        height: 100,
+        width: mqw * 0.28,
+        height: mqh * 0.13,
         margin: EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.white.withOpacity(0.8),
             borderRadius: BorderRadius.all(Radius.circular(10))
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(imgPath, width: 47, height: 47, fit: BoxFit.fill,),
+            Image.asset(imgPath, width: mqw * 0.11, height: mqh* 0.05, fit: BoxFit.fill,),
             SizedBox(height: 10,),
             Text(
-                title,
-                style: TextStyle(fontSize: 18, color: Color(0xff546573), fontWeight: FontWeight.w500)
+              title,
+              style: TextStyle(fontSize: 16, color: Color(0xff546573), fontWeight: FontWeight.w500),
+              textAlign: TextAlign.center,
             )
           ],
         ),

@@ -270,7 +270,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
                 // color: Colors.green,
                   borderRadius: BorderRadius.circular((mqw * 0.03)),
                   image: DecorationImage(
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                     colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.25), BlendMode.dstATop),
                     image: new NetworkImage(
                         item.contentsImgFile
