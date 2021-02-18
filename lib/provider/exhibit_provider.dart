@@ -328,7 +328,6 @@ class ExhibitProvider with ChangeNotifier {
       print("#### error: $error");
     }
 
-    print("_bookingRegData.toJson(): ${_bookingRegData.toJson()}");
     notifyListeners();
   }
 

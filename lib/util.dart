@@ -99,3 +99,10 @@ String bookingCheck(BookingRegModel bd) {
 
   return result;
 }
+
+bool getDayCheck(DateTime val) {
+  print("####$val");
+  bool result = true;
+  result = val.day == 22 || val.weekday == 6 ? false : true;
+  return result;
+}

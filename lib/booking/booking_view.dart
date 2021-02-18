@@ -549,19 +549,23 @@ class _BookingViewState extends State<BookingView> {
     final DateTime picked = await showDatePicker(
       context: context,
       helpText: '',
-      initialDate: selectedDate,
       locale: const Locale('ko', 'KR'),
       cancelText: '취소',
       confirmText: '확인',
-      firstDate: DateTime(2021),
-      lastDate: DateTime(2030),
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(Duration(days: 0)),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+      selectableDayPredicate: (DateTime val) => getDayCheck(val),
       builder: (context, child) {
         return Theme(
           data: ThemeData.dark(), // This will change to light theme.
           child: child,
         );
       },
+
     );
+
+    print("####picked: $picked");
     if (picked != null && picked != selectedDate)
       _exhibitProd.setBookingData('applyDate', DateFormat('yyyy-MM-dd').format(picked));
   }
