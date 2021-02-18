@@ -4,6 +4,7 @@ import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../constant.dart';
 import 'custom_image_icon_btn.dart';
@@ -13,6 +14,7 @@ class ExhibitViewBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _device = Provider.of<DevicesProvider>(context);
+    final _locals = AppLocalizations.of(context);
     return Container(
         height: 120,
         child: Column(
@@ -28,7 +30,7 @@ class ExhibitViewBottom extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text("자동전시", style: TextStyle(fontSize: 18, color: Colors.white)),
+                        Text(_locals.hr2, style: TextStyle(fontSize: 14, color: Colors.white)),
                         SizedBox(width: 5,),
                         CustomImageIconBtn(
                           px: 50.0,
@@ -41,7 +43,7 @@ class ExhibitViewBottom extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text("음성지원 안내", style: TextStyle(fontSize: 18, color: Colors.white)),
+                        Text(_locals.hr3, style: TextStyle(fontSize: 14, color: Colors.white), overflow: TextOverflow.ellipsis,),
                         SizedBox(width: 5,),
                         CustomImageIconBtn(
                           px: 50.0,
@@ -68,14 +70,14 @@ class ExhibitViewBottom extends StatelessWidget {
                         },
                       ),
                       _bottomBtn(
-                        title: '전시관 지도',
+                        title: _locals.hr1,
                         iconPath: 'assets/images/icon/icon-map.png',
                         onTapFunc: () {
                           Get.to(ExhibitionMapView());
                         },
                       ),
                       _bottomBtn(
-                        title: '공지사항',
+                        title: _locals.main10,
                         iconPath: 'assets/images/icon/icon-notice.png',
                         onTapFunc: () {},
                       ),

@@ -1,6 +1,7 @@
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
 import 'package:exhibition_guide_app/model/booking_reg_model.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,7 @@ class BookingResultView extends StatelessWidget {
   var mqw;
   var mqh;
   ExhibitProvider _exhibitProv;
+  AppLocalizations _locals;
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +22,14 @@ class BookingResultView extends StatelessWidget {
     mqh = mqd.size.height;
 
     _exhibitProv = Provider.of<ExhibitProvider>(context);
+    _locals = AppLocalizations.of(context);
     BookingRegModel bd = _exhibitProv.bookingRegData;
 
     return Scaffold(
       backgroundColor: Color(0xffE1E2E3),
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(mqd.size.height * 0.07),
-          child: CustomDefaultAppbar(title: '이용예역 신청')
+          child: CustomDefaultAppbar(title: _locals.menu7)
       ),
       bottomNavigationBar: _bottomBtn(),
       body: SingleChildScrollView(
@@ -52,7 +55,7 @@ class BookingResultView extends StatelessWidget {
                         ),
                         SizedBox(width: mqw * 0.03,),
                         Text(
-                            "신청정보 확인",
+                            _locals.apply1,
                             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)
                         )
                       ],
@@ -71,7 +74,7 @@ class BookingResultView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(height: mqh * 0.04,),
-                        Text("신청이 완료되었습니다.", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        Text(_locals.apply2, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                         SizedBox(height: mqh * 0.01,),
                         Text(
                           DateFormat('yyyy.MM.dd HH:mm:ss').format(DateTime.now())
@@ -100,38 +103,38 @@ class BookingResultView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 10),
-                                _bookingInfoItem(title: "예약번호", value: "?????"),
+                                _bookingInfoItem(title: _locals.apply3, value: "?????"),
                                 _bookingInfoItem(
-                                    title: "이용일시",
+                                    title: _locals.apply4,
                                     value: "${getValue(bd.applyDate)} ${getValue(bd.applyTime)}시"
                                 ),
                                 _bookingInfoItem(
-                                    title: "신청자명",
+                                    title: _locals.apply5,
                                     value: getValue(bd.name, nullString: "-")
                                 ),
                                 _bookingInfoItem(
-                                    title: "연락처",
+                                    title: _locals.bk9,
                                     value: getValue(bd.tel, nullString: "-")
                                 ),
                                 _bookingInfoItem(
-                                  title: '단체명',
+                                  title: _locals.apply6,
                                   value: getValue(bd.groupName,  nullString: "-"),
                                 ),
                                 _bookingInfoItem(
-                                    title: '참여인원',
+                                    title: _locals.apply7,
                                     value: getValue(bd.groupName, nullString: '0명')
                                 ),
                                 _bookingInfoItem(
-                                  title: '외국인 구분',
-                                  value: bd.langType == "B" ? "외국인" : "내국인",
+                                  title: _locals.apply8,
+                                  value: bd.langType == "B" ? _locals.bk17 : _locals.bk16,
                                   imgIcon: "assets/images/icon/icon-foreigner.png"
                                 ),
                                 _bookingInfoItem(
-                                  title: "장애여부 구분",
+                                  title: _locals.apply9,
                                   value: obstacleStatus(bd.obstacle),
                                   imgIcon: "assets/images/icon/icon-obstacle.png"
                                 ),
-                                Text("신청대상", style: TextStyle(fontSize: 16, color: Colors.black54, fontWeight: FontWeight.w700)),
+                                Text(_locals.apply10, style: TextStyle(fontSize: 16, color: Colors.black54, fontWeight: FontWeight.w700)),
                                 Text(applyType(bd), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700))
                               ]
                           ),
@@ -186,7 +189,7 @@ class BookingResultView extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: Text('이용신청 완료', style: TextStyle(fontSize: 20, color: Colors.white)),
+                child: Text(_locals.apply11, style: TextStyle(fontSize: 20, color: Colors.white)),
                 onPressed: () {
                 },
               ),
@@ -201,7 +204,7 @@ class BookingResultView extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: Text('신청이용 확인', style: TextStyle(fontSize: 20, color: Colors.white)),
+                  child: Text(_locals.apply12, style: TextStyle(fontSize: 20, color: Colors.white)),
                   onPressed: () {
                   },
                 ),

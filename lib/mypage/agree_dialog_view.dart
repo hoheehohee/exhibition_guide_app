@@ -2,6 +2,7 @@ import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../constant.dart';
@@ -10,6 +11,7 @@ import 'mypage_view.dart';
 class AgreeDialogView extends StatefulWidget {
   final String snsType;
   final String email;
+
   AgreeDialogView(this.snsType, this.email);
 
   @override
@@ -55,11 +57,14 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
     );
   }
 
+  AppLocalizations _locals;
+
   @override
   Widget build(BuildContext context) {
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
     mqh = mqd.size.height;
+    _locals = AppLocalizations.of(context);
 
     return Material(
       type: MaterialType.transparency,
@@ -143,7 +148,7 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
                     });
                   },
                 ),
-                Text("전체동의하기", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))
+                Text(_locals.agree1, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))
               ],
             ),
             Container(
@@ -183,14 +188,14 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("수집항목", style: TextStyle(fontSize: 16)),
+                              Text(_locals.agree2, style: TextStyle(fontSize: 16)),
                               SizedBox(height: 3),
-                              Text("- 이메일", style: TextStyle(fontSize: 13),)
+                              Text("- ${_locals.agree3}", style: TextStyle(fontSize: 13),)
                             ],
                           ),
                         ),
                       ),
-                      Text('[필수]'),
+                      Text(_locals.agree8),
                     ],
                   ),
                   Row(
@@ -216,14 +221,14 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("수집 및 이용 목적", style: TextStyle(fontSize: 16)),
+                              Text(_locals.agree4, style: TextStyle(fontSize: 16)),
                               SizedBox(height: 3),
-                              Text("- 예약신청 및 문의 앱의 원할한 사용을 위한 동의", style: TextStyle(fontSize: 13),)
+                              Text("- ${_locals.agree5}", style: TextStyle(fontSize: 13),)
                             ],
                           ),
                         ),
                       ),
-                      Text('[필수]'),
+                      Text(_locals.agree8),
                     ],
                   ),
                   Row(
@@ -249,14 +254,14 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("보유 및 이용 기간", style: TextStyle(fontSize: 16)),
+                              Text(_locals.agree6, style: TextStyle(fontSize: 16)),
                               SizedBox(height: 3),
-                              Text("- 서비스 탈퇴 시 또는 1년 동안 미이용 시", style: TextStyle(fontSize: 13),)
+                              Text("- ${_locals.agree7}", style: TextStyle(fontSize: 13),)
                             ],
                           ),
                         ),
                       ),
-                      Text('[필수]'),
+                      Text(_locals.agree8),
                     ],
                   )
                 ],
@@ -266,7 +271,7 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("회원가입 동의정책", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))
+                Text(_locals.agree9, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))
               ],
             ),
             SizedBox(height: mqh * 0.02),
@@ -299,9 +304,9 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text("이메일 제3자 동의", style: TextStyle(fontSize: 16)),
+                    child: Text(_locals.agree10, style: TextStyle(fontSize: 16)),
                   ),
-                  Text('[필수]'),
+                  Text(_locals.agree8),
                 ],
               ),
             ),

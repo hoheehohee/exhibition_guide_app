@@ -9,7 +9,7 @@ String getTextByLanguage(item, String key, String language) {
     var l = "";
 
     if (_language == 'en') l = "_eng";
-    else if (_language == 'cn') l = "_chn";
+    else if (_language == 'zh') l = "_chn";
     else if (_language == 'ja') l = "_jpn";
     return item.toJson()[key + l];
 

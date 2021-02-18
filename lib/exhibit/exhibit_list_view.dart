@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../constant.dart';
 import '../util.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExhibitListView extends StatefulWidget {
 
@@ -40,8 +41,11 @@ class _ExhibitListViewState extends State<ExhibitListView> {
   var mqd;
   var mqw;
   var mqh;
-  ExhibitProvider _exhibitProv;
   var _settingProv;
+
+  ExhibitProvider _exhibitProv;
+  AppLocalizations _locals;
+
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -71,6 +75,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
     mqh = mqd.size.height;
     _exhibitProv = Provider.of<ExhibitProvider>(context);
     _settingProv = Provider.of<SettingProvider>(context);
+    _locals = AppLocalizations.of(context);
 
     return Scaffold(
         appBar: _appBar(),
@@ -116,7 +121,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: _contentItem(
                                   _exhibitProv.exhibitContentDataTwo,
-                                title: '상설전시',
+                                title: _locals.main3,
                                 iconPath: 'assets/images/icon/icon-main-sangsul.png'
                               )
                           ),
@@ -128,7 +133,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: _contentItem(
                                   _exhibitProv.exhibitContentDataThree,
-                                title: '전유물',
+                                title: _locals.main2,
                                 iconPath: "assets/images/icon/icon-main-relics.png"
                               )
                           ),
@@ -255,7 +260,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
       result.add(
         InkWell(
           onTap: () {
-            Get.to(ExhibitDetail(item.idx, appbarTitle: '전시유물',));
+            Get.to(ExhibitDetail(item.idx, appbarTitle: _locals.main2,));
           },
           child: Container(
               height: mqh * 0.1,

@@ -1,5 +1,6 @@
 import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -18,21 +19,9 @@ class _BookingViewState extends State<BookingView> {
   var mqw;
   var mqh;
   var timeValue = null;
-  final time = ['09', '10', '11', '12', '13', '14', '15', '16'];
-  List<Map<String, String>> language = [
-    {'title': '한국어', 'value': 'kor'},
-    {'title': '영어', 'value': 'eng'},
-    {'title': '중국어', 'value': 'chn'},
-    {'title': '일본어', 'value': 'jpn'},
-  ];
+  AppLocalizations _locals;
 
-  List<Map<String, String>> obstacle = [
-    {'title': '없음', 'value': '1'},
-    {'title': '시각장애', 'value': '2'},
-    {'title': '청각장애', 'value': '3'},
-    {'title': '지체장애', 'value': '4'},
-    {'title': '기타', 'value': '5'},
-  ];
+  final time = ['09', '10', '11', '12', '13', '14', '15', '16'];
 
   ExhibitProvider _exhibitProd;
 
@@ -52,6 +41,7 @@ class _BookingViewState extends State<BookingView> {
     mqw = mqd.size.width;
     mqh = mqd.size.height;
     _exhibitProd = Provider.of<ExhibitProvider>(context);
+    _locals = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: _appBar(),
@@ -61,6 +51,21 @@ class _BookingViewState extends State<BookingView> {
   }
 
   Widget renderVidew() {
+    List<Map<String, String>> language = [
+      {'title': _locals.bk19, 'value': 'kor'},
+      {'title': _locals.bk20, 'value': 'eng'},
+      {'title': _locals.bk21, 'value': 'chn'},
+      {'title': _locals.bk22, 'value': 'jpn'},
+    ];
+
+    List<Map<String, String>> obstacle = [
+      {'title': '없음', 'value': '1'},
+      {'title': '시각장애', 'value': '2'},
+      {'title': '청각장애', 'value': '3'},
+      {'title': '지체장애', 'value': '4'},
+      {'title': '기타', 'value': '5'},
+    ];
+
     final bookingData = _exhibitProd.bookingRegData;
 
     TextEditingController dateText
@@ -96,7 +101,7 @@ class _BookingViewState extends State<BookingView> {
                         ),
                         SizedBox(width: mqw * 0.03,),
                         Text(
-                            "예약정보 입력",
+                            _locals.bk2,
                             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)
                         )
                       ],
@@ -115,7 +120,7 @@ class _BookingViewState extends State<BookingView> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(bottom: 5),
-                          child: Text('이용날짜 선택', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          child: Text(_locals.bk3, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         ),
                         TextField(
                             cursorColor: Colors.grey,
@@ -130,7 +135,7 @@ class _BookingViewState extends State<BookingView> {
                                 borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
-                              hintText: "이용할 날짜를 선택하세요",
+                              hintText: _locals.bk4,
                             )
                         ),
                       ],
@@ -142,7 +147,7 @@ class _BookingViewState extends State<BookingView> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(bottom: 5),
-                          child: Text('이용시간 선택', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          child: Text(_locals.bk5, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         ),
                         InputDecorator(
                             decoration: InputDecoration(
@@ -153,7 +158,7 @@ class _BookingViewState extends State<BookingView> {
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
                                 value: bookingData.applyTime,
-                                hint: Text('이용시간을 선택하세요.'),
+                                hint: Text(_locals.bk6),
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 iconSize: 20,
                                 isExpanded: true,
@@ -177,7 +182,7 @@ class _BookingViewState extends State<BookingView> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(bottom: 5),
-                              child: Text('신청자명', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                              child: Text(_locals.bk7, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                             ),
                             TextField(
                                 cursorColor: Colors.grey,
@@ -190,7 +195,7 @@ class _BookingViewState extends State<BookingView> {
                                     borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(5.0),
                                   ),
-                                  hintText: "신청자명을 입력하세요.",
+                                  hintText: _locals.bk8,
                                 )
                             ),
                           ],
@@ -202,7 +207,7 @@ class _BookingViewState extends State<BookingView> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(bottom: 5),
-                              child: Text('연락처', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                              child: Text(_locals.bk9, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                             ),
                             TextField(
                                 cursorColor: Colors.grey,
@@ -215,7 +220,7 @@ class _BookingViewState extends State<BookingView> {
                                     borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(5.0),
                                   ),
-                                  hintText: "연락처를 입력하세요.",
+                                  hintText: _locals.bk10,
                                 )
                             ),
                           ],
@@ -227,7 +232,7 @@ class _BookingViewState extends State<BookingView> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(bottom: 5),
-                              child: Text('단체명', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                              child: Text(_locals.bk11, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                             ),
                             TextField(
                                 cursorColor: Colors.grey,
@@ -240,7 +245,7 @@ class _BookingViewState extends State<BookingView> {
                                     borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(5.0),
                                   ),
-                                  hintText: "단체명을 입력하세요.",
+                                  hintText: _locals.bk12,
                                 )
                             ),
                           ],
@@ -252,7 +257,7 @@ class _BookingViewState extends State<BookingView> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(bottom: 5),
-                              child: Text('참여인원', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                              child: Text(_locals.bk13, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                             ),
                             TextField(
                                 cursorColor: Colors.grey,
@@ -267,7 +272,7 @@ class _BookingViewState extends State<BookingView> {
                                     borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(5.0),
                                   ),
-                                  hintText: "참여인원을 입력하세요.",
+                                  hintText: _locals.bk14,
                                 )
                             ),
                           ],
@@ -279,7 +284,7 @@ class _BookingViewState extends State<BookingView> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(bottom: 5),
-                              child: Text('외국인구분', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                              child: Text(_locals.bk15, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                             ),
                             Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -303,7 +308,7 @@ class _BookingViewState extends State<BookingView> {
                                               },
                                             )
                                         ),
-                                        Text('내국인'),
+                                        Text(_locals.bk16),
                                       ]
                                   ),
                                   Expanded(
@@ -326,12 +331,12 @@ class _BookingViewState extends State<BookingView> {
                                                   },
                                                 )
                                             ),
-                                            Text('외국인'),
+                                            Text(_locals.bk17),
                                             Expanded(
                                                 flex: 1,
                                                 child: DropdownButton<String>(
                                                   value: bookingData.lang,
-                                                  hint: Center(child: Text('안내언어')),
+                                                  hint: Center(child: Text(_locals.bk18)),
                                                   icon: Icon(Icons.keyboard_arrow_down),
                                                   iconSize: 24,
                                                   isExpanded: true,
@@ -360,11 +365,11 @@ class _BookingViewState extends State<BookingView> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(bottom: 5),
-                                child: Text('장애여부 구분', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                                child: Text(_locals.bk23, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                               ),
                               DropdownButton<String>(
                                 value: bookingData.obstacle,
-                                hint: Text('장애여부 선택'),
+                                hint: Text(_locals.bk24),
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 iconSize: 20,
                                 isExpanded: true,
@@ -387,30 +392,30 @@ class _BookingViewState extends State<BookingView> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(bottom: 5),
-                                child: Text('신청 대상', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                                child: Text(_locals.bk27, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                               ),
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    _checkBox(title: "유아", value: "type1"),
-                                    _checkBox(title: "초등저학교(1-3)", value: "type2"),
+                                    _checkBox(title: _locals.bk28, value: "type1"),
+                                    _checkBox(title: _locals.bk29, value: "type2"),
                                   ]
                               ),
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    _checkBox(title: "초등저학교(4-6)", value: "type3"),
-                                    _checkBox(title: "중학생", value: "type4"),
+                                    _checkBox(title: _locals.bk30, value: "type3"),
+                                    _checkBox(title: _locals.bk31, value: "type4"),
                                   ]
                               ),
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    _checkBox(title: "고등학생", value: "type5"),
-                                    _checkBox(title: "성인", value: "type6"),
+                                    _checkBox(title: _locals.bk32, value: "type5"),
+                                    _checkBox(title: _locals.bk33, value: "type6"),
                                   ]
                               )
                             ]
@@ -422,7 +427,7 @@ class _BookingViewState extends State<BookingView> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(bottom: 5),
-                                child: Text('개인정보수지이용 동의', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                                child: Text(_locals.bk34, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                               ),
                               Container(
                                 padding: EdgeInsets.all(mqw * 0.03),
@@ -434,9 +439,9 @@ class _BookingViewState extends State<BookingView> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("- 수집항목: [필수] 신청자명, 연락처"),
-                                    Text("- 수집 및 이용 목적: 예약신청 연락 정보 확인"),
-                                    Text("- 보유 및 이용기간: 예약신청을 위해 이용일후 해당정보를 자동으로 파기합니다.")
+                                    Text("- ${_locals.bk35}"),
+                                    Text("- ${_locals.bk36}"),
+                                    Text("- ${_locals.bk37}")
                                   ],
                                 ),
                               )
@@ -456,7 +461,7 @@ class _BookingViewState extends State<BookingView> {
                                         _exhibitProd.setBookingData('isConsent', !_exhibitProd.isConsent);
                                       }
                                   ),
-                                  Text("동의합니다.")
+                                  Text(_locals.bk39)
                                 ]
                             )
                         ),
@@ -476,7 +481,7 @@ class _BookingViewState extends State<BookingView> {
   Widget _appBar() {
     return AppBar(
       backgroundColor: backgroundColor,
-      title: Text("이용예약신청", style: TextStyle(color: Colors.white),),
+      title: Text(_locals.bk1, style: TextStyle(color: Colors.white),),
       leading: CustomImageIconBtn(
         px: 15.0,
         iconPath: "assets/images/button/btn-back.png",
@@ -508,7 +513,7 @@ class _BookingViewState extends State<BookingView> {
               }
             )
           ),
-          Text(title)
+          Expanded(child: Text(title, overflow: TextOverflow.ellipsis,))
         ]
       )
     );
@@ -524,7 +529,7 @@ class _BookingViewState extends State<BookingView> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0),
         ),
-        child: Text('이용신청 완료', style: TextStyle(fontSize: 20, color: Colors.white)),
+        child: Text(_locals.bk39, style: TextStyle(fontSize: 20, color: Colors.white)),
         onPressed: () {
           _exhibitProd.setBookingRegCall();
           // Get.to(

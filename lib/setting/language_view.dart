@@ -1,4 +1,5 @@
 import 'package:exhibition_guide_app/constant.dart';
+import 'package:exhibition_guide_app/provider/locale_provider.dart';
 import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,10 +7,13 @@ import 'package:provider/provider.dart';
 
 class LanguageView extends StatelessWidget {
   SettingProvider _language;
+  LocaleProvider _locale;
   @override
   Widget build(BuildContext context) {
+
     final Color darkBlue = Color.fromARGB(255, 18, 32, 47);
     _language = Provider.of<SettingProvider>(context);
+    _locale = Provider.of<LocaleProvider>(context);
 
     return MaterialApp(
       theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: darkBlue),
@@ -43,7 +47,7 @@ class LanguageView extends StatelessWidget {
                   height: 60,
                   color: Color(0xff365871),
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: _languageItem('中文', 'cn')
+                  child: _languageItem('中文', 'zh')
               ),
               SizedBox(height: 1),
               Container(
@@ -96,6 +100,7 @@ class LanguageView extends StatelessWidget {
           ),
           onPressed: () {
             _language.setLanguage(language);
+            _locale.setLocale(language);
           },
         )
       ],

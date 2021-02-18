@@ -1,3 +1,5 @@
+import 'package:exhibition_guide_app/l10n/l10n.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -5,10 +7,12 @@ class SettingProvider with ChangeNotifier {
   bool _isNetwork = true;
   double _fontSize = 18;
   String _language = 'ko';
+  Locale _locale;
 
   bool get isNetwork => _isNetwork;
   String get language => _language;
   double get fontSize => _fontSize;
+  Locale get locale => _locale;
 
   SettingProvider() {
     defaultLanguage();
@@ -34,6 +38,7 @@ class SettingProvider with ChangeNotifier {
     _language = value;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', _language);
+
     notifyListeners();
   }
 

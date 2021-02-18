@@ -1,7 +1,7 @@
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
 import 'package:exhibition_guide_app/crm/qna_detail.dart';
 import 'package:exhibition_guide_app/crm/qna_write.dart';
-import 'package:exhibition_guide_app/main/main_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:exhibition_guide_app/mypage/faq_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +17,8 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
   var mqw;
   var mqh;
 
+  AppLocalizations _locals;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -29,10 +31,12 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
     mqw = mqd.size.width;
     mqh = mqd.size.height;
 
+    _locals = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(mqd.size.height * 0.07),
-          child: CustomDefaultAppbar(title: '고객센터')
+          child: CustomDefaultAppbar(title: _locals.customer1)
       ),
       body: Container(
         color: Color(0xffE5E6E7),
@@ -57,13 +61,13 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
                         ),
                         SizedBox(width: mqw * 0.03,),
                         Text(
-                            "운영: 평일 오전 09~오루06시",
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)
+                            _locals.customer2,
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: mqh * 0.005),
-                          child: Text("(월요일휴관)", style: TextStyle(fontSize: 13)),
-                        )
+                        // Padding(
+                        //   padding: EdgeInsets.only(top: mqh * 0.005),
+                        //   child: Text("(월요일휴관)", style: TextStyle(fontSize: 13)),
+                        // )
                       ],
                     ),
                   )
@@ -87,7 +91,7 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
                                       Image.asset("assets/images/img-man.png", width: mqh * 0.1,),
                                       SizedBox(height: mqh * 0.04),
                                       Text(
-                                          '코로나19로 인해 고객센터를 잠정적으로\n축소하여 운영 중이오니, 너른 양해부탁드립니다.',
+                                          _locals.customer3,
                                           textAlign: TextAlign.center,
                                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)
                                       ),
@@ -98,11 +102,11 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(10.0),
                                         ),
-                                        child: Text('1:1문의하기', style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600)),
+                                        child: Text(_locals.customer4, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600)),
                                         onPressed: () {
                                           Get.to(
-                                            QnaWrite(),
-                                            // QnaDetail(),
+                                            // QnaWrite(),
+                                            QnaDetail(),
                                             transition: Transition.rightToLeft
                                           );
                                         },

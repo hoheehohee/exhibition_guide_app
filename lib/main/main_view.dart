@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:exhibition_guide_app/guide/guide_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../message.dart';
 
@@ -26,6 +27,7 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   var _isSeeGuide = 'init';
+  AppLocalizations _locals;
 
   @override
   void initState() {
@@ -42,7 +44,7 @@ class _MainViewState extends State<MainView> {
     _isSeeGuide = prefs.getString('isSeeGuide');
 
     // 가이드 화면 노출 설정
-    if(_isSeeGuide.isNull || _isSeeGuide == 'init'){
+    if(_isSeeGuide == null || _isSeeGuide == 'init'){
       Get.off(
         GuideView(),
         transition: Transition.fadeIn
@@ -99,6 +101,7 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     final _exhibitProv = Provider.of<ExhibitProvider>(context, listen: false);
     final _deviceProv = Provider.of<DevicesProvider>(context);
+    _locals = AppLocalizations.of(context);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -138,7 +141,7 @@ class _MainViewState extends State<MainView> {
                               width: 22,
                             ),
                             Text(
-                              "로그인",
+                              _locals.main2,
                               style: TextStyle(fontSize: 18, height: 1.5),
                             ),
                           ],
@@ -203,11 +206,11 @@ class _MainViewState extends State<MainView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                                '오늘은 어떻게 관람하고',
-                                style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
-                            Text(
-                                '싶으신가요?',
-                                style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
+                                AppLocalizations.of(context).text1,
+                                style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold)),
+                            // Text(
+                            //     '싶으신가요?',
+                            //     style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
                           ],
                         )
                       ],
@@ -222,34 +225,34 @@ class _MainViewState extends State<MainView> {
                             CustomMainButton(
                               onTap: () async {
                                 Get.offAll(ExhibitListView(
-                                  appBarTitle: '전시유물',
+                                  appBarTitle: _locals.main3,
                                   contentType: 'B',
-                                  contentTitle: "전시유물",
+                                  contentTitle: _locals.main3,
                                   exhibitionType: 'A',
                                   contentIconPath: "assets/images/icon/icon-main-relics.png",
                                 ));
                               },
-                              title: "전시유물",
+                              title: _locals.main3,
                               imgPath: 'assets/images/icon/icon-main-relics.png',
                             ),
                             CustomMainButton(
                               onTap: () {
                                 Get.to(ExhibitHighlightView());
                               },
-                              title: "하이라이트",
+                              title: _locals.main4,
                               imgPath: 'assets/images/icon/icon-main-highlight.png',
                             ),
                             CustomMainButton(
                               onTap: () async {
                                 Get.offAll(ExhibitListView(
-                                  appBarTitle: '상설전시',
+                                  appBarTitle: _locals.main5,
                                   contentType: 'A',
-                                  contentTitle: "상설전시",
+                                  contentTitle: _locals.main5,
                                   exhibitionType: 'A',
                                   contentIconPath: "assets/images/icon/icon-main-sangsul.png",
                                 ));
                               },
-                              title: "상설전시",
+                              title: _locals.main5,
                               imgPath: 'assets/images/icon/icon-main-sangsul.png',
                             ),
                           ],
@@ -262,37 +265,37 @@ class _MainViewState extends State<MainView> {
                               onTap: () {
                                 Get.offAll(
                                   ExhibitThemeView(
-                                    appBarTitle: '4F 전시실',
+                                    appBarTitle: _locals.main6,
                                     location: 'A',
                                   )
                                 );
                               },
-                              title: "4F 전시실",
+                              title: _locals.main6,
                               imgPath: 'assets/images/icon/icon-main-4f.png',
                             ),
                             CustomMainButton(
                               onTap: () {
                                 Get.offAll(
                                     ExhibitThemeView(
-                                      appBarTitle: '5F 전시실',
+                                      appBarTitle: _locals.main7,
                                       location: 'B',
                                     )
                                 );
                               },
-                              title: "5F 전시실",
+                              title: _locals.main7,
                               imgPath: 'assets/images/icon/icon-main-5f.png',
                             ),
                             CustomMainButton(
                               onTap: () {
                                 Get.offAll(ExhibitListView(
-                                  appBarTitle: "기획전시",
+                                  appBarTitle: _locals.main8,
                                   contentType: "",
                                   contentTitle: "",
                                   exhibitionType: 'B',
                                   contentIconPath: "",
                                 ));
                               },
-                              title: "기획전시",
+                              title: _locals.main8,
                               imgPath: 'assets/images/icon/icon-main-plan.png',
                             ),
                           ],
@@ -305,21 +308,21 @@ class _MainViewState extends State<MainView> {
                               onTap: () {
                                 Get.to(ExhivitDirectionsView());
                               },
-                              title: "오시는",
+                              title: _locals.main9,
                               imgPath: 'assets/images/icon/icon-main-location.png',
                             ),
                             CustomMainButton(
                               onTap: () {
                                 Get.to(NoticeListView());
                               },
-                              title: "공지사항",
+                              title: _locals.main10,
                               imgPath: 'assets/images/icon/icon-main-notice.png',
                             ),
                             CustomMainButton(
                               onTap: () {
                                 Get.to(BookingView());
                               },
-                              title: "도슨트예약",
+                              title: _locals.main11,
                               imgPath: 'assets/images/icon/icon-main-docent.png',
                             ),
                           ],
@@ -344,7 +347,7 @@ class _MainViewState extends State<MainView> {
                             )
                         ),
                         Text(
-                            "자동 전시안내",
+                            _locals.main13,
                             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
                         ),
                         SizedBox(height: 17),
@@ -355,7 +358,7 @@ class _MainViewState extends State<MainView> {
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text('개인정보처리방침', style: TextStyle(fontSize: 15, color: Colors.white)),
+                                  Text(_locals.main14, style: TextStyle(fontSize: 15, color: Colors.white)),
                                   SizedBox(height: 8),
                                   Text(
                                     FOOTER_ADDRESS,

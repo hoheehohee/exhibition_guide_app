@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../main/main_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BookingCheck extends StatelessWidget {
+  AppLocalizations _locals;
+
   @override
   Widget build(BuildContext context) {
+    _locals = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
-          title: Text("이용예약 신청"),
+          title: Text(_locals.menu7),
           leading: Builder(
               builder: (BuildContext context) => (
                   IconButton(
@@ -59,7 +64,7 @@ class BookingCheck extends StatelessWidget {
                     ),
                     Expanded(
                         flex: 1,
-                        child: Text('신청정보 확인', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+                        child: Text(_locals.apply1, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
                     )
                   ]
               )
@@ -75,7 +80,7 @@ class BookingCheck extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(height: 10),
-                        Text('신청이 완료되었습니다.', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(_locals.bk2, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         Text('2020.12.24 17:40:13'),
                         SizedBox(height: 30),
                         Icon(Icons.account_balance_outlined, size: 100, color: Colors.black54),

@@ -1,5 +1,6 @@
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class QnaDetail extends StatefulWidget {
   @override
@@ -10,18 +11,20 @@ class _QnaDetailState extends State<QnaDetail> {
   var mqd;
   var mqw;
   var mqh;
+  AppLocalizations _locals;
 
   @override
   Widget build(BuildContext context) {
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
     mqh = mqd.size.height;
+    _locals = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: Color(0xffEAEBEC),
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(mqd.size.height * 0.07),
-          child: CustomDefaultAppbar(title: '문의글 상세보기')
+          child: CustomDefaultAppbar(title: _locals.qna6)
       ),
       body: Container(
         child: Column(
@@ -35,7 +38,7 @@ class _QnaDetailState extends State<QnaDetail> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("나의 문의글 내용", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                  Text(_locals.qna7, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
                   Text("2020-12-04")
                 ],
               ),
@@ -63,7 +66,7 @@ class _QnaDetailState extends State<QnaDetail> {
                             Image.asset("assets/images/reply-logo.png", width: mqw * 0.2,),
                             SizedBox(width: mqw * 0.03,),
                             Expanded(
-                              child: Text("답변내용", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)
+                              child: Text(_locals.qna8, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)
                             ),
                             Text("2020-12-04")
                           ],
