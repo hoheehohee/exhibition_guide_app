@@ -213,9 +213,9 @@ class _BookingStateViewState extends State<BookingStateView> {
                               status = newValue;
                               setState(() {
                                 status;
-                                // Future.microtask(() => {
-                                //   Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, monthCount)
-                                // });
+                                Future.microtask(() => {
+                                  Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, monthCount)
+                                });
                               });
                             },
                             items: <Map>[

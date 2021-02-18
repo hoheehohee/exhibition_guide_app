@@ -1,5 +1,6 @@
 import 'package:exhibition_guide_app/booking/booking_state_view.dart';
 import 'package:exhibition_guide_app/crm/customer_center_view.dart';
+import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:exhibition_guide_app/model/booking_model.dart';
 import 'package:exhibition_guide_app/provider/mypage_provider.dart';
@@ -19,6 +20,7 @@ class _BookingInfoState extends State<BookingInfo> {
   AppLocalizations _locals;
 
   MyPageProvider _mypage;
+  SocialProvider _social;
 
   @override
   void initState() {
@@ -36,6 +38,7 @@ class _BookingInfoState extends State<BookingInfo> {
     mqw = mqd.size.width;
     mqh = mqd.size.height;
 
+    _social = Provider.of<SocialProvider>(context);
     _mypage = Provider.of<MyPageProvider>(context);
     _locals = AppLocalizations.of(context);
 
@@ -70,8 +73,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                   children: [
                                     Image.asset("assets/images/icon/icon-note.png", width: mqw * 0.05,),
                                     SizedBox(height: 10),
-                                    // Text('예약신청 ${applyCount.applyCount}')
-                                    Text("${_locals.as3} ${_mypage.applyCount.applyCount}")
+                                    Text("${_locals.as3} ${_social.isSocialLogin ? _mypage.applyCount.applyCount : "0"}")
                                   ]
                               )
                           ),
@@ -96,7 +98,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     children: [
                                       Image.asset("assets/images/icon/icon-comment-picture.png", width: mqw * 0.05,),
                                       SizedBox(height: 10),
-                                      Text("${_locals.as4} ${_mypage.applyCount.applyNow}")
+                                      Text("${_locals.as4} ${_social.isSocialLogin  ? _mypage.applyCount.applyNow:"0"}")
                                     ]
                                 )
                             )
@@ -115,7 +117,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     children: [
                                       Image.asset("assets/images/icon/icon-picture-ok.png", width: mqw * 0.05,),
                                       SizedBox(height: 10),
-                                      Text('${_locals.as5} ${_mypage.applyCount.applyEnd}')
+                                      Text('${_locals.as5} ${_social.isSocialLogin ? _mypage.applyCount.applyEnd:"0"}')
                                     ]
                                 )
                             )
@@ -156,7 +158,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text(_locals.as7, textAlign: TextAlign.center),
-                                      Text(_mypage.applyCountLatest.applyCount.toString(), style: TextStyle(color: Color(0xffA48C60)))
+                                      Text(_social.isSocialLogin ? _mypage.applyCountLatest.applyCount.toString() : "0", style: TextStyle(color: Color(0xffA48C60)))
                                     ]
                                 ),
                                 Icon(Icons.arrow_forward_ios, color: Colors.grey),
@@ -165,7 +167,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text(_locals.as8, textAlign: TextAlign.center),
-                                      Text(_mypage.applyCountLatest.applyCount.toString(), style: TextStyle(color: Color(0xffA48C60)))
+                                      Text(_social.isSocialLogin ? _mypage.applyCountLatest.applyNow.toString() : "0", style: TextStyle(color: Color(0xffA48C60)))
                                     ]
                                 ),
                                 Icon(Icons.arrow_forward_ios, color: Colors.grey),
@@ -174,7 +176,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text(_locals.as9, textAlign: TextAlign.center),
-                                      Text(_mypage.applyCountLatest.applyEnd.toString(), style: TextStyle(color: Color(0xffA48C60)))
+                                      Text(_social.isSocialLogin ? _mypage.applyCountLatest.applyEnd.toString() : "0", style: TextStyle(color: Color(0xffA48C60)))
                                     ]
                                 ),
                               ]

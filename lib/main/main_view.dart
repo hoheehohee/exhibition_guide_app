@@ -7,6 +7,7 @@ import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_theme_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_directions_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
+import 'package:exhibition_guide_app/mypage/login_dialog_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
@@ -33,6 +34,7 @@ class _MainViewState extends State<MainView> {
   AppLocalizations _locals;
   DevicesProvider _deviceProv;
   ExhibitProvider _exhibitProv;
+  SocialProvider _social;
 
   @override
   void initState() {
@@ -111,6 +113,7 @@ class _MainViewState extends State<MainView> {
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
     mqh = mqd.size.height;
+    _social = Provider.of<SocialProvider>(context);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -150,13 +153,19 @@ class _MainViewState extends State<MainView> {
                               width: mqw * 0.06,
                             ),
                             Text(
-                              _locals.main2,
+                              _social.isSocialLogin ? "로그아웃":_locals.main2,
                               style: TextStyle(fontSize: 18, height: 1.5),
                             ),
                           ],
                         ),
                         onTap: () {
-                          _showMyDialog();
+                          if(_social.isSocialLogin){
+                            _social.logout();
+                          } else {
+                            Get.dialog(
+                              LoginDialogView(),
+                            );
+                          }
                         },
                       ),
                     ),

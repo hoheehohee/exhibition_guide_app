@@ -2,6 +2,7 @@ import 'package:exhibition_guide_app/booking/booking_check.dart';
 import 'package:exhibition_guide_app/booking/booking_view.dart';
 import 'package:exhibition_guide_app/crm/qna_write.dart';
 import 'package:exhibition_guide_app/mypage/qna_list_view.dart';
+import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,11 +23,15 @@ class _ProfileViewState extends State<ProfileView> {
 
   SocialProvider _social;
   AppLocalizations _locals;
+  MyPageProvider _mypage;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    Future.microtask(() => {
+      Provider.of<MyPageProvider>(context, listen: false).setApplyCount(),
+    });
   }
 
   String getSnsIcon(String snsType) {
@@ -50,7 +55,7 @@ class _ProfileViewState extends State<ProfileView> {
         break;
       case "facebook":
         {
-          icon = "assets/images/facebook_icon.png";
+          icon = "assets/images/facebook_logo.png";
         }
         break;
     }
@@ -121,12 +126,6 @@ class _ProfileViewState extends State<ProfileView> {
           Image.asset(getSnsIcon(_social.snsType), fit: BoxFit.fill,),
           SizedBox(width: mqw * 0.03,),
           Text(_social.email, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          RaisedButton(
-            disabledColor: Colors.red,
-            disabledTextColor: Colors.black,
-            onPressed: () => _social.logout(),
-            child: Text('로그아웃'),
-          )
         ],
       )
     );
@@ -242,6 +241,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _applicationInformation() {
+    _mypage = Provider.of<MyPageProvider>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,7 +265,7 @@ class _ProfileViewState extends State<ProfileView> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('1', style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
+                    Text(_social.isSocialLogin ? _mypage.applyCount.applyCount.toString() : "0", style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
                     SizedBox(height: 10,),
                     Text(_locals.as3, style: TextStyle(fontSize: 13),)
                   ],
@@ -274,7 +274,7 @@ class _ProfileViewState extends State<ProfileView> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('1', style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
+                    Text(_social.isSocialLogin ? _mypage.applyCount.applyNow.toString() : "0", style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
                     SizedBox(height: 10,),
                     Text(_locals.as4, style: TextStyle(fontSize: 13),)
                   ],
@@ -283,7 +283,7 @@ class _ProfileViewState extends State<ProfileView> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('1', style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
+                    Text(_social.isSocialLogin  ? _mypage.applyCount.applyEnd.toString():"0", style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
                     SizedBox(height: 10,),
                     Text(_locals.as8, style: TextStyle(fontSize: 13),)
                   ],
