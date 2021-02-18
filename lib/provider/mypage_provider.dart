@@ -6,6 +6,8 @@ import 'package:exhibition_guide_app/message.dart';
 import 'package:exhibition_guide_app/model/applyCount_model.dart';
 import 'package:exhibition_guide_app/model/booking_list_model.dart';
 import 'package:exhibition_guide_app/model/faq_list_model.dart';
+import 'package:exhibition_guide_app/model/notice_detail_model.dart';
+import 'package:exhibition_guide_app/model/notice_list_model.dart';
 import 'package:exhibition_guide_app/model/qna_list_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,6 +24,9 @@ class MyPageProvider with ChangeNotifier {
   QnaListModel _qnaList = QnaListModel.fromJson({"data": []});
   FaqListModel _faqList = FaqListModel.fromJson({"data": []});
   BookingListModel _bookingList = BookingListModel.fromJson({"data": [], "dataCount": 0});
+  NoticeListModel _noticeList = NoticeListModel.fromJson({"data": []});
+  NoticeDetailModel _noticeDetail;
+  
   ApplyCountModel _applyCount;
   ApplyCountModel _applyCountLatest;
 
@@ -32,6 +37,8 @@ class MyPageProvider with ChangeNotifier {
   QnaListModel get qnaList => _qnaList;
   FaqListModel get faqList => _faqList;
   BookingListModel get bookingList => _bookingList;
+  NoticeListModel get noticeList  => _noticeList;
+  NoticeDetailModel get noticeDetail => _noticeDetail;
   ApplyCountModel get applyCount => _applyCount;
   ApplyCountModel get applyCountLatest => _applyCountLatest;
   get qnaItem => _qnaItem;
@@ -198,6 +205,67 @@ class MyPageProvider with ChangeNotifier {
       notifyListeners();
     }catch(error) {
       print('##### getFaqListSel Error: $error');
+    }
+  }
+
+  // 공지사항 조회
+  Future<void> setNoticeListSel() async {
+    // kor : 한글, eng:영문, jpn:일문, chn:중문
+
+    _loading = true;
+    try{
+      Response resp;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final language = prefs.getString('language');
+      var _lang = "kor";
+
+      if (language == 'en') _lang = "eng";
+      else if (language == "zh") _lang = "chn";
+      else if (language == "ja") _lang = "jpn";
+
+      resp = await dio.get(
+        BASE_URL + "/noticeData.do",
+        queryParameters: {"lang": _lang, "PAGE_INDEX": 1, "PAGE_ROW": 1000}
+      );
+
+      final jsonData = json.decode('$resp');
+      _noticeList = NoticeListModel.fromJson(jsonData);
+      _loading = false;
+
+      notifyListeners();
+    }catch(error) {
+      _loading = false;
+      print("##### setNoticeListSel error: $error");
+    }
+  }
+
+  // 공지사항 상세
+  Future<void> setNoticeDetailSel(int idx) async{
+    _loading = true;
+    try{
+      Response resp;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final language = prefs.getString('language');
+      var _lang = "kor";
+
+      if (language == 'en') _lang = "eng";
+      else if (language == "zh") _lang = "chn";
+      else if (language == "ja") _lang = "jpn";
+
+      resp = await dio.get(
+        BASE_URL + "/noticeDetailData.do",
+        queryParameters: {"boardIdx": idx, "lang": _lang}
+      );
+
+      final jsonData = json.decode('$resp');
+      _noticeDetail = NoticeDetailModel.fromJson(jsonData);
+      _loading = false;
+
+      notifyListeners();
+    }catch(error) {
+      _loading = false;
+      _noticeDetail = null;
+      print("##### setNoticeDetailSel error: $error");
     }
   }
 }
