@@ -177,6 +177,7 @@ class SocialProvider with ChangeNotifier {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('loginId', map["loginID"]);
         await prefs.setString('email', data["email"]);
+        await prefs.setString('snsType', data["snsType"]);
         _email = data["email"];
         _snsType = data["snsType"];
         _isSocialLogin = true;
