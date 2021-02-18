@@ -55,7 +55,7 @@ class _ProfileViewState extends State<ProfileView> {
         break;
       case "facebook":
         {
-          icon = "assets/images/facebook_logo.png";
+          icon = "assets/images/icon-facebook.png";
         }
         break;
     }
@@ -265,7 +265,7 @@ class _ProfileViewState extends State<ProfileView> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(_social.isSocialLogin ? _mypage.applyCount.applyCount.toString() : "0", style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
+                    Text(_social.isSocialLogin && _mypage.applyCount != null ? _mypage.applyCount.applyCount.toString() : "0", style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
                     SizedBox(height: 10,),
                     Text(_locals.as3, style: TextStyle(fontSize: 13),)
                   ],
@@ -274,7 +274,7 @@ class _ProfileViewState extends State<ProfileView> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(_social.isSocialLogin ? _mypage.applyCount.applyNow.toString() : "0", style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
+                    Text(_social.isSocialLogin && _mypage.applyCount != null ? _mypage.applyCount.applyNow.toString() : "0", style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
                     SizedBox(height: 10,),
                     Text(_locals.as4, style: TextStyle(fontSize: 13),)
                   ],
@@ -283,7 +283,7 @@ class _ProfileViewState extends State<ProfileView> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(_social.isSocialLogin  ? _mypage.applyCount.applyEnd.toString():"0", style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
+                    Text(_social.isSocialLogin && _mypage.applyCount != null ? _mypage.applyCount.applyEnd.toString():"0", style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
                     SizedBox(height: 10,),
                     Text(_locals.as8, style: TextStyle(fontSize: 13),)
                   ],
