@@ -8,6 +8,7 @@ import 'package:exhibition_guide_app/exhibit/exhibit_theme_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_directions_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
+import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,6 +32,7 @@ class _MainViewState extends State<MainView> {
   var mqh;
   AppLocalizations _locals;
   DevicesProvider _deviceProv;
+  ExhibitProvider _exhibitProv;
 
   @override
   void initState() {
@@ -104,6 +106,8 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     _locals = AppLocalizations.of(context);
     _deviceProv = Provider.of<DevicesProvider>(context);
+    _exhibitProv = Provider.of<ExhibitProvider>(context);
+
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
     mqh = mqd.size.height;
@@ -270,6 +274,7 @@ class _MainViewState extends State<MainView> {
                             children: [
                               CustomMainButton(
                                 onTap: () {
+                                  _exhibitProv.setMenyType("F4");
                                   Get.offAll(
                                     ExhibitThemeView(
                                       appBarTitle: _locals.main6,
@@ -282,6 +287,7 @@ class _MainViewState extends State<MainView> {
                               ),
                               CustomMainButton(
                                 onTap: () {
+                                  _exhibitProv.setMenyType("F5");
                                   Get.offAll(
                                       ExhibitThemeView(
                                         appBarTitle: _locals.main7,
@@ -294,6 +300,7 @@ class _MainViewState extends State<MainView> {
                               ),
                               CustomMainButton(
                                 onTap: () {
+                                  _exhibitProv.setMenyType("plan");
                                   Get.offAll(ExhibitListView(
                                     appBarTitle: _locals.main8,
                                     contentType: "",

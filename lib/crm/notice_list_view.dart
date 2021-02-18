@@ -40,8 +40,6 @@ class _NoticeListViewState extends State<NoticeListView> {
     _locals = AppLocalizations.of(context);
     _mypageProv = Provider.of<MyPageProvider>(context);
 
-
-
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(mqd.size.height * 0.07),

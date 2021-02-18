@@ -26,6 +26,17 @@ String getContentType(String type) {
   return result;
 }
 
+// 전시물 구분
+Map<String, dynamic> getExhibitType(String type) {
+  Map<String, dynamic> result = {};
+
+  if (type == "A") result = {"title": "상설", "color": 0xffAB8B57};
+  else if (type == "B") result = {"title": "기획", "color": 0xff13687C};
+  else if (type == "plan") result = {"title": "유물", "color": 0xffFF9C00};
+
+  return result;
+}
+
 // value check
 String getValue(String value, {String nullString}) {
   if (value == null || value.isEmpty || value == "") {

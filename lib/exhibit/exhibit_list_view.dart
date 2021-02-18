@@ -43,6 +43,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
   var mqh;
   var _settingProv;
 
+
   ExhibitProvider _exhibitProv;
   AppLocalizations _locals;
 
@@ -122,7 +123,8 @@ class _ExhibitListViewState extends State<ExhibitListView> {
                               children: _contentItem(
                                   _exhibitProv.exhibitContentDataTwo,
                                 title: _locals.main3,
-                                iconPath: 'assets/images/icon/icon-main-sangsul.png'
+                                iconPath: "assets/images/icon/icon-main-relics.png"
+
                               )
                           ),
                         ),
@@ -133,8 +135,8 @@ class _ExhibitListViewState extends State<ExhibitListView> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: _contentItem(
                                   _exhibitProv.exhibitContentDataThree,
-                                title: _locals.main2,
-                                iconPath: "assets/images/icon/icon-main-relics.png"
+                                title: _locals.menu3,
+                                iconPath: 'assets/images/icon/icon-main-sangsul.png'
                               )
                           ),
                         )

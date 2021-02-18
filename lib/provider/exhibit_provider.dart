@@ -14,6 +14,7 @@ import '../message.dart';
 
 
 class ExhibitProvider with ChangeNotifier {
+  final Dio dio = new Dio();
 
   bool _isAudio = false;
   bool _loading = false;
@@ -23,6 +24,7 @@ class ExhibitProvider with ChangeNotifier {
 
   var _language;
   var _exhibitItem = null;
+  String _menuType = "";
 
   ExhibitContentsDataModel _exhibitHighlightDataOne = ExhibitContentsDataModel.fromJson({"data": []});
   ExhibitContentsDataModel _exhibitHighlightDataTwo = ExhibitContentsDataModel.fromJson({"data": []});
@@ -31,6 +33,9 @@ class ExhibitProvider with ChangeNotifier {
   ExhibitContentsDataModel _exhibitContentDataTwo = ExhibitContentsDataModel.fromJson({"data": []});
   ExhibitContentsDataModel _exhibitContentDataThree = ExhibitContentsDataModel.fromJson({"data": []});
   ETM.ExhibitThemeModel _exhibitThemeData = ETM.ExhibitThemeModel.fromJson({"data": []});
+  ETM.ExhibitThemeModel _exhibitAllMenuData = ETM.ExhibitThemeModel.fromJson({"data": []});
+  ETM.ExhibitThemeModel _exhibitAllMenuItems = ETM.ExhibitThemeModel.fromJson({"data": []});
+
 
   BookingRegModel _bookingRegData = BookingRegModel.fromJson({});
 
@@ -52,12 +57,15 @@ class ExhibitProvider with ChangeNotifier {
   List<ExhibitThemeItemModel> get exhibitThemeItem => _exhibitThemeItem;
 
   String get language => _language;
+  String get menuType => _menuType;
   ExhibitContentsDataModel get exhibitHighlightDataOne => _exhibitHighlightDataOne;
   ExhibitContentsDataModel get exhibitHighlightDataTwo => _exhibitHighlightDataTwo;
   ExhibitContentsDataModel get exhibitHighlightDataThree => _exhibitHighlightDataThree;
   ExhibitContentsDataModel get exhibitContentDataOne => _exhibitContentDataOne;
   ExhibitContentsDataModel get exhibitContentDataTwo => _exhibitContentDataTwo;
   ExhibitContentsDataModel get exhibitContentDataThree => _exhibitContentDataThree;
+  ETM.ExhibitThemeModel get exhibitAllMenuData => _exhibitAllMenuData;
+  ETM.ExhibitThemeModel get exhibitAllMenuItems => _exhibitAllMenuItems;
 
   BookingRegModel get bookingRegData => _bookingRegData;
 
@@ -84,6 +92,10 @@ class ExhibitProvider with ChangeNotifier {
     else if (_language == 'ja') l = "_jpn";
 
     return index > -1 ? item.toJson()[key + l] : _exhibitItem[key + l];
+  }
+
+  void setMenyType(String type) {
+    _menuType = type;
   }
 
   void setIsPermanentExhibition() {
@@ -114,7 +126,6 @@ class ExhibitProvider with ChangeNotifier {
     _loading = true;
     init();
     Response resp;
-    Dio dio = new Dio();
 
     try {
       resp = await dio.get(BASE_URL + '/contentsData.do');
@@ -134,8 +145,7 @@ class ExhibitProvider with ChangeNotifier {
     _loading = true;
     init();
     Response resp;
-    Dio dio = new Dio();
-    print("##### idx: ${idx}");
+
     try{
       resp = await dio.get(BASE_URL + '/contentsDataDetail.do', queryParameters: {"idx": idx});
       _exhibitItem = jsonDecode(resp.toString());
@@ -153,7 +163,6 @@ class ExhibitProvider with ChangeNotifier {
     Response respOne;
     Response respTwo;
     Response respThree;
-    Dio dio = new Dio();
 
     try {
       respOne = await dio.get(
@@ -194,7 +203,6 @@ class ExhibitProvider with ChangeNotifier {
     Response respOne;
     Response respTwo;
     Response respThree;
-    Dio dio = new Dio();
 
     try {
       respOne = await dio.get(
@@ -232,7 +240,6 @@ class ExhibitProvider with ChangeNotifier {
     _loading = true;
     init();
     Response resp;
-    Dio dio = new Dio();
 
     try {
       resp = await dio.get(BASE_URL + '/exhibitionData.do', queryParameters: {"location": type});
@@ -241,7 +248,7 @@ class ExhibitProvider with ChangeNotifier {
 
       _exhibitThemeItem = List.generate(_exhibitThemeData.data.length, (index) {
         ETM.Data _data = _exhibitThemeData.data[index];
-        print("###  _data.exhibitionNameEng: ${ _data.exhibitionName}");
+
         return ExhibitThemeItemModel(
           title: _data.exhibitionName,
           titleEng: _data.exhibitionNameEng,
@@ -275,7 +282,6 @@ class ExhibitProvider with ChangeNotifier {
     Response respOne;
     Response respTwo;
     Response respThree;
-    Dio dio = new Dio();
 
     try {
       respOne = await dio.get(
@@ -334,7 +340,6 @@ class ExhibitProvider with ChangeNotifier {
   Future<void> setBookingRegCall() async {
     _loading = true;
     Response resp;
-    Dio dio = new Dio();
 
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -360,7 +365,6 @@ class ExhibitProvider with ChangeNotifier {
 
   Future<void> setBookingDetSelCall(String applyID) async {
     Response resp;
-    Dio dio = new Dio();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final loginID = prefs.getString('loginId');
 
@@ -376,6 +380,56 @@ class ExhibitProvider with ChangeNotifier {
 
     } catch(error) {
       print("##### setBookingDetSelCall error: $error");
+    }
+  }
+
+  Future<void> setExhibitAllListSel() async {
+    print("#### menuType: $_menuType");
+    _loading = true;
+    try{
+      Response resp;
+      Map<String, String> params = {};
+      if (_menuType == "F4") params = {"location": "A", "exhibitionType": "A"};
+      else if (_menuType == "F5") params = {"location": "B", "exhibitionType": "A"};
+      else if (_menuType == "plan") params = {"exhibitionType": "A"};
+
+      resp = await dio.get(
+        BASE_URL + "/exhibitionData.do",
+        queryParameters: params
+      );
+
+      final jsonData = json.decode('{"data": $resp}');
+      _exhibitAllMenuData = ETM.ExhibitThemeModel.fromJson(jsonData);
+
+      final code = _exhibitAllMenuData.data[0].exhibitionCode;
+      if (code != null && code.isNotEmpty) {
+        setExhibitAllMenuItemsSel(code);
+      }
+      _loading = false;
+
+      notifyListeners();
+    }catch(error) {
+      _loading = false;
+      print("##### setExhibitAllListSel error: $error");
+    }
+  }
+
+  Future<void> setExhibitAllMenuItemsSel(String code) async {
+    _loading = true;
+    try{
+      Response resp;
+      resp = await dio.get(
+          BASE_URL + "/exhibitionData.do",
+          queryParameters: {"exhibitionCode": code}
+      );
+
+      final jsonData = json.decode('{"data": $resp}');
+      _exhibitAllMenuItems = ETM.ExhibitThemeModel.fromJson(jsonData);
+      _loading = false;
+      notifyListeners();
+    }catch(error) {
+      _loading = false;
+      print("##### setExhibitAllMenuItemsSel error: $error");
     }
   }
 }

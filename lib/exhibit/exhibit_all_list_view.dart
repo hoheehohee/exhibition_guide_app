@@ -1,29 +1,51 @@
 import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
+import 'package:exhibition_guide_app/model/exhibit_theme_model.dart' as ETM;
+import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../constant.dart';
 import 'exhibit_items.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class ExhibitAllListView extends StatelessWidget {
+class ExhibitAllListView extends StatefulWidget {
 
+  @override
+  _ExhibitAllListViewState createState() => _ExhibitAllListViewState();
+}
+
+class _ExhibitAllListViewState extends State<ExhibitAllListView> {
   var mqd;
   var mqw;
   var mqh;
 
+  AppLocalizations _locals;
+  ExhibitProvider _exhibitProv;
   final List<String> _categoryList = ['전시 카테고리1', '전시 카테고리2', '전시 카테고리3', '전시 카테고리4', '전시 카테고리5'];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() {
+      Provider.of<ExhibitProvider>(context, listen: false).setExhibitAllListSel();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
     mqh = mqd.size.height;
+    _locals = AppLocalizations.of(context);
+    _exhibitProv = Provider.of<ExhibitProvider>(context);
 
     return Scaffold(
       appBar: _appBar(),
       body: Container(
         child: DefaultTabController(
-          length: _categoryList.length,
+          length: _exhibitProv.exhibitAllMenuData.data.length,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,7 +79,7 @@ class ExhibitAllListView extends StatelessWidget {
   Widget _appBar() {
     return AppBar(
       backgroundColor: backgroundColor,
-      title: Text("전시물 선택", style: TextStyle(color: Colors.white),),
+      title: Text(_locals.el4, style: TextStyle(color: Colors.white),),
       leading: CustomImageIconBtn(
         px: 15.0,
         iconPath: "assets/images/button/btn-cancel.png",
@@ -68,27 +90,30 @@ class ExhibitAllListView extends StatelessWidget {
     );
   }
 
-  // 전시 카테고리 tab 목록
   Widget _exhibitCategoryTabList(BuildContext context) {
     return TabBar(
-        isScrollable: true,
-        indicatorWeight: mqw * 0.01,
-        unselectedLabelColor: Colors.black.withOpacity(0.3),
-        indicatorColor: Color(0xff956E2C),
-        tabs: _tabItems(context, _categoryList)
+      isScrollable: true,
+      indicatorWeight: mqw * 0.01,
+      unselectedLabelColor: Colors.black.withOpacity(0.3),
+      indicatorColor: Color(0xff956E2C),
+      tabs: _tabItems(context, _exhibitProv.exhibitAllMenuData),
+      onTap: (index) {
+        final code = _exhibitProv.exhibitAllMenuData.data[index].exhibitionCode;
+        _exhibitProv.setExhibitAllMenuItemsSel(code);
+      }
     );
   }
-  List<Widget> _tabItems(BuildContext context, List<String> _categoryList) {
+
+  List<Widget> _tabItems(BuildContext context, ETM.ExhibitThemeModel _categoryList) {
     List<Widget> items = [];
-    for(var i = 0; i < _categoryList.length; i++) {
+    for(var i = 0; i < _categoryList.data.length; i++) {
       items.add(
-          Center(child: Text(_categoryList[i], style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)))
+          Center(child: Text(_categoryList.data[i].exhibitionName, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)))
       );
     }
     return items;
   }
 
-  // 전시층, 전시 카테고리 title
   Widget _exhibitCategoryTitle() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -108,5 +133,4 @@ class ExhibitAllListView extends StatelessWidget {
       ],
     );
   }
-
 }
