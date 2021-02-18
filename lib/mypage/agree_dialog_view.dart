@@ -70,7 +70,7 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
       type: MaterialType.transparency,
       child: Container(
         padding: EdgeInsets.all(20),
-        margin: EdgeInsets.only(top: 50),
+        margin: EdgeInsets.only(top: 30),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -267,7 +267,7 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
                 ],
               ),
             ),
-            SizedBox(height: mqh * 0.05),
+            SizedBox(height: mqh * 0.03),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

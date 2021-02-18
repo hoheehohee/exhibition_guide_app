@@ -55,10 +55,12 @@ class DevicesProvider with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final deacon = prefs.getBool("beaconOnOff");
     final audio = prefs.getBool("autoPlayAudio");
-    _isRunning = deacon;
-    _autoPlayAudio = audio;
-    becaonScan(deacon);
-    setAutoPlayAudio(audio);
+
+    _isRunning = deacon == null ? false : deacon;
+    _autoPlayAudio = audio == null ? false : audio;
+
+    becaonScan(_isRunning);
+    setAutoPlayAudio(_autoPlayAudio);
   }
 
   void setIsRunning(bool running) {
@@ -78,14 +80,13 @@ class DevicesProvider with ChangeNotifier {
 
   void becaonScan(bool type) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    prefs.setBool("beaconOnOff", type);
     if (type) {
       await BeaconsPlugin.startMonitoring;
     } else {
       await BeaconsPlugin.stopMonitoring;
     }
     _isRunning = type;
-    prefs.setBool("beaconOnOff", type);
 
     notifyListeners();
   }
@@ -95,7 +96,7 @@ class DevicesProvider with ChangeNotifier {
   }
 
   void init() async {
-    print("#####${Platform.isAndroid}");
+    print("#####Platform.isAndroid: ${Platform.isAndroid}");
     if (!_isRunning) return;
 
     // 백그라운드에서 실행
@@ -118,7 +119,6 @@ class DevicesProvider with ChangeNotifier {
 
     // UUID에 맞는 비콘 연결
     beaconEventsController.stream.listen((data) {
-      print("###### beacon data: $data");
         if (data.isNotEmpty) {
           _beaconResult = data;
           setBeaconConnect(true);
@@ -272,6 +272,7 @@ class DevicesProvider with ChangeNotifier {
   // 전시물 상세 동영상 지정
   void setExhibitDetVideo(String url) {
     List<BetterPlayerDataSource> temp = [];
+
     temp.add(
       BetterPlayerDataSource(
           BetterPlayerDataSourceType.network,

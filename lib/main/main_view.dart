@@ -8,7 +8,6 @@ import 'package:exhibition_guide_app/exhibit/exhibit_theme_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_directions_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
-import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,6 +30,7 @@ class _MainViewState extends State<MainView> {
   var mqw;
   var mqh;
   AppLocalizations _locals;
+  DevicesProvider _deviceProv;
 
   @override
   void initState() {
@@ -102,8 +102,8 @@ class _MainViewState extends State<MainView> {
 
   @override
   Widget build(BuildContext context) {
-    final _deviceProv = Provider.of<DevicesProvider>(context);
     _locals = AppLocalizations.of(context);
+    _deviceProv = Provider.of<DevicesProvider>(context);
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
     mqh = mqd.size.height;
@@ -341,7 +341,7 @@ class _MainViewState extends State<MainView> {
                                 child: IconButton(
                                   padding: EdgeInsets.all(0),
                                   icon: Image.asset(
-                                    Provider.of<DevicesProvider>(context).isRunning
+                                    _deviceProv.isRunning
                                       ? 'assets/images/toogle-main-on.png'
                                       : 'assets/images/toogle-main-off.png',
                                     width: mqw * 0.25,

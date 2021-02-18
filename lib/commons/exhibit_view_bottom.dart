@@ -1,4 +1,4 @@
-import 'package:exhibition_guide_app/guide/exhibition_directions_view.dart';
+import 'package:exhibition_guide_app/crm/notice_list_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +92,9 @@ class ExhibitViewBottom extends StatelessWidget {
                       _bottomBtn(
                         title: _locals.main10,
                         iconPath: 'assets/images/icon/icon-notice.png',
-                        onTapFunc: () {},
+                        onTapFunc: () {
+                          Get.to(NoticeListView());
+                        },
                       ),
                     ]
                 )

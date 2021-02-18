@@ -6,6 +6,7 @@ import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:exhibition_guide_app/provider/setting_provider.dart';
+import 'package:exhibition_guide_app/setting/language_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -240,7 +241,9 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                       px: 40.0,
                       onAction: () async {
                         _device.stopAudio();
-                        await _device.setExhibitDetVideo(_exhibit.exhibitItem['videoFile']);
+                        final video = _exhibit.getTextByLanguage(-1, 'videoFile');
+                        print("##### video: $video");
+                        await _device.setExhibitDetVideo(video);
                         Get.to(ExhibitVideoView());
                       },
                       iconPath: 'assets/images/icon/icon-movie.png',
@@ -271,7 +274,9 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                           ),
                           _imageIconBtn(
                             px: 40.0,
-                            onAction: () {},
+                            onAction: () {
+                              Get.off(LanguageView(idx: widget.idx));
+                            },
                             iconPath: 'assets/images/icon/icon-type.png'
                           )
                         ]
@@ -316,7 +321,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
 
   Widget _bottomButtons() {
     return Container(
-        height: mqh * 0.08,
+        height: mqh * 0.09,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,

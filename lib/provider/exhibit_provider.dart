@@ -369,9 +369,7 @@ class ExhibitProvider with ChangeNotifier {
         BASE_URL + "/applyDetailData.do",
         queryParameters: {"applyID": applyID, "loginID": loginID},
       );
-      print("######## result11");
       final result = json.decode(resp.toString());
-      print("######## result: $result");
       _bookingRegData = BookingRegModel.fromJson(result);
 
       Getx.Get.offAll(BookingResultView());

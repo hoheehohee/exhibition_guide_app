@@ -1,4 +1,5 @@
 import 'package:exhibition_guide_app/constant.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_detail.dart';
 import 'package:exhibition_guide_app/provider/locale_provider.dart';
 import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,14 @@ import 'package:provider/provider.dart';
 class LanguageView extends StatelessWidget {
   SettingProvider _language;
   LocaleProvider _locale;
+  final idx;
+
+  LanguageView({
+    Key key,
+    this.idx,
+  });
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -78,7 +87,11 @@ class LanguageView extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.arrow_back_ios),
                   onPressed: () {
-                    Get.back();
+                    if (idx != null) {
+                      Get.off(ExhibitDetail(idx));
+                    } else {
+                      Get.back();
+                    }
                   },
                 )
             )

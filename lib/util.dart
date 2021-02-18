@@ -66,3 +66,25 @@ String applyType(BookingRegModel bd) {
   if (result.isNotEmpty) result = result.substring(1, result.length - 2);
   return result;
 }
+
+// 이용예역신청 value check
+String bookingCheck(BookingRegModel bd) {
+  var result = "";
+  bd.toJson().forEach((key, value) {
+    if (value == null || value == "") {
+      switch(key) {
+        case 'applyDate': result = "이용날짜를 입력하세요."; break;
+        case 'applyTime': result = "이용시간을 입력하세요."; break;
+        case 'name': result = "신청자명을 입력하세요."; break;
+        case 'tel': result = "연락처를 입력하세요."; break;
+        case 'langType': result = "외국인 구분을 선택하세요."; break;
+        case 'obstacle': result = "장애여부를 선택하세요."; break;
+        case '': result = " 입력하세요."; break;
+        case '': result = " 입력하세요."; break;
+
+      }
+    }
+  });
+
+  return result;
+}

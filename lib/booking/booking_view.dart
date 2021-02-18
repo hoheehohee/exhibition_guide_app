@@ -1,5 +1,6 @@
 import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
+import 'package:exhibition_guide_app/util.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -461,7 +462,7 @@ class _BookingViewState extends State<BookingView> {
                                         _exhibitProd.setBookingData('isConsent', !_exhibitProd.isConsent);
                                       }
                                   ),
-                                  Text(_locals.bk39)
+                                  Text(_locals.bk38)
                                 ]
                             )
                         ),
@@ -531,10 +532,14 @@ class _BookingViewState extends State<BookingView> {
         ),
         child: Text(_locals.bk39, style: TextStyle(fontSize: 20, color: Colors.white)),
         onPressed: () {
-          _exhibitProd.setBookingRegCall();
-          // Get.to(
-          //     BookingCheck()
-          // );
+          final result = bookingCheck(_exhibitProd.bookingRegData);
+          if (result != "") {
+            _customDialog(result);
+          } else if (!_exhibitProd.isConsent) {
+            _customDialog("개인정보수집이용에 동의해주세요");
+          } else {
+            _exhibitProd.setBookingRegCall();
+          }
         },
       )
     );
@@ -559,5 +564,26 @@ class _BookingViewState extends State<BookingView> {
     );
     if (picked != null && picked != selectedDate)
       _exhibitProd.setBookingData('applyDate', DateFormat('yyyy-MM-dd').format(picked));
+  }
+
+  void _customDialog(String result) {
+    Get.defaultDialog(
+      title: "알림",
+      titleStyle: TextStyle(),
+      middleText: result,
+      confirm: FlatButton(
+          minWidth: double.infinity,
+          onPressed: () {
+            Get.back();
+          },
+          child: RaisedButton(
+            color: Color(0xff293F52),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Text("확인", style: TextStyle(fontSize: 18, color: Colors.white)),
+          )
+      ),
+    );
   }
 }
