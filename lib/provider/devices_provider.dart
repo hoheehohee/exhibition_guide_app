@@ -82,7 +82,12 @@ class DevicesProvider with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("beaconOnOff", type);
     if (type) {
-      await BeaconsPlugin.startMonitoring;
+      if (Platform.isAndroid) {
+        // 백그라운드에서 실행
+        init();
+      } else {
+        await BeaconsPlugin.startMonitoring;
+      }
     } else {
       await BeaconsPlugin.stopMonitoring;
     }

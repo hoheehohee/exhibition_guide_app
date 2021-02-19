@@ -15,6 +15,7 @@
     "main12": "Personal Inquiries",
     "main13": "Automated Guide System",
     "main14": "Privacy Policy",
+    "main15": "LogOut",
 
     "guide1":	"Announcements regarding the National Memorial Museum of Forced Mobilization under Japanese Occupation App",
     "guide2":	"Please put on earphones within the museum.",
@@ -189,6 +190,7 @@
     "@main12": { "description": "" },
     "@main13": { "description": "" },
     "@main14": { "description": "" },
+    "@main15": { "description": "" },
 
     "@guide1":	{ "description": "" },
     "@guide2":	{ "description": "" },
