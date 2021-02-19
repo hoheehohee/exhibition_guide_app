@@ -152,12 +152,14 @@ class SocialProvider with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String loginId = prefs.getString('loginId');
     String email = prefs.getString('email');
+    String snsType = prefs.getString('snsType');
 
     if (loginId == null || loginId.isEmpty) {
       _isSocialLogin = false;
     } else {
       _isSocialLogin = true;
       _email = email;
+      _snsType = snsType;
     }
     notifyListeners();
   }

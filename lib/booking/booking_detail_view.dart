@@ -20,7 +20,7 @@ class _BookingDetailViewState extends State<BookingDetailView> {
       backgroundColor: Color(0xffE9E9E9),
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(mqd.size.height * 0.07),
-          child: CustomDefaultAppbar(title: '이용예역 신청')
+          child: CustomDefaultAppbar(title: '이용예약 신청')
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,

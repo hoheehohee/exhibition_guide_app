@@ -158,7 +158,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text(_locals.as7, textAlign: TextAlign.center),
-                                      Text(_social.isSocialLogin ? _mypage.applyCountLatest.applyCount.toString() : "0", style: TextStyle(color: Color(0xffA48C60)))
+                                      Text(_social.isSocialLogin && _mypage.applyCountLatest != null ? _mypage.applyCountLatest.applyCount.toString() : "0", style: TextStyle(color: Color(0xffA48C60)))
                                     ]
                                 ),
                                 Icon(Icons.arrow_forward_ios, color: Colors.grey),
@@ -167,7 +167,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text(_locals.as8, textAlign: TextAlign.center),
-                                      Text(_social.isSocialLogin ? _mypage.applyCountLatest.applyNow.toString() : "0", style: TextStyle(color: Color(0xffA48C60)))
+                                      Text(_social.isSocialLogin && _mypage.applyCountLatest != null ? _mypage.applyCountLatest.applyNow.toString() : "0", style: TextStyle(color: Color(0xffA48C60)))
                                     ]
                                 ),
                                 Icon(Icons.arrow_forward_ios, color: Colors.grey),
@@ -176,7 +176,7 @@ class _BookingInfoState extends State<BookingInfo> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children:[
                                       Text(_locals.as9, textAlign: TextAlign.center),
-                                      Text(_social.isSocialLogin ? _mypage.applyCountLatest.applyEnd.toString() : "0", style: TextStyle(color: Color(0xffA48C60)))
+                                      Text(_social.isSocialLogin && _mypage.applyCountLatest != null ? _mypage.applyCountLatest.applyEnd.toString() : "0", style: TextStyle(color: Color(0xffA48C60)))
                                     ]
                                 ),
                               ]

@@ -153,7 +153,7 @@ class _MainViewState extends State<MainView> {
                               width: mqw * 0.06,
                             ),
                             Text(
-                              _social.isSocialLogin ? "로그아웃":_locals.main2,
+                              _social.isSocialLogin ? _locals.main15:_locals.main2,
                               style: TextStyle(fontSize: 18, height: 1.5),
                             ),
                           ],
