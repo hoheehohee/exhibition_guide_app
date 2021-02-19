@@ -15,6 +15,7 @@ class BookingRegModel {
   String applyDate;
   String applyTime;
   String loginID;
+  String applyNumber;
 
   BookingRegModel(
       {this.name,
@@ -32,7 +33,9 @@ class BookingRegModel {
         this.obstacle,
         this.applyDate,
         this.applyTime,
-        this.loginID});
+        this.loginID,
+        this.applyNumber
+      });
 
   BookingRegModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -51,6 +54,7 @@ class BookingRegModel {
     applyDate = json['applyDate'];
     applyTime = json['applyTime'];
     loginID = json['loginID'];
+    applyNumber = json['applyNumber'];
   }
 
   Map<String, dynamic> toJson() {
@@ -71,6 +75,7 @@ class BookingRegModel {
     data['applyDate'] = this.applyDate;
     data['applyTime'] = this.applyTime;
     data['loginID'] = this.loginID;
+    data['applyNumber'] = this.applyNumber;
     return data;
   }
 }

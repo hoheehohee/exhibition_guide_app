@@ -145,13 +145,13 @@ class MyPageProvider with ChangeNotifier {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String loginId = prefs.getString('loginId');
       // String loginId = "3se61vr220cidol826d5";
+      var queryParameters =  {"loginID": loginId,"PAGE_INDEX": 1,"PAGE_ROW": 100,"applyStatus":statusGubun};
+      if(status == 0){
+        queryParameters = {"loginID": loginId,"PAGE_INDEX": 1,"PAGE_ROW": 100};
+      }
 
       if(loginId != null) {
-        resp = await dio.get(BASE_URL + '/applyListData.do', queryParameters: {
-          "loginID": loginId,
-          "PAGE_INDEX": 1,
-          "PAGE_ROW": 100
-        });
+        resp = await dio.get(BASE_URL + '/applyListData.do', queryParameters: queryParameters);
         final jsonData = json.decode("$resp");
         print("######## $resp");
         _bookingList = BookingListModel.fromJson(jsonData);

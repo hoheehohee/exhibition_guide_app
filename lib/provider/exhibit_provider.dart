@@ -354,7 +354,6 @@ class ExhibitProvider with ChangeNotifier {
 
       if (result["state"] == 'Y') setBookingDetSelCall(result["applyID"]);
       _loading = false;
-      setBookingDetSelCall("20");
 
     }catch(error) {
       _loading = false;
@@ -362,7 +361,7 @@ class ExhibitProvider with ChangeNotifier {
     }
   }
 
-  Future<void> setBookingDetSelCall(String applyID) async {
+  Future<void> setBookingDetSelCall(int applyID) async {
     Response resp;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final loginID = prefs.getString('loginId');
