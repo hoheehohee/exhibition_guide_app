@@ -81,12 +81,20 @@ class DevicesProvider with ChangeNotifier {
   void becaonScan(bool type) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("beaconOnOff", type);
+    _isRunning = type;
+
     if (type) {
-      await BeaconsPlugin.startMonitoring;
+      if (Platform.isAndroid) {
+        init();
+      } else {
+        await BeaconsPlugin.startMonitoring;
+      }
     } else {
       await BeaconsPlugin.stopMonitoring;
+      if (Platform.isAndroid) {
+        await BeaconsPlugin.runInBackground(false);
+      }
     }
-    _isRunning = type;
 
     notifyListeners();
   }
@@ -97,6 +105,7 @@ class DevicesProvider with ChangeNotifier {
 
   void init() async {
     print("#####Platform.isAndroid: ${Platform.isAndroid}");
+
     if (!_isRunning) return;
 
     // 백그라운드에서 실행
@@ -104,7 +113,6 @@ class DevicesProvider with ChangeNotifier {
     // await BeaconsPlugin.runInBackground(true);
 
     if (Platform.isAndroid) {
-      // 백그라운드에서 실행
       await BeaconsPlugin.startMonitoring;
       await BeaconsPlugin.runInBackground(true);
 
@@ -112,13 +120,14 @@ class DevicesProvider with ChangeNotifier {
           title: "Need Location Permission",
           message: "This app collects location data to work with beacons.");
     }
-    await BeaconsPlugin.listenToBeacons(beaconEventsController);
 
+    await BeaconsPlugin.listenToBeacons(beaconEventsController);
     // 비콘 정보
     await BeaconsPlugin.addRegion("", "FDA50693-A4E2-4FB1-AFCF-C6EB07647825");
 
     // UUID에 맞는 비콘 연결
     beaconEventsController.stream.listen((data) {
+        // print("##########beaconEventsController: $data");
         if (data.isNotEmpty) {
           _beaconResult = data;
           setBeaconConnect(true);
