@@ -194,6 +194,9 @@
     "etc9":"Application approval",
     "etc10":"End of use",
     "etc11":"Cancellation of application",
+    "etc12":"Canceled",
+    "etc13":"There was no cancellation",
+    "etc14":"All exhibition commentary, salseong exhibition hall, exhibits, other/planned exhibitions",
 
     "@main1": { "description": "" },
     "@main2": { "description": "" },
@@ -387,6 +390,9 @@
     "@etc8": { "description": "" },
     "@etc9": { "description": "" },
     "@etc10": { "description": "" },
-    "@etc11": { "description": "" }
+    "@etc11": { "description": "" },
+    "@etc12": { "description": "" },
+    "@etc13": { "description": "" },
+    "@etc14": { "description": "" }
 
 }

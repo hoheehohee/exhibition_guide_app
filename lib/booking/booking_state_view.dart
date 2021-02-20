@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../util.dart';
 import 'booking_modify.dart';
 import 'booking_view.dart';
 
@@ -302,9 +303,9 @@ class _BookingStateViewState extends State<BookingStateView> {
                                               onTap: () async{
                                                 var state = await _mypage.setApplyCancel(_mypage.bookingList.data[index].applyID);
                                                 if(state == "Y"){
-                                                  _showMyDialog("취소되었습니다.");
+                                                  g_showMyDialog(_locals.etc12, context);
                                                 }else{
-                                                  _showMyDialog("취소가 되지 않았습니다.");
+                                                  g_showMyDialog(_locals.etc13, context);
                                                 }
                                               },
                                               // 신청 취소
@@ -372,7 +373,7 @@ class _BookingStateViewState extends State<BookingStateView> {
                       Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
-                          '전체 전시해설, 살성전시실, 전시유물, 기타/기획전',
+                          _locals.etc14,
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black54),
                         ),
                       )
