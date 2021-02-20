@@ -76,7 +76,9 @@ class _ExhibitListViewState extends State<ExhibitListView> {
       return _locals.menu3;
     } else if(title == "기획전시"){
       return _locals.menu4;
-    } else {
+    } else if(title == "전시물"){
+      return _locals.main5;
+    }else {
       return "";
     }
   }
