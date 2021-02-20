@@ -246,9 +246,9 @@ class _MainViewState extends State<MainView> {
                               CustomMainButton(
                                 onTap: () async {
                                   Get.to(ExhibitListView(
-                                    appBarTitle: _locals.main3,
+                                    appBarTitle: "전시유물",
                                     contentType: 'B',
-                                    contentTitle: _locals.main3,
+                                    contentTitle: "전시유물",
                                     exhibitionType: 'A',
                                     contentIconPath: "assets/images/icon/icon-main-relics.png",
                                   ));
@@ -266,9 +266,9 @@ class _MainViewState extends State<MainView> {
                               CustomMainButton(
                                 onTap: () async {
                                   Get.to(ExhibitListView(
-                                    appBarTitle: _locals.main5,
+                                    appBarTitle: "전시물",
                                     contentType: 'A',
-                                    contentTitle: _locals.main5,
+                                    contentTitle: "전시물",
                                     exhibitionType: 'A',
                                     contentIconPath: "assets/images/icon/icon-main-sangsul.png",
                                   ));
@@ -287,7 +287,7 @@ class _MainViewState extends State<MainView> {
                                   _exhibitProv.setMenyType("F4");
                                   Get.to(
                                     ExhibitThemeView(
-                                      appBarTitle: _locals.main6,
+                                      appBarTitle: "4F 전시실",
                                       location: 'A',
                                     )
                                   );

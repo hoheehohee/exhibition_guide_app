@@ -70,15 +70,19 @@ class _ExhibitListViewState extends State<ExhibitListView> {
   }
 
   String getTitle(String title){
-    if(title == "전시유물"){
+    if(title == "전시유물" || title == "Relics" || title == "展示遺物" || title == "展示遺物" || title == "展示文物" ){
       return _locals.menu2;
-    } else if(title == "상설전시"){
+    } else if(title == "상설전시" || title == "Permanent Exhibition" || title == "常設展示" || title == "常设展览" ){
       return _locals.menu3;
-    } else if(title == "기획전시"){
+    } else if(title == "기획전시" || title == "Featured Exhibition" || title == "企画展示" || title == "策划展览" ){
       return _locals.menu4;
-    } else if(title == "전시물"){
+    } else if(title == "전시물" || title == "Exhibits" || title == "展示物" || title == "展品" ){
       return _locals.main5;
-    }else {
+    } else if(title == "4F 전시실" || title == "4th Floor" || title == "４Ｆ 展示室" || title == "4F展厅" ){
+      return _locals.main6;
+    } else if(title == "5F 전시실" || title == "5th Floor" || title == "5Ｆ 展示室" || title == "5F展厅" ){
+      return _locals.main7;
+    } else {
       return "";
     }
   }
