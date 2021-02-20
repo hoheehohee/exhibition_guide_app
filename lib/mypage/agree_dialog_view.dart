@@ -30,34 +30,6 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
   bool retention = false;
   bool email = false;
   SocialProvider _social;
-
-  Future<void> _showMyDialog(String message) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('알림'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(message),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('확인'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   AppLocalizations _locals;
 
   @override

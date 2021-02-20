@@ -105,8 +105,8 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
                                         child: Text(_locals.customer4, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600)),
                                         onPressed: () {
                                           Get.to(
-                                            // QnaWrite(),
-                                            QnaDetail(),
+                                            QnaWrite(),
+                                            // QnaDetail(),
                                             transition: Transition.rightToLeft
                                           );
                                         },

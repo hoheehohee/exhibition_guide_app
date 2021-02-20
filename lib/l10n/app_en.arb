@@ -185,6 +185,15 @@
 
     "etc1":"Language setting",
     "etc2":"Continue after consent",
+    "etc3":"Application details",
+    "etc4":"3months",
+    "etc5":"6months",
+    "etc6":"12months",
+    "etc7":"View all application",
+    "etc8":"Reservation request",
+    "etc9":"Application approval",
+    "etc10":"End of use",
+    "etc11":"Cancellation of application",
 
     "@main1": { "description": "" },
     "@main2": { "description": "" },
@@ -369,6 +378,15 @@
     "@alert6": { "description": "" },
 
     "@etc1": { "description": "" },
-    "@etc2": { "description": "" }
+    "@etc2": { "description": "" },
+    "@etc3": { "description": "" },
+    "@etc4": { "description": "" },
+    "@etc5": { "description": "" },
+    "@etc6": { "description": "" },
+    "@etc7": { "description": "" },
+    "@etc8": { "description": "" },
+    "@etc9": { "description": "" },
+    "@etc10": { "description": "" },
+    "@etc11": { "description": "" }
 
 }
