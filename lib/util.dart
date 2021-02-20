@@ -1,4 +1,6 @@
+
 import 'package:exhibition_guide_app/model/booking_reg_model.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // 언어별 텍스트
@@ -105,4 +107,41 @@ bool getDayCheck(DateTime val) {
   bool result = true;
   result = val.day == 22 || val.weekday == 6 ? false : true;
   return result;
+}
+
+final navigatorKey = GlobalKey<NavigatorState>();
+
+Future<void> g_showMyDialog(String message, context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(''),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(message),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('확인'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<bool> isLogin() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if(prefs.getString('loginId') != null && prefs.getString('loginId') != ""){
+    return true;
+  }
+  return false;
 }

@@ -176,6 +176,16 @@
     "qna7": "My Inquiries",
     "qna8": "Responses",
 
+    "alert1": "It is available after login.",
+    "alert2": "Please agree to the membership agreement policy.",
+    "alert3": "Please agree to the collection items.",
+    "alert4": "Please agree to the terms of use.",
+    "alert5": "Please agree to the period of use.",
+    "alert6": "Sign up is complete.",
+
+    "etc1":"Language setting",
+    "etc2":"Continue after consent",
+
     "@main1": { "description": "" },
     "@main2": { "description": "" },
     "@main3": { "description": "" },
@@ -349,6 +359,16 @@
     "@qna5": { "description": "" },
     "@qna6": { "description": "" },
     "@qna7": { "description": "" },
-    "@qna8": { "description": "" }
+    "@qna8": { "description": "" },
+
+    "@alert1": { "description": "" },
+    "@alert2": { "description": "" },
+    "@alert3": { "description": "" },
+    "@alert4": { "description": "" },
+    "@alert5": { "description": "" },
+    "@alert6": { "description": "" },
+
+    "@etc1": { "description": "" },
+    "@etc2": { "description": "" }
 
 }

@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import 'booking_modify.dart';
+import 'booking_view.dart';
+
 class BookingStateView extends StatefulWidget {
   BookingStateView(this.status);
 
@@ -250,7 +253,9 @@ class _BookingStateViewState extends State<BookingStateView> {
               margin: EdgeInsets.all(10),
               child: InkWell(
                 onTap: () {
-                  Get.to(BookingDetailView());
+                  if(_mypage.bookingList.data[index].status == "N") {
+                    Get.to(BookingModify(_mypage.bookingList.data[index].applyID));
+                  }
                 },
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

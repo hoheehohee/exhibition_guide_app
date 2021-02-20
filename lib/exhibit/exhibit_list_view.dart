@@ -69,6 +69,18 @@ class _ExhibitListViewState extends State<ExhibitListView> {
     });
   }
 
+  String getTitle(String title){
+    if(title == "전시유물"){
+      return _locals.menu2;
+    } else if(title == "상설전시"){
+      return _locals.menu3;
+    } else if(title == "기획전시"){
+      return _locals.menu4;
+    } else {
+      return "";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     mqd = MediaQuery.of(context);
@@ -155,7 +167,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
   Widget _appBar() {
     return AppBar(
       backgroundColor: backgroundColor,
-      title: Text(widget.appBarTitle != null ? widget.appBarTitle : '', style: TextStyle(color: Colors.white),),
+      title: Text(widget.appBarTitle != null ? getTitle(widget.appBarTitle) : '', style: TextStyle(color: Colors.white),),
       actions:[
         IconButton(
           icon: new Icon(Icons.menu, size: mqw * 0.08, color: Colors.white,),
@@ -179,7 +191,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
               filled: true,
               fillColor: Color(0xffC3C3C3),
               border: OutlineInputBorder(),
-              hintText: "전시품명을 검색하세요",
+              hintText: _locals.hr4,
               hintStyle: TextStyle(color: Color(0xff5B5B5B), fontSize: 18),
               prefixIcon: Icon(Icons.search, size: mqw * 0.07,),
             ),
@@ -253,7 +265,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
   List<Widget> _contentItem(ExhibitContentsDataModel list, {title, iconPath}) {
     List<Widget> result = [
       _exhibitTitle(
-          widget.contentTitle.isEmpty ? title : widget.contentTitle,
+          widget.contentTitle.isEmpty ? getTitle(title) : getTitle(widget.contentTitle),
           widget.contentIconPath.isEmpty ? iconPath : widget.contentIconPath
       ),
       SizedBox(height: mqh * 0.02),
@@ -262,7 +274,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
       result.add(
         InkWell(
           onTap: () {
-            Get.to(ExhibitDetail(item.idx, appbarTitle: _locals.main2,));
+            Get.to(ExhibitDetail(item.idx, appbarTitle: widget.contentTitle.isEmpty ? getTitle(title) : getTitle(widget.contentTitle),));
           },
           child: Container(
               height: mqh * 0.1,

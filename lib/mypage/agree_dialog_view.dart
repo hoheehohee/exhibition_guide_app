@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../constant.dart';
+import '../util.dart';
 import 'mypage_view.dart';
 
 class AgreeDialogView extends StatefulWidget {
@@ -320,21 +321,21 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  child: Text('동의후 계속', style: TextStyle(fontSize: 20, color: Colors.white)),
+                  child: Text(_locals.etc2, style: TextStyle(fontSize: 20, color: Colors.white)),
                   onPressed: () async {
                       if(!email){
-                          _showMyDialog("이메일 동의해주세요.");
+                          g_showMyDialog(_locals.alert2, context);
                         } else if(!collect){
-                          _showMyDialog("수집항목 동의해주세요.");
+                          g_showMyDialog(_locals.alert3, context);
                         } else if(!use){
-                          _showMyDialog("이용항목 동의해주세요.");
+                          g_showMyDialog(_locals.alert4, context);
                         } else if(!retention){
-                          _showMyDialog("이용기간 동의해주세요.");
+                          g_showMyDialog(_locals.alert5, context);
                         } else {
                           Map data = {"snsType": widget.snsType, "email": widget.email};
                           var join = await _social.joinServer(data);
                           if(join == "Y"){
-                            await _showMyDialog("회원가입이 완료되었습니다");
+                            await g_showMyDialog(_locals.alert6, context);
                             Get.to(MyPageView(0));
                           }
                         }

@@ -127,7 +127,7 @@ class BookingResultView extends StatelessWidget {
                                 ),
                                 _bookingInfoItem(
                                     title: _locals.apply7,
-                                    value: getValue(bd.groupName, nullString: '0명')
+                                    value: getValue(bd.groupPersonnel, nullString: '0명')
                                 ),
                                 _bookingInfoItem(
                                   title: _locals.apply8,
