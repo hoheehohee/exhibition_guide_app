@@ -77,7 +77,9 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     // 새로운 비콘이 잡혔을 때 해당 데이터 조회
     if (_device.beforeBeaconIdx != idx) {
       idx = _device.beforeBeaconIdx;
-      _exhibit.setExhibitDetSel(int.parse(_device.beforeBeaconIdx));
+      if (idx != "-1") {
+        _exhibit.setExhibitDetSel(int.parse(_device.beforeBeaconIdx));
+      }
     }
 
     return Scaffold(

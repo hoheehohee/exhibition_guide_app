@@ -155,6 +155,7 @@ class ExhibitProvider with ChangeNotifier {
 
     try{
       resp = await dio.get(BASE_URL + '/contentsDataDetail.do', queryParameters: {"idx": idx});
+
       _exhibitItem = jsonDecode(resp.toString());
       _loading = false;
       notifyListeners();
@@ -178,6 +179,7 @@ class ExhibitProvider with ChangeNotifier {
         queryParameters: {"contentsType": type, "exhibitionType": exhibitionType, "highlightYN": 'Y'}
       );
       final jsonData = json.decode('{"data": $respOne}');
+      print("## resp1: $respOne");
       _exhibitContentDataOne = ExhibitContentsDataModel.fromJson(jsonData);
 
       respTwo = await dio.get(
@@ -218,6 +220,7 @@ class ExhibitProvider with ChangeNotifier {
           BASE_URL + '/contentsData.do',
           queryParameters: {"highlightYN": 'Y', "exhibitionCode": exhibitionCode}
       );
+      print("## resp2: $respOne");
       final jsonData = json.decode('{"data": $respOne}');
       _exhibitContentDataOne = ExhibitContentsDataModel.fromJson(jsonData);
 
@@ -254,6 +257,7 @@ class ExhibitProvider with ChangeNotifier {
     try {
       resp = await dio.get(BASE_URL + '/exhibitionData.do', queryParameters: {"location": type});
       final jsonData = json.decode('{"data": $resp}');
+      print("## resp3: $resp");
       _exhibitThemeData = ETM.ExhibitThemeModel.fromJson(jsonData);
 
       _exhibitThemeItem = List.generate(_exhibitThemeData.data.length, (index) {
