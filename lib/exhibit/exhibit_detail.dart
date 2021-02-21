@@ -47,6 +47,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     Future.microtask((){
       // Provider.of<DevicesProvider>(context, listen: false).playAudio(),
       idx = widget.idx.toString();
+      Provider.of<DevicesProvider>(context, listen: false).setBeforeBeaconIdx(idx.toString());
       Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx);
     });
 

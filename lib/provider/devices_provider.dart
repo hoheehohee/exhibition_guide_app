@@ -53,7 +53,10 @@ class DevicesProvider with ChangeNotifier {
   DevicesProvider() {
     setDevicePreferences();
   }
-
+  void setBeforeBeaconIdx (String idx) {
+    _beforeBeaconIdx = idx;
+    notifyListeners();
+  }
   void setDevicePreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final deacon = prefs.getBool("beaconOnOff");
