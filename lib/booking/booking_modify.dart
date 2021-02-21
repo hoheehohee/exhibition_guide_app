@@ -377,7 +377,7 @@ class _BookingModify extends State<BookingModify> {
                                             Expanded(
                                                 flex: 1,
                                                 child: DropdownButton<String>(
-                                                  value: bookingData.lang == null ? "kor" : bookingData.lang,
+                                                  value: (bookingData.lang == null || bookingData.lang == "") ? "kor" : bookingData.lang,
                                                   hint: Center(child: Text(_locals.bk18)),
                                                   icon: Icon(Icons.keyboard_arrow_down),
                                                   iconSize: 24,
@@ -410,7 +410,7 @@ class _BookingModify extends State<BookingModify> {
                                 child: Text(_locals.bk23, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                               ),
                               DropdownButton<String>(
-                                value: bookingData.obstacle == null ? "1" : bookingData.obstacle,
+                                value: (bookingData.obstacle == null || bookingData.obstacle == "") ? "1" : bookingData.obstacle,
                                 hint: Text(_locals.bk24),
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 iconSize: 20,

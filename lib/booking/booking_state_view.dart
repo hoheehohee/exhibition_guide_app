@@ -47,27 +47,27 @@ class _BookingStateViewState extends State<BookingStateView> {
     switch (status) {
       case "N":
         {
-          statusText = "신청";
+          statusText = "assets/images/status/badge-hold.png";
         }
         break;
       case "C":
         {
-          statusText = "취소";
+          statusText = "assets/images/status/badge-cancel.png";
         }
         break;
       case "AC":
         {
-          statusText = "관리자취소";
+          statusText = "assets/images/status/badge-cancel-red.png";
         }
         break;
       case "Y":
         {
-          statusText = "승인";
+          statusText = "assets/images/status/badge-ok.png";
         }
         break;
       case "B":
         {
-          statusText = "완료";
+          statusText = "assets/images/status/badge-ok2.png";
         }
         break;
     }
@@ -259,14 +259,14 @@ class _BookingStateViewState extends State<BookingStateView> {
               margin: EdgeInsets.all(10),
               child: InkWell(
                 onTap: () {
-                  if(_mypage.bookingList.data[index].status == "N") {
-                    Get.to(BookingModify(_mypage.bookingList.data[index].applyID));
-                  } else {
+                  // if(_mypage.bookingList.data[index].status == "N") {
+                  //   Get.to(BookingModify(_mypage.bookingList.data[index].applyID));
+                  // } else {
                     Future.microtask(() => {
                       Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, monthCount)
                     });
                     _exhibit.setBookingDetSelCall(_mypage.bookingList.data[index].applyID);
-                  }
+                  // }
                 },
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -330,16 +330,17 @@ class _BookingStateViewState extends State<BookingStateView> {
                                           Container(
                                               width: 70,
                                               height: 25,
-                                              margin: EdgeInsets.only(left: 5),
-                                              padding: EdgeInsets.all(3),
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey,
-                                              ),
+                                              // margin: EdgeInsets.only(left: 5),
+                                              // padding: EdgeInsets.all(3),
+                                              // decoration: BoxDecoration(
+                                              //   color: Colors.grey,
+                                              // ),
                                               child: Center(
-                                                  child: Text(
-                                                      getStatusText(_mypage.bookingList.data[index].status),
-                                                      style: TextStyle(color: Colors.white)
-                                                  )
+                                                  child:Image.asset(getStatusText(_mypage.bookingList.data[index].status), width: 70,)
+                                                  // child: Text(
+                                                  //     getStatusText(_mypage.bookingList.data[index].status),
+                                                  //     style: TextStyle(color: Colors.white)
+                                                  // )
                                               )
                                           )
                                         ]
