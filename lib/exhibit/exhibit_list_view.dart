@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:exhibition_guide_app/commons/exhibit_view_bottom.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_detail.dart';
+import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart' as ECDM;
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart';
@@ -96,7 +97,8 @@ class _ExhibitListViewState extends State<ExhibitListView> {
     _settingProv = Provider.of<SettingProvider>(context);
     _locals = AppLocalizations.of(context);
 
-    return Scaffold(
+    return WillPopScope(
+      child: Scaffold(
         appBar: _appBar(),
         key: _scaffoldKey,
         bottomNavigationBar: ExhibitViewBottom(),
@@ -110,63 +112,68 @@ class _ExhibitListViewState extends State<ExhibitListView> {
           color: backgroundColor,
           width: double.infinity,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _textInput(),
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: (
-                    _exhibitProv.loading
-                      ? Center(child: CircularProgressIndicator(), heightFactor: 10,)
-                      : Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        _exhibitProv.exhibitContentDataOne.data.length == 0
-                        ? Container()
-                        : (
-                          CarouselSlider(
-                            options: CarouselOptions(
-                              aspectRatio: 2.0,
-                              enableInfiniteScroll: false,
-                              // enlargeCenterPage: true,
-                            ),
-                            items: _imageSliders(_exhibitProv.exhibitContentDataOne.data),
-                          )
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(mqw * 0.03),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: _contentItem(
-                                  _exhibitProv.exhibitContentDataTwo,
-                                title: _locals.main3,
-                                iconPath: "assets/images/icon/icon-main-relics.png"
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _textInput(),
+                Expanded(
+                  child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: (
+                          _exhibitProv.loading
+                              ? Center(child: CircularProgressIndicator(), heightFactor: 10,)
+                              : Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              _exhibitProv.exhibitContentDataOne.data.length == 0
+                                  ? Container()
+                                  : (
+                                  CarouselSlider(
+                                    options: CarouselOptions(
+                                      aspectRatio: 2.0,
+                                      enableInfiniteScroll: false,
+                                      // enlargeCenterPage: true,
+                                    ),
+                                    items: _imageSliders(_exhibitProv.exhibitContentDataOne.data),
+                                  )
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(mqw * 0.03),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: _contentItem(
+                                        _exhibitProv.exhibitContentDataTwo,
+                                        title: _locals.main3,
+                                        iconPath: "assets/images/icon/icon-main-relics.png"
 
+                                    )
+                                ),
+                              ),
+                              widget.contentType.isEmpty
+                                  ? Container(
+                                padding: EdgeInsets.all(mqw * 0.03),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: _contentItem(
+                                        _exhibitProv.exhibitContentDataThree,
+                                        title: _locals.menu3,
+                                        iconPath: 'assets/images/icon/icon-main-sangsul.png'
+                                    )
+                                ),
                               )
-                          ),
-                        ),
-                        widget.contentType.isEmpty
-                        ? Container(
-                          padding: EdgeInsets.all(mqw * 0.03),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: _contentItem(
-                                  _exhibitProv.exhibitContentDataThree,
-                                title: _locals.menu3,
-                                iconPath: 'assets/images/icon/icon-main-sangsul.png'
-                              )
-                          ),
-                        )
-                        : Container(),
-                      ],
-                    )
-                  )
-                ),
-              )
-            ]
+                                  : Container(),
+                            ],
+                          )
+                      )
+                  ),
+                )
+              ]
           ),
-        )
+        ),
+      ),
+      onWillPop: () async {
+        Get.offAll(MainView());
+        return false;
+      }
     );
   }
 

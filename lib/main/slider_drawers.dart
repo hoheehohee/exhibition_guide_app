@@ -70,7 +70,7 @@ class SliderDrawers extends StatelessWidget {
                   switch(drawersItemList[i]["idx"]){
                     case 0: Get.to(ExhibitHighlightView()); break;
                     case 1:
-                      Get.to(ExhibitListView(
+                      Get.offAll(ExhibitListView(
                         appBarTitle: "전시유물",
                         contentType: 'B',
                         contentTitle: "전시유물",
@@ -79,7 +79,7 @@ class SliderDrawers extends StatelessWidget {
                       ));
                       break;
                     case 2:
-                      Get.to(ExhibitListView(
+                      Get.offAll(ExhibitListView(
                         appBarTitle: "상설전시",
                         contentType: 'A',
                         contentTitle: "상설전시",
@@ -88,7 +88,7 @@ class SliderDrawers extends StatelessWidget {
                       ));
                       break;
                     case 3:
-                      Get.to(ExhibitListView(
+                      Get.offAll(ExhibitListView(
                         appBarTitle: "기획전시",
                         contentType: "",
                         contentTitle: "",
