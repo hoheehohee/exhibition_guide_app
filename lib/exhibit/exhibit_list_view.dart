@@ -216,8 +216,14 @@ class _ExhibitListViewState extends State<ExhibitListView> {
               children: <Widget>[
                 InkWell(
                   child: Image.network(item.contentsImgFile, fit: BoxFit.cover, width: 1000.0),
+                  // child :Image.network(item.contentsImgFile,fit: BoxFit.cover, width: 1000.0,
+                  //         errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace) {
+                  //           return Image.network("https://miro.medium.com/max/3152/1*Ifpd_HtDiK9u6h68SZgNuA.png", fit: BoxFit.cover, width: 1000.0);
+                  //         },
+                  // ),
                   onTap: () {
-                    // Get.offAll(ExhibitDetail(2));
+                    // print("abc");
+                    Get.to(ExhibitDetail(item.idx));
                   },
                 ),
                 Positioned(
