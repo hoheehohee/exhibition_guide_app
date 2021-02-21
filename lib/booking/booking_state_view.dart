@@ -6,6 +6,11 @@ import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../util.dart';
+import 'booking_modify.dart';
+import 'booking_view.dart';
 
 class BookingStateView extends StatefulWidget {
   BookingStateView(this.status);
@@ -19,8 +24,10 @@ class BookingStateView extends StatefulWidget {
 class _BookingStateViewState extends State<BookingStateView> {
 
   MyPageProvider _mypage;
+  ExhibitProvider _exhibit;
   int status;
   int monthCount = 3;
+  AppLocalizations _locals;
 
   var mqd;
   var mqw;
@@ -120,10 +127,12 @@ class _BookingStateViewState extends State<BookingStateView> {
     mqw = mqd.size.width;
     mqh = mqd.size.height;
     _mypage = Provider.of<MyPageProvider>(context);
+    _exhibit = Provider.of<ExhibitProvider>(context);
+    _locals = AppLocalizations.of(context);
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(mqd.size.height * 0.07),
-          child: CustomDefaultAppbar(title: '신청상세정보')
+          child: CustomDefaultAppbar(title: _locals.etc3)
       ),
       body: Container(
         color: Color(0xffE5E6E7),
@@ -176,9 +185,9 @@ class _BookingStateViewState extends State<BookingStateView> {
                               });
                             },
                             items: <Map>[
-                              {'idx': 3, 'text': '3개월'},
-                              {'idx': 6, 'text': '6개월'},
-                              {'idx': 9, 'text': '12개월'},
+                              {'idx': 3, 'text': _locals.etc4},
+                              {'idx': 6, 'text': _locals.etc5},
+                              {'idx': 9, 'text': _locals.etc6},
                             ].map((Map value) {
                               return DropdownMenuItem<int>(
                                 value: value['idx'],
@@ -219,11 +228,11 @@ class _BookingStateViewState extends State<BookingStateView> {
                               });
                             },
                             items: <Map>[
-                              {'idx': 0, 'text': '전체 신청내역 조회'},
-                              {'idx': 1, 'text': '예약신청 내역'},
-                              {'idx': 2, 'text': '신청승인 내역'},
-                              {'idx': 3, 'text': '이용종료 내역'},
-                              {'idx': 4, 'text': '신청취소 내역'},
+                              {'idx': 0, 'text': _locals.etc7},
+                              {'idx': 1, 'text': _locals.etc8},
+                              {'idx': 2, 'text': _locals.etc9},
+                              {'idx': 3, 'text': _locals.etc10},
+                              {'idx': 4, 'text': _locals.etc11},
                             ].map((Map value) {
                               return DropdownMenuItem<int>(
                                 value: value['idx'],
@@ -250,7 +259,14 @@ class _BookingStateViewState extends State<BookingStateView> {
               margin: EdgeInsets.all(10),
               child: InkWell(
                 onTap: () {
-                  Get.to(BookingDetailView());
+                  if(_mypage.bookingList.data[index].status == "N") {
+                    Get.to(BookingModify(_mypage.bookingList.data[index].applyID));
+                  } else {
+                    Future.microtask(() => {
+                      Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, monthCount)
+                    });
+                    _exhibit.setBookingDetSelCall(_mypage.bookingList.data[index].applyID);
+                  }
                 },
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -287,9 +303,9 @@ class _BookingStateViewState extends State<BookingStateView> {
                                               onTap: () async{
                                                 var state = await _mypage.setApplyCancel(_mypage.bookingList.data[index].applyID);
                                                 if(state == "Y"){
-                                                  _showMyDialog("취소되었습니다.");
+                                                  g_showMyDialog(_locals.etc12, context);
                                                 }else{
-                                                  _showMyDialog("취소가 되지 않았습니다.");
+                                                  g_showMyDialog(_locals.etc13, context);
                                                 }
                                               },
                                               // 신청 취소
@@ -357,7 +373,7 @@ class _BookingStateViewState extends State<BookingStateView> {
                       Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
-                          '전체 전시해설, 살성전시실, 전시유물, 기타/기획전',
+                          _locals.etc14,
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black54),
                         ),
                       )

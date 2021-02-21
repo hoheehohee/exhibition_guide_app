@@ -5,10 +5,12 @@ import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LanguageView extends StatelessWidget {
   SettingProvider _language;
   LocaleProvider _locale;
+  AppLocalizations _locals;
   final idx;
 
   LanguageView({
@@ -23,6 +25,7 @@ class LanguageView extends StatelessWidget {
     final Color darkBlue = Color.fromARGB(255, 18, 32, 47);
     _language = Provider.of<SettingProvider>(context);
     _locale = Provider.of<LocaleProvider>(context);
+    _locals = AppLocalizations.of(context);
 
     return MaterialApp(
       theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: darkBlue),
@@ -78,7 +81,7 @@ class LanguageView extends StatelessWidget {
         elevation: 0.0,
         centerTitle: true,
         title: Text(
-          '언어 설정',
+          _locals.etc1,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: backgroundColor,

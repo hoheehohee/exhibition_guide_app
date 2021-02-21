@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import '../util.dart';
 import 'login_dialog_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -189,8 +190,12 @@ class _ProfileViewState extends State<ProfileView> {
         Expanded(
           flex: 1,
           child: InkWell(
-            onTap: () {
+            onTap: () async{
+              if(!await isLogin()){
+                g_showMyDialog(_locals.alert1, context);
+              } else {
               Get.to(BookingView());
+              }
             },
             child: Container(
               height: mqh * 0.13,
@@ -213,8 +218,12 @@ class _ProfileViewState extends State<ProfileView> {
         Expanded(
           flex: 1,
           child: InkWell(
-            onTap: () {
-              Get.to(QnaWrite());
+            onTap: () async{
+              if(!await isLogin()){
+                g_showMyDialog(_locals.alert1, context);
+              } else {
+                Get.to(QnaWrite());
+              }
             },
             child: Container(
               height: mqh * 0.13,

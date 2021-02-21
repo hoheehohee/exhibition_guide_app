@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:exhibition_guide_app/booking/booking_result_view.dart';
+import 'package:exhibition_guide_app/model/booking_modify_model.dart';
 import 'package:exhibition_guide_app/model/booking_reg_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_list_model.dart';
@@ -39,6 +40,7 @@ class ExhibitProvider with ChangeNotifier {
 
 
   BookingRegModel _bookingRegData = BookingRegModel.fromJson({});
+  BookingModifyModel _bookingModifyData = BookingModifyModel.fromJson({});
 
   List<ExhibitItem> _exhibitList = [];
   List<ExhibitThemeItemModel> _exhibitThemeItem = [];
@@ -71,6 +73,7 @@ class ExhibitProvider with ChangeNotifier {
   ETM.ExhibitThemeModel get exhibitAllMenuItems => _exhibitAllMenuItems;
 
   BookingRegModel get bookingRegData => _bookingRegData;
+  BookingModifyModel get bookingModifyData => _bookingModifyData;
 
   get exhibitList => _exhibitList;
   get exhibitItem => _exhibitItem;
@@ -334,6 +337,24 @@ class ExhibitProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // 이용예약신청 데이터 form
+  void setBookingModifyData(String key, value) {
+    final temp = _bookingModifyData.toJson();
+    try{
+      if (key == 'isConsent') {
+        _isConsent = !_isConsent;
+      } else {
+        temp[key] = value;
+        _bookingModifyData = BookingModifyModel.fromJson(temp);
+      }
+
+    }catch(error) {
+      print("#### error: $error");
+    }
+
+    notifyListeners();
+  }
+
   // 이용예약신청 데이터 form 초기화
   void setBookingDataInitial() {
     _bookingRegData = BookingRegModel.fromJson({});
@@ -357,7 +378,6 @@ class ExhibitProvider with ChangeNotifier {
 
       if (result["state"] == 'Y') setBookingDetSelCall(result["applyID"]);
       _loading = false;
-      setBookingDetSelCall("20");
 
     }catch(error) {
       _loading = false;
@@ -365,7 +385,32 @@ class ExhibitProvider with ChangeNotifier {
     }
   }
 
-  Future<void> setBookingDetSelCall(String applyID) async {
+  Future<void> setBookingModifyCall() async {
+    _loading = true;
+    Response resp;
+
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      _bookingRegData.loginID = prefs.getString('loginId');
+      resp = await dio.get(
+        BASE_URL + "/applyUpdateData.do",
+        queryParameters: _bookingRegData.toModifyJson(),
+      );
+
+      final result = jsonDecode(resp.toString());
+
+      _loading = false;
+
+      if (result["state"] == 'Y') setBookingDetSelCall(_bookingRegData.applyID);
+      _loading = false;
+
+    }catch(error) {
+      _loading = false;
+      print("##### setBookingRegCall error: $error");
+    }
+  }
+
+  Future<void> setBookingDetSelCall(int applyID) async {
     Response resp;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final loginID = prefs.getString('loginId');
@@ -380,6 +425,25 @@ class ExhibitProvider with ChangeNotifier {
 
       Getx.Get.offAll(BookingResultView());
 
+    } catch(error) {
+      print("##### setBookingDetSelCall error: $error");
+    }
+  }
+
+  Future<void> setBookingDetSelCallByModify(int applyID) async {
+    Response resp;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final loginID = prefs.getString('loginId');
+    _loading = true;
+    try{
+      resp = await dio.get(
+        BASE_URL + "/applyDetailData.do",
+        queryParameters: {"applyID": applyID, "loginID": loginID},
+      );
+      final result = json.decode(resp.toString());
+      _bookingRegData = BookingRegModel.fromJson(result);
+      _loading = false;
+      notifyListeners();
     } catch(error) {
       print("##### setBookingDetSelCall error: $error");
     }

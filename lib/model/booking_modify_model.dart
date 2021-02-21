@@ -1,4 +1,4 @@
-class BookingRegModel {
+class BookingModifyModel {
   String name;
   String tel;
   String groupName;
@@ -15,10 +15,9 @@ class BookingRegModel {
   String applyDate;
   String applyTime;
   String loginID;
-  String applyNumber;
-  int applyID;
+  int applyId;
 
-  BookingRegModel(
+  BookingModifyModel(
       {this.name,
         this.tel,
         this.groupName,
@@ -35,11 +34,10 @@ class BookingRegModel {
         this.applyDate,
         this.applyTime,
         this.loginID,
-        this.applyNumber,
-        this.applyID
+        this.applyId
       });
 
-  BookingRegModel.fromJson(Map<String, dynamic> json) {
+  BookingModifyModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     tel = json['tel'];
     groupName = json['groupName'];
@@ -56,8 +54,7 @@ class BookingRegModel {
     applyDate = json['applyDate'];
     applyTime = json['applyTime'];
     loginID = json['loginID'];
-    applyNumber = json['applyNumber'];
-    applyID = json['applyID'];
+    applyId = json['applyId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -78,30 +75,7 @@ class BookingRegModel {
     data['applyDate'] = this.applyDate;
     data['applyTime'] = this.applyTime;
     data['loginID'] = this.loginID;
-    data['applyNumber'] = this.applyNumber;
-    data['applyID'] = this.applyID;
-    return data;
-  }
-
-  Map<String, dynamic> toModifyJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['tel'] = this.tel;
-    data['groupName'] = this.groupName;
-    data['groupPersonnel'] = this.groupPersonnel;
-    data['type1'] = this.type1;
-    data['type2'] = this.type2;
-    data['type3'] = this.type3;
-    data['type4'] = this.type4;
-    data['type5'] = this.type5;
-    data['type6'] = this.type6;
-    data['langType'] = this.langType;
-    data['lang'] = this.lang;
-    data['obstacle'] = this.obstacle;
-    data['applyDate'] = this.applyDate;
-    data['applyTime'] = this.applyTime;
-    data['loginID'] = this.loginID;
-    data['applyID'] = this.applyID;
+    data['applyId'] = this.applyId;
     return data;
   }
 }

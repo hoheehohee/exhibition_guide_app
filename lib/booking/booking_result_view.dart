@@ -1,12 +1,17 @@
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
+import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/model/booking_reg_model.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
+import '../main.dart';
 import '../util.dart';
+import 'booking_state_view.dart';
 
 class BookingResultView extends StatelessWidget {
   var mqd;
@@ -103,7 +108,7 @@ class BookingResultView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 10),
-                                _bookingInfoItem(title: _locals.apply3, value: "?????"),
+                                _bookingInfoItem(title: _locals.apply3, value: bd.applyNumber),
                                 _bookingInfoItem(
                                     title: _locals.apply4,
                                     value: "${getValue(bd.applyDate)} ${getValue(bd.applyTime)}시"
@@ -122,7 +127,7 @@ class BookingResultView extends StatelessWidget {
                                 ),
                                 _bookingInfoItem(
                                     title: _locals.apply7,
-                                    value: getValue(bd.groupName, nullString: '0명')
+                                    value: getValue(bd.groupPersonnel, nullString: '0명')
                                 ),
                                 _bookingInfoItem(
                                   title: _locals.apply8,
@@ -191,6 +196,7 @@ class BookingResultView extends StatelessWidget {
                 ),
                 child: Text(_locals.apply11, style: TextStyle(fontSize: 20, color: Colors.white)),
                 onPressed: () {
+                  Get.to(MainView());
                 },
               ),
             )
@@ -206,6 +212,7 @@ class BookingResultView extends StatelessWidget {
                   ),
                   child: Text(_locals.apply12, style: TextStyle(fontSize: 20, color: Colors.white)),
                   onPressed: () {
+                    Get.to(BookingStateView(0));
                   },
                 ),
               )

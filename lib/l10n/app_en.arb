@@ -176,6 +176,28 @@
     "qna7": "My Inquiries",
     "qna8": "Responses",
 
+    "alert1": "It is available after login.",
+    "alert2": "Please agree to the membership agreement policy.",
+    "alert3": "Please agree to the collection items.",
+    "alert4": "Please agree to the terms of use.",
+    "alert5": "Please agree to the period of use.",
+    "alert6": "Sign up is complete.",
+
+    "etc1":"Language setting",
+    "etc2":"Continue after consent",
+    "etc3":"Application details",
+    "etc4":"3months",
+    "etc5":"6months",
+    "etc6":"12months",
+    "etc7":"View all application",
+    "etc8":"Reservation request",
+    "etc9":"Application approval",
+    "etc10":"End of use",
+    "etc11":"Cancellation of application",
+    "etc12":"Canceled",
+    "etc13":"There was no cancellation",
+    "etc14":"All exhibition commentary, salseong exhibition hall, exhibits, other/planned exhibitions",
+
     "@main1": { "description": "" },
     "@main2": { "description": "" },
     "@main3": { "description": "" },
@@ -349,6 +371,28 @@
     "@qna5": { "description": "" },
     "@qna6": { "description": "" },
     "@qna7": { "description": "" },
-    "@qna8": { "description": "" }
+    "@qna8": { "description": "" },
+
+    "@alert1": { "description": "" },
+    "@alert2": { "description": "" },
+    "@alert3": { "description": "" },
+    "@alert4": { "description": "" },
+    "@alert5": { "description": "" },
+    "@alert6": { "description": "" },
+
+    "@etc1": { "description": "" },
+    "@etc2": { "description": "" },
+    "@etc3": { "description": "" },
+    "@etc4": { "description": "" },
+    "@etc5": { "description": "" },
+    "@etc6": { "description": "" },
+    "@etc7": { "description": "" },
+    "@etc8": { "description": "" },
+    "@etc9": { "description": "" },
+    "@etc10": { "description": "" },
+    "@etc11": { "description": "" },
+    "@etc12": { "description": "" },
+    "@etc13": { "description": "" },
+    "@etc14": { "description": "" }
 
 }

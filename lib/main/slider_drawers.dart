@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../util.dart';
 import 'main_view.dart';
 
 class SliderDrawers extends StatelessWidget {
@@ -33,7 +34,7 @@ class SliderDrawers extends StatelessWidget {
       { 'title': _locals.menu4, 'idx': 3 },
       { 'title': _locals.menu5, 'idx': 4 },
       { 'title': _locals.menu6, 'idx': 5 },
-      { 'title': '언어설정', 'idx': 6 },
+      { 'title': _locals.etc1, 'idx': 6 },
       { 'title': _locals.menu7, 'idx': 7 },
       { 'title': _locals.menu8, 'idx': 8 },
     ];
@@ -65,30 +66,30 @@ class SliderDrawers extends StatelessWidget {
                   )
               ),
               child: InkWell(
-                onTap: () {
+                onTap: () async{
                   switch(drawersItemList[i]["idx"]){
                     case 0: Get.to(ExhibitHighlightView()); break;
                     case 1:
-                      Get.offAll(ExhibitListView(
-                        appBarTitle: _locals.menu2,
+                      Get.to(ExhibitListView(
+                        appBarTitle: "전시유물",
                         contentType: 'B',
-                        contentTitle: _locals.menu2,
+                        contentTitle: "전시유물",
                         exhibitionType: 'A',
                         contentIconPath: "assets/images/icon/icon-main-relics.png",
                       ));
                       break;
                     case 2:
-                      Get.offAll(ExhibitListView(
-                        appBarTitle: _locals.menu3,
+                      Get.to(ExhibitListView(
+                        appBarTitle: "상설전시",
                         contentType: 'A',
-                        contentTitle: _locals.menu3,
+                        contentTitle: "상설전시",
                         exhibitionType: 'A',
                         contentIconPath: "assets/images/icon/icon-main-sangsul.png",
                       ));
                       break;
                     case 3:
-                      Get.offAll(ExhibitListView(
-                        appBarTitle: _locals.menu4,
+                      Get.to(ExhibitListView(
+                        appBarTitle: "기획전시",
                         contentType: "",
                         contentTitle: "",
                         exhibitionType: 'B',
@@ -98,7 +99,13 @@ class SliderDrawers extends StatelessWidget {
                     case 4: Get.to(NoticeListView()); break;
                     case 5: Get.to(SettingView()); break;
                     case 6: Get.to(LanguageView()); break;
-                    case 7: Get.to(BookingView()); break;
+                    case 7:
+                      if(!await isLogin()){
+                          g_showMyDialog(_locals.alert1, context);
+                      } else {
+                          Get.to(BookingView());
+                      }
+                      break;
                     case 8: Get.to(MyPageView(0)); break;
                   }
                 },

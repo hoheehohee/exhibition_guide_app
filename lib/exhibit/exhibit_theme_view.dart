@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../constant.dart';
 
@@ -34,8 +35,27 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
   ExhibitProvider _exhibitProv ;
   SettingProvider _settingProv;
   bool show = false;
+  AppLocalizations _locals;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  String getTitle(String title){
+    if(title == "전시유물" || title == "Relics" || title == "展示遺物" || title == "展示遺物" || title == "展示文物" ){
+      return _locals.menu2;
+    } else if(title == "상설전시" || title == "Permanent Exhibition" || title == "常設展示" || title == "常设展览" ){
+      return _locals.menu3;
+    } else if(title == "기획전시" || title == "Featured Exhibition" || title == "企画展示" || title == "策划展览" ){
+      return _locals.menu4;
+    } else if(title == "전시물" || title == "Exhibits" || title == "展示物" || title == "展品" ){
+      return _locals.main5;
+    } else if(title == "4F 전시실" || title == "4th Floor" || title == "４Ｆ 展示室" || title == "4F展厅" ){
+      return _locals.main6;
+    } else if(title == "5F 전시실" || title == "5th Floor" || title == "5Ｆ 展示室" || title == "5F展厅" ){
+      return _locals.main7;
+    } else {
+      return "";
+    }
+  }
 
   @override
   void initState() {
@@ -53,6 +73,8 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
     mqh = mqd.size.height;
     _exhibitProv = Provider.of<ExhibitProvider>(context);
     _settingProv = Provider.of<SettingProvider>(context);
+    _locals = AppLocalizations.of(context);
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: _appBar(),
@@ -80,7 +102,7 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
   Widget _appBar() {
     return AppBar(
       backgroundColor: backgroundColor,
-      title: Text(widget.appBarTitle != null ? widget.appBarTitle : '', style: TextStyle(color: Colors.white),),
+      title: Text(widget.appBarTitle != null ? getTitle(widget.appBarTitle) : '', style: TextStyle(color: Colors.white),),
       actions:[
         IconButton(
           icon: new Icon(Icons.menu, size: mqw * 0.08, color: Colors.white,),
@@ -163,7 +185,7 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
                             contentType: '',
                             contentIconPath: '',
                             contentTitle: '',
-                            appBarTitle: getTextByLanguage(item, 'title', _settingProv.language),
+                            appBarTitle: widget.appBarTitle,
                             exhibitionCode: item.exhibitionCode,
                           )
                         );

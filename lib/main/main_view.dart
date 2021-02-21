@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:exhibition_guide_app/guide/guide_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:exhibition_guide_app/util.dart';
 
 import '../message.dart';
 
@@ -244,10 +245,10 @@ class _MainViewState extends State<MainView> {
                             children: [
                               CustomMainButton(
                                 onTap: () async {
-                                  Get.offAll(ExhibitListView(
-                                    appBarTitle: _locals.main3,
+                                  Get.to(ExhibitListView(
+                                    appBarTitle: "전시유물",
                                     contentType: 'B',
-                                    contentTitle: _locals.main3,
+                                    contentTitle: "전시유물",
                                     exhibitionType: 'A',
                                     contentIconPath: "assets/images/icon/icon-main-relics.png",
                                   ));
@@ -264,10 +265,10 @@ class _MainViewState extends State<MainView> {
                               ),
                               CustomMainButton(
                                 onTap: () async {
-                                  Get.offAll(ExhibitListView(
-                                    appBarTitle: _locals.main5,
+                                  Get.to(ExhibitListView(
+                                    appBarTitle: "전시물",
                                     contentType: 'A',
-                                    contentTitle: _locals.main5,
+                                    contentTitle: "전시물",
                                     exhibitionType: 'A',
                                     contentIconPath: "assets/images/icon/icon-main-sangsul.png",
                                   ));
@@ -284,9 +285,9 @@ class _MainViewState extends State<MainView> {
                               CustomMainButton(
                                 onTap: () {
                                   _exhibitProv.setMenyType("F4");
-                                  Get.offAll(
+                                  Get.to(
                                     ExhibitThemeView(
-                                      appBarTitle: _locals.main6,
+                                      appBarTitle: "4F 전시실",
                                       location: 'A',
                                     )
                                   );
@@ -297,7 +298,7 @@ class _MainViewState extends State<MainView> {
                               CustomMainButton(
                                 onTap: () {
                                   _exhibitProv.setMenyType("F5");
-                                  Get.offAll(
+                                  Get.to(
                                       ExhibitThemeView(
                                         appBarTitle: _locals.main7,
                                         location: 'B',
@@ -310,7 +311,7 @@ class _MainViewState extends State<MainView> {
                               CustomMainButton(
                                 onTap: () {
                                   _exhibitProv.setMenyType("plan");
-                                  Get.offAll(ExhibitListView(
+                                  Get.to(ExhibitListView(
                                     appBarTitle: _locals.main8,
                                     contentType: "",
                                     contentTitle: "",
@@ -342,8 +343,12 @@ class _MainViewState extends State<MainView> {
                                 imgPath: 'assets/images/icon/icon-main-notice.png',
                               ),
                               CustomMainButton(
-                                onTap: () {
-                                  Get.to(BookingView());
+                                onTap: () async {
+                                  if(!await isLogin()){
+                                    g_showMyDialog(_locals.alert1, context);
+                                  } else {
+                                    Get.to(BookingView());
+                                  }
                                 },
                                 title: _locals.main11,
                                 imgPath: 'assets/images/icon/icon-main-docent.png',
