@@ -207,38 +207,39 @@ class _MainViewState extends State<MainView> {
           ),
           Expanded(
             flex: 1,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/main-back.jpg"),
-                          fit: BoxFit.fitWidth
-                      )
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(height: mqh * 0.04,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                  AppLocalizations.of(context).text1,
-                                  style: TextStyle(fontSize: 21, color: Colors.white, fontWeight: FontWeight.bold)),
-                              // Text(
-                              //     '싶으신가요?',
-                              //     style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(height: mqh * 0.05),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+            child: Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/main-back.jpg"),
+                        fit: BoxFit.fitWidth
+                    )
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: mqh * 0.04,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                AppLocalizations.of(context).text1,
+                                style: TextStyle(fontSize: 21, color: Colors.white, fontWeight: FontWeight.bold)),
+                            // Text(
+                            //     '싶으신가요?',
+                            //     style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(height: mqh * 0.05),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -286,10 +287,10 @@ class _MainViewState extends State<MainView> {
                                 onTap: () {
                                   _exhibitProv.setMenyType("F4");
                                   Get.to(
-                                    ExhibitThemeView(
-                                      appBarTitle: "4F 전시실",
-                                      location: 'A',
-                                    )
+                                      ExhibitThemeView(
+                                        appBarTitle: "4F 전시실",
+                                        location: 'A',
+                                      )
                                   );
                                 },
                                 title: _locals.main6,
@@ -363,8 +364,8 @@ class _MainViewState extends State<MainView> {
                                   padding: EdgeInsets.all(0),
                                   icon: Image.asset(
                                     _deviceProv.isRunning
-                                      ? 'assets/images/toogle-main-on.png'
-                                      : 'assets/images/toogle-main-off.png',
+                                        ? 'assets/images/toogle-main-on.png'
+                                        : 'assets/images/toogle-main-off.png',
                                     width: mqw * 0.25,
                                     fit: BoxFit.fill,
                                   ),
@@ -378,37 +379,38 @@ class _MainViewState extends State<MainView> {
                               _locals.main13,
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)
                           ),
-                          SizedBox(height: 17),
-                          Container(
-                            padding: EdgeInsets.only(top: 21, bottom: 20, left: 10, right: 10),
-                            color: Color(0xff253242).withOpacity(0.7),
-                            child: (
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(_locals.main14, style: TextStyle(fontSize: 15, color: Colors.white)),
-                                    SizedBox(height: mqh * 0.008),
-                                    Text(
-                                      FOOTER_ADDRESS,
-                                      style: TextStyle(fontSize: 12, color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      FOOTER_COPY,
-                                      style: TextStyle(fontSize: 10, color: Color(0xff5A6B7B)),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                )
-                            ),
-                          )
+                          // SizedBox(height: mqh * 0.2),
                         ],
-                      )
-                    ],
-                  )
-              ),
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.only(top: mqh * 0.02, bottom: mqh * 0.025, left: 10, right: 10),
+                      color: Color(0xff253242).withOpacity(0.7),
+                      child: (
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(_locals.main14, style: TextStyle(fontSize: 15, color: Colors.white)),
+                              SizedBox(height: mqh * 0.008),
+                              Text(
+                                FOOTER_ADDRESS,
+                                style: TextStyle(fontSize: 12, color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                FOOTER_COPY,
+                                style: TextStyle(fontSize: 10, color: Color(0xff5A6B7B)),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          )
+                      ),
+                    ),
+                  ],
+                )
             ),
-          )
+          ),
         ],
       ),
     );
