@@ -143,6 +143,7 @@ class ExhibitProvider with ChangeNotifier {
       _loading = false;
       notifyListeners();
     } catch(error) {
+      _loading = false;
       print('##### getExhibitSel: $error');
     }
   }
@@ -158,6 +159,7 @@ class ExhibitProvider with ChangeNotifier {
       _loading = false;
       notifyListeners();
     }catch(error) {
+      _loading = false;
       print("##### setExhibitDetSel: $error");
     }
   }
@@ -198,6 +200,7 @@ class ExhibitProvider with ChangeNotifier {
       _loading = false;
       notifyListeners();
     } catch(error) {
+      _loading = false;
       print("##### setExhibitContentDataSel: $error}");
     }
   }
@@ -237,6 +240,7 @@ class ExhibitProvider with ChangeNotifier {
       _loading = false;
       notifyListeners();
     } catch(error) {
+      _loading = false;
       print("##### setExhibitContentDataSel: $error}");
     }
   }
@@ -277,6 +281,7 @@ class ExhibitProvider with ChangeNotifier {
       _loading = false;
       notifyListeners();
     } catch(error) {
+      _loading = false;
       print("##### setExhibitContentDataSel: $error}");
     }
   }
@@ -445,6 +450,7 @@ class ExhibitProvider with ChangeNotifier {
       _loading = false;
       notifyListeners();
     } catch(error) {
+      _loading = false;
       print("##### setBookingDetSelCall error: $error");
     }
   }
