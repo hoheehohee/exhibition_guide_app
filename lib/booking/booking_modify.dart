@@ -58,7 +58,7 @@ class _BookingModify extends State<BookingModify> {
   @override
   void dispose() {
     _exhibitProd.setBookingDataInitial();
-    groupPersonnelController.dispose();
+    // groupPersonnelController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -92,9 +92,13 @@ class _BookingModify extends State<BookingModify> {
     _exhibitProd = Provider.of<ExhibitProvider>(context);
     bookingData = _exhibitProd.bookingRegData;
     nameController = TextEditingController(text: bookingData.name);
+    nameController.selection = TextSelection.fromPosition(TextPosition(offset: nameController.text.length));
     telController = TextEditingController(text: bookingData.tel);
+    telController.selection = TextSelection.fromPosition(TextPosition(offset: telController.text.length));
     groupNameController = TextEditingController(text: bookingData.groupName);
+    groupNameController.selection = TextSelection.fromPosition(TextPosition(offset: groupNameController.text.length));
     groupPersonnelController = TextEditingController(text: bookingData.groupPersonnel);
+    groupPersonnelController.selection = TextSelection.fromPosition(TextPosition(offset: groupPersonnelController.text.length));
     dateText = TextEditingController()..text = bookingData.applyDate;
 
     return Scaffold(
@@ -377,7 +381,7 @@ class _BookingModify extends State<BookingModify> {
                                             Expanded(
                                                 flex: 1,
                                                 child: DropdownButton<String>(
-                                                  value: bookingData.lang == null ? "kor" : bookingData.lang,
+                                                  value: (bookingData.lang == null || bookingData.lang == "") ? "kor" : bookingData.lang,
                                                   hint: Center(child: Text(_locals.bk18)),
                                                   icon: Icon(Icons.keyboard_arrow_down),
                                                   iconSize: 24,
@@ -410,7 +414,7 @@ class _BookingModify extends State<BookingModify> {
                                 child: Text(_locals.bk23, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                               ),
                               DropdownButton<String>(
-                                value: bookingData.obstacle == null ? "1" : bookingData.obstacle,
+                                value: (bookingData.obstacle == null || bookingData.obstacle == "") ? "1" : bookingData.obstacle,
                                 hint: Text(_locals.bk24),
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 iconSize: 20,
