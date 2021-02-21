@@ -11,6 +11,7 @@ import 'package:exhibition_guide_app/model/notice_list_model.dart';
 import 'package:exhibition_guide_app/model/qna_list_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 

@@ -1,5 +1,4 @@
 import 'package:exhibition_guide_app/model/booking_reg_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // 언어별 텍스트
 String getTextByLanguage(item, String key, String language) {
@@ -97,12 +96,5 @@ String bookingCheck(BookingRegModel bd) {
     }
   });
 
-  return result;
-}
-
-bool getDayCheck(DateTime val) {
-  print("####$val");
-  bool result = true;
-  result = val.day == 22 || val.weekday == 6 ? false : true;
   return result;
 }

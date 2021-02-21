@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:exhibition_guide_app/util.dart';
@@ -25,8 +27,17 @@ class _BookingViewState extends State<BookingView> {
   final time = ['09', '10', '11', '12', '13', '14', '15', '16'];
 
   ExhibitProvider _exhibitProd;
-
   DateTime selectedDate = DateTime.now();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Future.microtask(() {
+      Provider.of<ExhibitProvider>(context, listen: false).setHolidaySel();
+    });
+  }
 
   @override
   void dispose() {
@@ -555,7 +566,18 @@ class _BookingViewState extends State<BookingView> {
       initialDate: DateTime.now(),
       firstDate: DateTime.now().subtract(Duration(days: 0)),
       lastDate: DateTime.now().add(Duration(days: 365)),
-      selectableDayPredicate: (DateTime val) => getDayCheck(val),
+      selectableDayPredicate: (DateTime val) {
+        // return val.day != 19 ? false : true;
+        List<dynamic> temp = [];
+        _exhibitProd.holiday.forEach((element) {
+          String yyyyMM = DateFormat('yyyyMM').format(val);
+          element.forEach((k, v) {
+            if (k == yyyyMM) temp = v;
+          });
+        });
+
+        return temp.contains(val.day);
+      },
       builder: (context, child) {
         return Theme(
           data: ThemeData.dark(), // This will change to light theme.
@@ -565,9 +587,15 @@ class _BookingViewState extends State<BookingView> {
 
     );
 
-    print("####picked: $picked");
-    if (picked != null && picked != selectedDate)
-      _exhibitProd.setBookingData('applyDate', DateFormat('yyyy-MM-dd').format(picked));
+    if (picked != null && picked != selectedDate) {
+      String nowD = DateFormat('yyyyMMdd').format(DateTime.now());
+      String selDay = DateFormat('yyyyMMdd').format(picked);
+      if (nowD == selDay) {
+        _customDialog("오늘날짜 선택은 불가능합니다.");
+      } else {
+        _exhibitProd.setBookingData('applyDate', DateFormat('yyyy-MM-dd').format(picked));
+      }
+    }
   }
 
   void _customDialog(String result) {

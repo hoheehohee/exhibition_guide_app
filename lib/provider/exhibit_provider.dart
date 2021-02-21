@@ -8,6 +8,7 @@ import 'package:exhibition_guide_app/model/exhibit_theme_item_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_theme_model.dart' as ETM;
 import 'package:get/get.dart' as Getx;
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../message.dart';
@@ -55,9 +56,11 @@ class ExhibitProvider with ChangeNotifier {
   bool get isConsent => _isConsent;
   List get imageList => _imgList;
   List<ExhibitThemeItemModel> get exhibitThemeItem => _exhibitThemeItem;
+  List<dynamic> _holiday = [];
 
   String get language => _language;
   String get menuType => _menuType;
+  List<dynamic> get holiday => _holiday;
   ExhibitContentsDataModel get exhibitHighlightDataOne => _exhibitHighlightDataOne;
   ExhibitContentsDataModel get exhibitHighlightDataTwo => _exhibitHighlightDataTwo;
   ExhibitContentsDataModel get exhibitHighlightDataThree => _exhibitHighlightDataThree;
@@ -429,6 +432,27 @@ class ExhibitProvider with ChangeNotifier {
     }catch(error) {
       _loading = false;
       print("##### setExhibitAllMenuItemsSel error: $error");
+    }
+  }
+
+  Future<void> setHolidaySel() async {
+
+    try {
+      String params = DateFormat('yyyyMM').format(DateTime.now());
+      String nowDay = DateFormat('dd').format(DateTime.now());
+      Response resp;
+      Dio dio = new Dio();
+      resp = await dio.get(
+          BASE_URL + "/reservationOpenDateData.do",
+          queryParameters: {"searchMonth": params}
+      );
+      final data = json.decode(resp.toString());
+      _holiday = data;
+      _holiday[0][params].insert(0, int.parse(nowDay));
+
+      notifyListeners();
+    }catch(error) {
+      print("##### setHolidaySel error: $error");
     }
   }
 }

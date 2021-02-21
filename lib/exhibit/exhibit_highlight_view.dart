@@ -19,6 +19,10 @@ class ExhibitHighlightView extends StatefulWidget {
 }
 
 class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
+  var mqd;
+  var mqw;
+  var mqh;
+
   AppLocalizations _locals;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   ExhibitProvider _exhibitProv;
@@ -36,6 +40,10 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
 
   @override
   Widget build(BuildContext context) {
+    mqd = MediaQuery.of(context);
+    mqw = mqd.size.width;
+    mqh = mqd.size.height;
+
     _locals = AppLocalizations.of(context);
     _exhibitProv = Provider.of<ExhibitProvider>(context);
     _settingProv = Provider.of<SettingProvider>(context);
@@ -164,7 +172,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
   List<Widget> _imageSliders(List<ECDM.Data> imageList, String title) {
     return imageList.map((item) => Container(
       child: Container(
-        margin: EdgeInsets.all(5.0),
+        margin: EdgeInsets.symmetric(vertical: mqh * 0.005),
         child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
             child: Stack(
