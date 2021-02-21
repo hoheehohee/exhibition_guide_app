@@ -12,6 +12,7 @@ import 'package:exhibition_guide_app/message.dart';
 import 'package:exhibition_guide_app/model/beacon_content_model.dart';
 import 'package:exhibition_guide_app/model/beacon_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_item_model.dart';
+import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' as Getx;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +33,7 @@ class DevicesProvider with ChangeNotifier {
 
   String _beaconResult = '';
   String _audioUrl = '';
+  String _beforeBeaconIdx = "-1";
   int _nrMessaggesReceived = 0;
 
   bool _playing = false; // 재성버튼 활성 default
@@ -44,6 +46,7 @@ class DevicesProvider with ChangeNotifier {
   bool get isBeaconConnect => _beaconConnect;
   bool get autoPlayAudio => _autoPlayAudio;
   List get dataSourceList => _dataSourceList;
+  String get beforeBeaconIdx => _beforeBeaconIdx;
   BeaconModel get cBeaconData => beaconData;
   BeaconContentModel get beaconConteantList => _beaconContentList;
 
@@ -84,18 +87,13 @@ class DevicesProvider with ChangeNotifier {
     _isRunning = type;
 
     if (type) {
-      if (Platform.isAndroid) {
-        init();
-      } else {
-        await BeaconsPlugin.startMonitoring;
-      }
+      init();
     } else {
       await BeaconsPlugin.stopMonitoring;
       if (Platform.isAndroid) {
         await BeaconsPlugin.runInBackground(false);
       }
     }
-
     notifyListeners();
   }
 
@@ -105,7 +103,7 @@ class DevicesProvider with ChangeNotifier {
 
   void init() async {
     print("#####Platform.isAndroid: ${Platform.isAndroid}");
-
+    print("##### _isRunning: $_isRunning");
     if (!_isRunning) return;
 
     // 백그라운드에서 실행
@@ -187,7 +185,6 @@ class DevicesProvider with ChangeNotifier {
 
       if (_exhibitItem.data != null) {
         int idx = _exhibitItem.data.idx;
-        Getx.Get.to(ExhibitDetail(idx));
 
         _audioUrl = _exhibitItem.data.voiceFile;
         temp.add(
@@ -197,7 +194,12 @@ class DevicesProvider with ChangeNotifier {
           )
         );
         _dataSourceList = temp;
+        if (_beforeBeaconIdx != idx.toString()) stopAudio();
+        _beforeBeaconIdx = idx.toString();
+
         Getx.Get.to(ExhibitDetail(idx));
+        // print("####t: $beforeBeaconIdx");
+
       }
 
     }catch(error) {

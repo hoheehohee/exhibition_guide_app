@@ -34,6 +34,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   var mqd;
   var mqw;
   var mqh;
+  String idx;
   ExhibitProvider _exhibit;
   DevicesProvider _device;
   SettingProvider _settingProv;
@@ -43,9 +44,10 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => {
+    Future.microtask((){
       // Provider.of<DevicesProvider>(context, listen: false).playAudio(),
-      Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx)
+      idx = widget.idx.toString();
+      Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx);
     });
 
     // 음성지원 안내가 on일 경우 자동 음성 안내 시작
@@ -71,6 +73,12 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     _device = Provider.of<DevicesProvider>(context);
     _settingProv = Provider.of<SettingProvider>(context);
     _loading = _exhibit.loading;
+
+    // 새로운 비콘이 잡혔을 때 해당 데이터 조회
+    if (_device.beforeBeaconIdx != idx) {
+      idx = _device.beforeBeaconIdx;
+      _exhibit.setExhibitDetSel(int.parse(_device.beforeBeaconIdx));
+    }
 
     return Scaffold(
       appBar: _appBar(),
