@@ -58,7 +58,7 @@ class _BookingModify extends State<BookingModify> {
   @override
   void dispose() {
     _exhibitProd.setBookingDataInitial();
-    groupPersonnelController.dispose();
+    // groupPersonnelController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -92,9 +92,13 @@ class _BookingModify extends State<BookingModify> {
     _exhibitProd = Provider.of<ExhibitProvider>(context);
     bookingData = _exhibitProd.bookingRegData;
     nameController = TextEditingController(text: bookingData.name);
+    nameController.selection = TextSelection.fromPosition(TextPosition(offset: nameController.text.length));
     telController = TextEditingController(text: bookingData.tel);
+    telController.selection = TextSelection.fromPosition(TextPosition(offset: telController.text.length));
     groupNameController = TextEditingController(text: bookingData.groupName);
+    groupNameController.selection = TextSelection.fromPosition(TextPosition(offset: groupNameController.text.length));
     groupPersonnelController = TextEditingController(text: bookingData.groupPersonnel);
+    groupPersonnelController.selection = TextSelection.fromPosition(TextPosition(offset: groupPersonnelController.text.length));
     dateText = TextEditingController()..text = bookingData.applyDate;
 
     return Scaffold(

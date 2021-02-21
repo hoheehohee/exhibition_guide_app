@@ -259,14 +259,14 @@ class _BookingStateViewState extends State<BookingStateView> {
               margin: EdgeInsets.all(10),
               child: InkWell(
                 onTap: () {
-                  // if(_mypage.bookingList.data[index].status == "N") {
-                  //   Get.to(BookingModify(_mypage.bookingList.data[index].applyID));
-                  // } else {
+                  if(_mypage.bookingList.data[index].status == "N") {
+                    Get.to(BookingModify(_mypage.bookingList.data[index].applyID));
+                  } else {
                     Future.microtask(() => {
                       Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, monthCount)
                     });
                     _exhibit.setBookingDetSelCall(_mypage.bookingList.data[index].applyID);
-                  // }
+                  }
                 },
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
