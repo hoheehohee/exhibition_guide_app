@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'provider/setting_provider.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (context) => LocaleProvider(),
     builder: (context, child) {
-
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
       return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => MyPageProvider()),
