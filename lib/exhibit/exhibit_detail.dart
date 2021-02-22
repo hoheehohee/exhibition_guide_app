@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
 import 'package:exhibition_guide_app/constant.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_video_view.dart';
 import 'package:exhibition_guide_app/guide/exhibition_map_view.dart';
@@ -14,6 +15,7 @@ import 'package:provider/provider.dart';
 import '../main/main_view.dart';
 import '../util.dart';
 import 'exhibit_all_list_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExhibitDetail extends StatefulWidget {
   final int idx;
@@ -30,13 +32,14 @@ class ExhibitDetail extends StatefulWidget {
 class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserver {
 
   IconData playBtn = Icons.play_arrow; // 재성 시 활성 icon
+  AppLocalizations _locals;
 
   var mqd;
   var mqw;
   var mqh;
   String idx;
   ExhibitProvider _exhibit;
-  DevicesProvider _device;
+  DevicesProvider _devicesProv;
   SettingProvider _settingProv;
   bool _loading;
   bool _audioPlayShow = true;
@@ -51,18 +54,21 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
       Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx);
     });
 
-    // 음성지원 안내가 on일 경우 자동 음성 안내 시작
-    Timer(
-      Duration(seconds: 3), () {
-        if (_device.autoPlayAudio && _exhibit.exhibitItem != null) {
-          final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
-          _device.setExhibitDetAudio(audio);
-          _device.playAudio();
-        }
-      }
-    );
+    autoAudioPlay();
   }
 
+  void autoAudioPlay() {
+    // 음성지원 안내가 on일 경우 자동 음성 안내 시작
+    Timer(
+        Duration(seconds: 2), () {
+      if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
+        final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+        _devicesProv.setExhibitDetAudio(audio);
+        _devicesProv.playAudio();
+      }
+    }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,15 +77,17 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     mqh = mqd.size.height;
 
     _exhibit = Provider.of<ExhibitProvider>(context);
-    _device = Provider.of<DevicesProvider>(context);
+    _devicesProv = Provider.of<DevicesProvider>(context);
     _settingProv = Provider.of<SettingProvider>(context);
+    _locals = AppLocalizations.of(context);
     _loading = _exhibit.loading;
 
     // 새로운 비콘이 잡혔을 때 해당 데이터 조회
-    if (_device.beforeBeaconIdx != idx) {
-      idx = _device.beforeBeaconIdx;
+    if (_devicesProv.beforeBeaconIdx != idx) {
+      idx = _devicesProv.beforeBeaconIdx;
       if (idx != "-1") {
-        _exhibit.setExhibitDetSel(int.parse(_device.beforeBeaconIdx));
+        _exhibit.setExhibitDetSel(int.parse(_devicesProv.beforeBeaconIdx));
+        autoAudioPlay();
       }
     }
 
@@ -103,7 +111,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                 icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
                 onPressed: () {
                   Get.back();
-                  _device.stopAudio();
+                  _devicesProv.stopAudio();
                 }
             )
           )
@@ -113,7 +121,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
           px: 25.0,
           iconPath: 'assets/images/button/btn-home.png',
           onAction: () {
-            _device.stopAudio();
+            _devicesProv.stopAudio();
             Get.offAll(MainView());
           }
         ),
@@ -150,23 +158,19 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                 alignment: Alignment.centerRight,
                 child: (
                     Container(
-                        width: 60,
+                        width: mqw * 0.15,
                         margin: EdgeInsets.only(right: 15),
                         child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Image.asset(
-                                  "assets/images/icon/icon-qr-on.png",
-                                  width: 25,
-                                  fit: BoxFit.fill
-                              ),
-                              Image.asset(
-                                  "assets/images/icon/icon-bluetooth.png",
-                                  color: Color(0xff2E667B),
-                                  width: 25,
-                                  fit: BoxFit.fill
-                              ),
+                              _imageIconBtn(
+                                  px: 40.0,
+                                  onAction: () {
+                                    Get.off(LanguageView(idx: widget.idx));
+                                  },
+                                  iconPath: 'assets/images/icon/icon-type.png'
+                              )
                             ]
                         )
                     )
@@ -222,7 +226,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             )
         ),
         Container(
-            height: 60,
+            height: mqh * 0.09,
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
@@ -230,12 +234,10 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
               border: Border(bottom: BorderSide(width: 1, color: Colors.grey))
             ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-            Expanded(
-                flex: 2,
-                child: Row(
+              Row(
                   children: [
                     _imageIconBtn(
                       px: 40.0,
@@ -244,17 +246,17 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                           _audioPlayShow = true;
                         });
                         final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
-                        _device.setExhibitDetAudio(audio);
+                        _devicesProv.setExhibitDetAudio(audio);
                       },
                       iconPath: 'assets/images/icon/icon-headset.png',
                     ),
                     _imageIconBtn(
                       px: 40.0,
                       onAction: () async {
-                        _device.stopAudio();
+                        _devicesProv.stopAudio();
                         final video = _exhibit.getTextByLanguage(-1, 'videoFile');
                         print("##### video: $video");
-                        await _device.setExhibitDetVideo(video);
+                        await _devicesProv.setExhibitDetVideo(video);
                         Get.to(ExhibitVideoView());
                       },
                       iconPath: 'assets/images/icon/icon-movie.png',
@@ -262,38 +264,78 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                     _imageIconBtn(
                       px: 40.0,
                       onAction: () {
-                        _device.stopAudio();
+                        _devicesProv.stopAudio();
                         Get.to(ExhibitionMapView());
                       },
                       iconPath: 'assets/images/icon/icon-map-d.png',
                     )
                   ]
+              ),
+              Expanded(
+                  flex: 1,
+                  child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: mqw * 0.03, bottom: mqh * 0.01),
+                              child: (
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CustomImageIconBtn(
+                                      px: mqw * 0.2,
+                                      iconPath: (
+                                          _devicesProv.isRunning
+                                              ? 'assets/images/toogle-main-on.png'
+                                              : 'assets/images/toogle-main-off.png'
+                                      ),
+                                      onAction: () {
+                                        _devicesProv.becaonScan(!_devicesProv.isRunning);
+                                      },
+                                    ),
+                                    Text(_locals.hr5, style: TextStyle(fontSize: mqw * 0.035, height: mqh * 0.0005)),
+                                  ],
+                                )
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: mqh * 0.01),
+                              child: (
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      CustomImageIconBtn(
+                                        px: mqw * 0.2,
+                                        iconPath: (
+                                            _devicesProv.autoPlayAudio
+                                                ? 'assets/images/toogle-main-on.png'
+                                                : 'assets/images/toogle-main-off.png'
+                                        ),
+                                        onAction: () {
+                                          _devicesProv.setAutoPlayAudio(!_devicesProv.autoPlayAudio);
+                                          // if (!_devicesProv.autoPlayAudio) {
+                                          //   final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+                                          //   _devicesProv.setExhibitDetAudio(audio);
+                                          //   _devicesProv.playAudio();
+                                          // } else {
+                                          //   _devicesProv.stopAudio();
+                                          // }
+                                        },
+                                      ),
+                                      Text(_locals.hr6, style: TextStyle(fontSize: mqw * 0.035, height: mqh * 0.0005)),
+                                    ],
+                                  )
+                              ),
+                            )
+                          ]
+                      )
+                  )
                 )
-            ),
-            Expanded(
-                flex: 1,
-                child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          _imageIconBtn(
-                            px: 40.0,
-                            onAction: () {},
-                            iconPath: 'assets/images/icon/icon-share.png'
-                          ),
-                          _imageIconBtn(
-                            px: 40.0,
-                            onAction: () {
-                              Get.off(LanguageView(idx: widget.idx));
-                            },
-                            iconPath: 'assets/images/icon/icon-type.png'
-                          )
-                        ]
-                    )
-                )
-              )
             ]
           )
         ),
@@ -356,17 +398,17 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                   px: 30.0,
                   onAction: () {
                     final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
-                    _device.setExhibitDetAudio(audio);
-                    _device.playAudio();
+                    _devicesProv.setExhibitDetAudio(audio);
+                    _devicesProv.playAudio();
                   },
                   iconPath: (
-                    _device.isPlaying
+                    _devicesProv.isPlaying
                       ? 'assets/images/button/btn-pause.png'
                       :'assets/images/button/btn-play.png'
                   )
                 ),
                 Text(
-                  "${_device.position.inMinutes}:${_device.position.inSeconds.remainder(60)}",
+                  "${_devicesProv.position.inMinutes}:${_devicesProv.position.inSeconds.remainder(60)}",
                   style: TextStyle(color: Colors.white),
                 ),
                 Expanded(
@@ -374,13 +416,13 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                     child: _audioSlider()
                 ),
                 Text(
-                  "${_device.duration.inMinutes}:${_device.duration.inSeconds.remainder(60)}",
+                  "${_devicesProv.duration.inMinutes}:${_devicesProv.duration.inSeconds.remainder(60)}",
                   style: TextStyle(color: Colors.white)
                 ),
                 _imageIconBtn(
                   px: 23.0,
                   onAction: () {
-                    _device.stopAudio();
+                    _devicesProv.stopAudio();
                     setState(() {
                       _audioPlayShow = false;
                     });
@@ -408,12 +450,12 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
       ),
       child: Slider(
         min: 0,
-        // value: _device.position.inSeconds.toDouble(),
-        value: _device.duration.inSeconds.toDouble() == 0 ? 0 : _device.position.inSeconds.toDouble(),
-        max: _device.duration.inSeconds.toDouble() == 0 ? 1 : _device.duration.inSeconds.toDouble(),
+        // value: _devicesProv.position.inSeconds.toDouble(),
+        value: _devicesProv.duration.inSeconds.toDouble() == 0 ? 0 : _devicesProv.position.inSeconds.toDouble(),
+        max: _devicesProv.duration.inSeconds.toDouble() == 0 ? 1 : _devicesProv.duration.inSeconds.toDouble(),
         onChanged: (double value) {
           setState(() {
-            _device.audioPlayer.seek(new Duration(seconds: value.toInt()));
+            _devicesProv.audioPlayer.seek(new Duration(seconds: value.toInt()));
           });
         },
       )

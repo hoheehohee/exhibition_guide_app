@@ -36,6 +36,8 @@
     "hr2":	"Automated Guide System",
     "hr3":	"Audio Support",
     "hr4":	"Please enter the exhibit name.",
+    "hr5":  "Automated Guide System",
+    "hr6":	"Audio Support",
 
     "el1": "Permanent",
     "el2": "Featured",
@@ -233,6 +235,8 @@
     "@hr2": { "description": "" },
     "@hr3": { "description": "" },
     "@hr4": { "description": "" },
+    "@hr5": { "description": "" },
+    "@hr6": { "description": "" },
 
     "@el1": { "description": "" },
     "@el2": { "description": "" },
