@@ -30,10 +30,13 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.example.exhibitionGuideApp</string>
+			<string>com.example.exhibitionGuideApp2</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakaocf1b1bd224be28380b11659982f4f52f</string>
+				<string>kakaofb73046ab2e433c0bf267b62692607d6</string>
+				<string>naverejfkcifnvidf</string>
+				<string>fb2837155739868665</string>
+				<string>com.googleusercontent.apps.760281444534-lqe7tljp6tdhud77srke70nhbgu3q829</string>
 			</array>
 		</dict>
 		<dict/>
@@ -41,15 +44,25 @@
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>KAKAO_APP_KEY</key>
-	<string>cf1b1bd224be28380b11659982f4f52f</string>
+	<string>fb73046ab2e433c0bf267b62692607d6</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>kakaocf1b1bd224be28380b11659982f4f52f</string>
+		<string>kakaofb73046ab2e433c0bf267b62692607d6</string>
 		<string>kakaokompassauth</string>
 		<string>storykompassauth</string>
 		<string>kakaolink</string>
 		<string>storylink</string>
+		<string>naversearchapp</string>
+		<string>naversearchthirdlogin</string>
 	</array>
+	<key>kServiceAppUrlScheme</key>
+	<string>naverejfkcifnvidf</string>
+	<key>kConsumerKey</key>
+	<string>XI9NTAtdXR3E7_LCoJ3p</string>
+	<key>kConsumerSecret</key>
+	<string>DDIt5NzI_i</string>
+	<key>kServiceAppName</key>
+	<string>국립일제강제동원역사관</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -88,5 +101,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+    <key>FacebookAppID</key>
+    <string>2837155739868665</string>
+    <key>FacebookDisplayName</key>
+    <string>국립일제강제동원역사관</string>
 </dict>
 </plist>

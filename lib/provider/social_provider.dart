@@ -44,7 +44,7 @@ class SocialProvider with ChangeNotifier {
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
       print("##### kakaoLogin error: $e");
-      _isSocialLogin = true;
+      _isSocialLogin = false;
       // _isSocialLogin = false;
       notifyListeners();
 
@@ -75,7 +75,7 @@ class SocialProvider with ChangeNotifier {
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
       print("##### googleLogin error: $e");
-      _isSocialLogin = true;
+      _isSocialLogin = false;
       // _isSocialLogin = false;
       notifyListeners();
     }
