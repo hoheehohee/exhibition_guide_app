@@ -12,6 +12,8 @@ import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _BASE_URL = 'http://220.95.107.101/';
@@ -31,9 +33,9 @@ class SocialProvider with ChangeNotifier {
   Future<Map> kakaoLogin() async {
     print("##### kakaoLogin");
     try {
-      /*String authCode = await AuthCodeClient.instance.requestWithAgt(requiredScopes);
+      String authCode = await AuthCodeClient.instance.request(); // via browser
       AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
-      AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
+      AccessTokenStore.instance.toStore(token);
       User user = await UserApi.instance.me();
       Map data = {"snsType": "kakao", "email": user.kakaoAccount.email};
       if(data["email"] == null){
@@ -41,7 +43,7 @@ class SocialProvider with ChangeNotifier {
       } else {
         data["check"] = await checkServer(data);
       }
-      return data;*/
+      return data;
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
       print("##### kakaoLogin error: $e");
