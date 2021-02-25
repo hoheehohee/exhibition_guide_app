@@ -1,4 +1,4 @@
-package com.example.exhibition_guide_app
+package com.museum.exhibition_guide_app
 
 import com.umair.beacons_plugin.BeaconsPlugin
 import io.flutter.embedding.android.FlutterActivity

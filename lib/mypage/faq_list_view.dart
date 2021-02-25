@@ -103,7 +103,8 @@ class _FaqListViewState extends State<FaqListView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(item.title),
+                      Flexible(
+                          child: new Text(item.title)),
                       Image.asset(
                         item.isExpanded
                           ? "assets/images/icon/icon-arrow-up.png"

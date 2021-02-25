@@ -6,7 +6,7 @@ import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_kakao_login/flutter_kakao_login.dart';
+// import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:get/route_manager.dart';
@@ -30,7 +30,43 @@ class SocialProvider with ChangeNotifier {
   // 카카오 로그인
   Future<Map> kakaoLogin() async {
     print("##### kakaoLogin");
-    try{
+    try {
+      /*String authCode = await AuthCodeClient.instance.requestWithAgt(requiredScopes);
+      AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
+      AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
+      User user = await UserApi.instance.me();
+      Map data = {"snsType": "kakao", "email": user.kakaoAccount.email};
+      if(data["email"] == null){
+        data["check"] = "C";
+      } else {
+        data["check"] = await checkServer(data);
+      }
+      return data;*/
+    } catch(e) {
+      // 화면 전환을 위해 임시로 로그인을 성공으로 함
+      print("##### kakaoLogin error: $e");
+      _isSocialLogin = false;
+      // _isSocialLogin = false;
+      notifyListeners();
+    }
+
+    /*final FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();
+    final result = await kakaoSignIn.getUserMe();
+    final KakaoAccountResult account = result.account;
+    if (account != null) {
+      final KakaoAccountResult account = result.account;
+      final userID = account.userID;
+      final userEmail = account.userEmail;
+      final userPhoneNumber = account.userPhoneNumber;
+      final userDisplayID = account.userDisplayID;
+      final userNickname = account.userNickname;
+      final userGender = account.userGender;
+      final userAgeRange = account.userAgeRange;
+      final userBirthday = account.userBirthday;
+      final userProfileImagePath = account.userProfileImagePath;
+      final userThumbnailImagePath = account.userThumbnailImagePath;
+    }*/
+    /*try{
       FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();
       final result = await kakaoSignIn.logIn();
       final KakaoAccountResult account = result.account;
@@ -44,11 +80,10 @@ class SocialProvider with ChangeNotifier {
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
       print("##### kakaoLogin error: $e");
-      _isSocialLogin = true;
+      _isSocialLogin = false;
       // _isSocialLogin = false;
       notifyListeners();
-
-    }
+    }*/
   }
 
   // 구글 로그인
@@ -75,8 +110,7 @@ class SocialProvider with ChangeNotifier {
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
       print("##### googleLogin error: $e");
-      _isSocialLogin = true;
-      // _isSocialLogin = false;
+      _isSocialLogin = false;
       notifyListeners();
     }
   }

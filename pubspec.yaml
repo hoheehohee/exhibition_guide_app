@@ -38,7 +38,7 @@ dependencies:
   beacons_plugin: 1.0.19
   dio: 3.0.10
   flutter_naver_login: ^1.2.0
-  flutter_kakao_login: ^1.2.0
+#  flutter_kakao_login: ^1.2.0
   kakao_flutter_sdk: ^0.5.4
   flutter_login_facebook: ^0.4.0+1
   google_sign_in: ^4.5.6

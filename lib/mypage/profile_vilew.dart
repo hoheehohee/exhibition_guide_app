@@ -56,7 +56,7 @@ class _ProfileViewState extends State<ProfileView> {
         break;
       case "facebook":
         {
-          icon = "assets/images/icon-facebook.png";
+          icon = "assets/images/facebook.png";
         }
         break;
     }
