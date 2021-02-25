@@ -112,8 +112,17 @@ class MyPageProvider with ChangeNotifier {
     _loading = true;
     Response resp;
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final language = prefs.getString('language');
+
+    var _lang = "kor";
+
+    if (language == 'en') _lang = "eng";
+    else if (language == "zh") _lang = "chn";
+    else if (language == "ja") _lang = "jpn";
+
     try{
-      resp = await dio.get(BASE_URL + '/faqData.do');
+      resp = await dio.get(BASE_URL + '/faqData.do', queryParameters: { "lang": _lang});
       final jsonData = json.decode("$resp");
       _faqList = FaqListModel.fromJson(jsonData);
       _loading = false;
