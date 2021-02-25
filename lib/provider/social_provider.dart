@@ -31,13 +31,23 @@ class SocialProvider with ChangeNotifier {
   Future<Map> kakaoLogin() async {
     print("##### kakaoLogin");
     try {
-      String authCode = await AuthCodeClient.instance.request();
-    } on KakaoAuthException catch (e) {
-      // some error happened during the course of user login... deal with it.
-    } on KakaoClientException catch (e) {
-      //
-    } catch (e) {
-      //
+      /*String authCode = await AuthCodeClient.instance.requestWithAgt(requiredScopes);
+      AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
+      AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
+      User user = await UserApi.instance.me();
+      Map data = {"snsType": "kakao", "email": user.kakaoAccount.email};
+      if(data["email"] == null){
+        data["check"] = "C";
+      } else {
+        data["check"] = await checkServer(data);
+      }
+      return data;*/
+    } catch(e) {
+      // 화면 전환을 위해 임시로 로그인을 성공으로 함
+      print("##### kakaoLogin error: $e");
+      _isSocialLogin = false;
+      // _isSocialLogin = false;
+      notifyListeners();
     }
 
     /*final FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();

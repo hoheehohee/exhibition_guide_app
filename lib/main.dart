@@ -8,6 +8,7 @@ import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -15,6 +16,8 @@ import 'provider/setting_provider.dart';
 import 'package:flutter/services.dart';
 
 void main() {
+  KakaoContext.clientId = "fb73046ab2e433c0bf267b62692607d6";
+  KakaoContext.javascriptClientId = "0cebd12ebcbdd2b2fd398e87d07b300a";
   runApp(MyApp());
 }
 
