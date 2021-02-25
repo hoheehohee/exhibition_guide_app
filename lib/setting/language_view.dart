@@ -91,7 +91,7 @@ class LanguageView extends StatelessWidget {
                   icon: Icon(Icons.arrow_back_ios),
                   onPressed: () {
                     if (idx != null) {
-                      Get.off(ExhibitDetail(idx));
+                      Get.off(ExhibitDetail(idx, appbarTitle: Get.arguments,));
                     } else {
                       Get.back();
                     }

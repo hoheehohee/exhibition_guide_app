@@ -1,4 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
+import 'package:exhibition_guide_app/commons/custon_slider_appbar.dart';
 import 'package:exhibition_guide_app/commons/exhibit_view_bottom.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_detail.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
@@ -99,7 +101,15 @@ class _ExhibitListViewState extends State<ExhibitListView> {
 
     return WillPopScope(
       child: Scaffold(
-        appBar: _appBar(),
+        appBar:PreferredSize(
+            preferredSize: Size.fromHeight(mqd.size.height * 0.08),
+            child: CustomSliderAppbar(
+              title: widget.appBarTitle != null ? getTitle(widget.appBarTitle) : '',
+              onAction: () {
+                _scaffoldKey.currentState.openEndDrawer();
+              },
+            )
+        ),
         key: _scaffoldKey,
         bottomNavigationBar: ExhibitViewBottom(),
         endDrawer: Drawer(
@@ -177,22 +187,6 @@ class _ExhibitListViewState extends State<ExhibitListView> {
     );
   }
 
-  Widget _appBar() {
-    return AppBar(
-      backgroundColor: backgroundColor,
-      title: Text(widget.appBarTitle != null ? getTitle(widget.appBarTitle) : '', style: TextStyle(color: Colors.white),),
-      actions:[
-        IconButton(
-          icon: new Icon(Icons.menu, size: mqw * 0.08, color: Colors.white,),
-          onPressed: () {
-            _scaffoldKey.currentState.openEndDrawer();
-          },
-        ),
-      ],
-      leading: new Container(),
-    );
-  }
-
   Widget _textInput() {
     return Padding(
         padding: EdgeInsets.all(mqw * 0.03),
@@ -230,7 +224,9 @@ class _ExhibitListViewState extends State<ExhibitListView> {
                   // ),
                   onTap: () {
                     // print("abc");
-                    Get.to(ExhibitDetail(item.idx));
+                    Get.to(
+                        ExhibitDetail(item.idx, appbarTitle: widget.appBarTitle,)
+                    );
                   },
                 ),
                 Positioned(

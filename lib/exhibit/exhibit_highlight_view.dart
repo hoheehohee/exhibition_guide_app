@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:exhibition_guide_app/commons/custon_slider_appbar.dart';
 import 'package:exhibition_guide_app/commons/exhibit_view_bottom.dart';
 import 'package:exhibition_guide_app/constant.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
@@ -49,7 +50,15 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
     _settingProv = Provider.of<SettingProvider>(context);
 
     return Scaffold(
-      appBar: _appBar(),
+      appBar:PreferredSize(
+          preferredSize: Size.fromHeight(mqd.size.height * 0.08),
+          child: CustomSliderAppbar(
+            title: _locals.menu1,
+            onAction: () {
+              _scaffoldKey.currentState.openEndDrawer();
+            },
+          )
+      ),
       bottomNavigationBar: ExhibitViewBottom(),
       key: _scaffoldKey,
       endDrawer: Drawer(
@@ -96,22 +105,6 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _appBar() {
-    return AppBar(
-      backgroundColor: backgroundColor,
-      title: Text(_locals.menu1, style: TextStyle(color: Colors.white),),
-      actions:[
-        IconButton(
-          icon: new Icon(Icons.menu, size: 30, color: Colors.white,),
-          onPressed: () {
-            _scaffoldKey.currentState.openEndDrawer();
-          },
-        ),
-      ],
-      leading: new Container(),
     );
   }
 
@@ -172,7 +165,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
   List<Widget> _imageSliders(List<ECDM.Data> imageList, String title) {
     return imageList.map((item) => Container(
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: mqh * 0.005),
+        margin: EdgeInsets.all(mqw * 0.01),
         child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
             child: Stack(

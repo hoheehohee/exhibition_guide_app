@@ -44,17 +44,64 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   bool _loading;
   bool _audioPlayShow = true;
 
+  String getTitle(String title){
+    if(title == "전시유물" || title == "Relics" || title == "展示遺物" || title == "展示遺物" || title == "展示文物" ){
+      return _locals.menu2;
+    } else if(title == "상설전시" || title == "Permanent Exhibition" || title == "常設展示" || title == "常设展览" ){
+      return _locals.menu3;
+    } else if(title == "기획전시" || title == "Featured Exhibition" || title == "企画展示" || title == "策划展览" ){
+      return _locals.menu4;
+    } else if(title == "전시물" || title == "Exhibits" || title == "展示物" || title == "展品" ){
+      return _locals.main5;
+    } else if(title == "4F 전시실" || title == "4th Floor" || title == "４Ｆ 展示室" || title == "4F展厅" ){
+      return _locals.main6;
+    } else if(title == "5F 전시실" || title == "5th Floor" || title == "5Ｆ 展示室" || title == "5F展厅" ){
+      return _locals.main7;
+    } else {
+      return "";
+    }
+  }
+
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
+    //앱 상태 변경 이벤트 등록
+
     Future.microtask((){
       // Provider.of<DevicesProvider>(context, listen: false).playAudio(),
       idx = widget.idx.toString();
+      print("####### idx: $idx");
       Provider.of<DevicesProvider>(context, listen: false).setBeforeBeaconIdx(idx.toString());
       Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx);
     });
 
     autoAudioPlay();
+  }
+
+  @override
+  void dispose() {
+    //앱 상태 변경 이벤트 해제
+    //문제는 앱 종료시 dispose함수가 호출되지 않아 해당 함수를 실행 할 수가 없다.
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.paused:
+        break;
+      case AppLifecycleState.detached:
+        Provider.of<DevicesProvider>(context, listen: false).stopAudio();
+        print("##### detached");
+        break;
+    }
   }
 
   void autoAudioPlay() {
@@ -91,20 +138,30 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
       }
     }
 
-    return Scaffold(
-      appBar: _appBar(),
-      body: _mainView(),
-      bottomNavigationBar: _audioPlayShow ?  _bottomButtons() : null,
+    return WillPopScope(
+      child: Scaffold(
+        appBar: _appBar(),
+        body: _mainView(),
+        bottomNavigationBar: (
+          _audioPlayShow
+            ? (
+              _exhibit.exhibitItem != null && _exhibit.exhibitItem["voiceFile"] != ""
+              ? _bottomButtons()
+              : null
+            )
+            : null),
+      ),
+      onWillPop: () async {
+        Provider.of<DevicesProvider>(context, listen: false).stopAudio();
+        return true;
+      }
     );
   }
 
   Widget _appBar() {
     return AppBar(
       backgroundColor: backgroundColor,
-      title: Text(
-        widget.appbarTitle != null ? widget.appbarTitle : "",
-        style: TextStyle(color: Colors.white),
-      ),
+      title: Text(widget.appbarTitle != null ? getTitle(widget.appbarTitle) : '', style: TextStyle(color: Colors.white),),
       leading: Builder(
         builder: (BuildContext context) => (
             IconButton(
@@ -167,7 +224,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                               _imageIconBtn(
                                   px: 40.0,
                                   onAction: () {
-                                    Get.off(LanguageView(idx: widget.idx));
+                                    Get.off(LanguageView(idx: widget.idx), arguments: widget.appbarTitle);
                                   },
                                   iconPath: 'assets/images/icon/icon-type.png'
                               )

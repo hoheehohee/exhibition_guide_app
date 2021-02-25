@@ -1,3 +1,4 @@
+import 'package:exhibition_guide_app/commons/custon_slider_appbar.dart';
 import 'package:exhibition_guide_app/commons/exhibit_view_bottom.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
@@ -77,7 +78,15 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
 
     return Scaffold(
       key: _scaffoldKey,
-      appBar: _appBar(),
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(mqd.size.height * 0.08),
+          child: CustomSliderAppbar(
+            title: widget.appBarTitle != null ? getTitle(widget.appBarTitle) : '',
+            onAction: () {
+              _scaffoldKey.currentState.openEndDrawer();
+            },
+          )
+      ),
       bottomNavigationBar: ExhibitViewBottom(),
       backgroundColor: backgroundColor,
       endDrawer: Drawer(
@@ -96,22 +105,6 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
             )
         ),
       )
-    );
-  }
-
-  Widget _appBar() {
-    return AppBar(
-      backgroundColor: backgroundColor,
-      title: Text(widget.appBarTitle != null ? getTitle(widget.appBarTitle) : '', style: TextStyle(color: Colors.white),),
-      actions:[
-        IconButton(
-          icon: new Icon(Icons.menu, size: mqw * 0.08, color: Colors.white,),
-          onPressed: () {
-            _scaffoldKey.currentState.openEndDrawer();
-          },
-        ),
-      ],
-      leading: new Container(),
     );
   }
 

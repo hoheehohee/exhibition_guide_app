@@ -13,7 +13,7 @@
     "main10": "Announcements",
     "main11": "Reserve a Docent Tour",
     "main12": "Personal Inquiries",
-    "main13": "Automated Guide System",
+    "main13": "Automated Guide",
     "main14": "Privacy Policy",
     "main15": "LogOut",
 
@@ -33,10 +33,10 @@
     "menu8": "My Page",
 
     "hr1":  "Exhibition Hall Guides",
-    "hr2":	"Automated Guide System",
+    "hr2":	"Automated Guide",
     "hr3":	"Audio Support",
     "hr4":	"Please enter the exhibit name.",
-    "hr5":  "Automated Guide System",
+    "hr5":  "Automated Guide",
     "hr6":	"Audio Support",
 
     "el1": "Permanent",
