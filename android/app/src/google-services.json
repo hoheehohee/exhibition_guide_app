@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1057254671401",
+    "project_id": "museum-25f3e",
+    "storage_bucket": "museum-25f3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057254671401:android:a1dea5ceb06a9be3e48838",
+        "android_client_info": {
+          "package_name": "com.museum.exhibition_guide_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1057254671401-8pmnk1k0flnni5qmoluidbvhatt673pp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.museum.exhibition_guide_app",
+            "certificate_hash": "80830ca6bc89c18311abbc54dafdd7ce93b36d4c"
+          }
+        },
+        {
+          "client_id": "1057254671401-v64i07i86nuiu415j58bflr473uirig1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzKTD8zMYJFzMMN-9_p-AADrKhJUMaek4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1057254671401-v64i07i86nuiu415j58bflr473uirig1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
