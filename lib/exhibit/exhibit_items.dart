@@ -31,7 +31,9 @@ class ExhibitItems extends StatelessWidget {
 
         return InkWell(
           onTap: () {
-            print("##### click: ${data[index].exhibitionCode}");
+            Get.to(
+              ExhibitDetail(data[index].idx, appbarTitle: '전시물 선택',),
+            );
           },
           child: Container(
               height: mqh * 0.1,
@@ -44,18 +46,18 @@ class ExhibitItems extends StatelessWidget {
                 children: [
                   Container(
                       width: mqw * 0.13,
-                      height: mqh * 0.04,
+                      height: mqh * 0.038,
                       decoration: BoxDecoration(
                           color: Color(type["color"]),
                           borderRadius: BorderRadius.all(Radius.circular(5))
                       ),
                       child: Center(
-                          child: Text(type["title"], style: TextStyle(color: Colors.white, fontSize: mqh * 0.025)))
+                          child: Text(type["title"], style: TextStyle(color: Colors.white, fontSize: mqh * 0.02)))
                   ),
                   SizedBox(width: 10,),
                   Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(data[index].exhibitionName, style: TextStyle(fontSize: mqh * 0.029, fontWeight: FontWeight.w500))
+                      child: Text(data[index].exhibitionName, style: TextStyle(fontSize: mqh * 0.025, fontWeight: FontWeight.w500))
                   )
                 ],
               )

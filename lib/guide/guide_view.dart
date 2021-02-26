@@ -10,6 +10,10 @@ class GuideView extends StatefulWidget {
 }
 
 class _GuideViewState extends State<GuideView> {
+  var mqd;
+  var mqw;
+  var mqh;
+
   bool _isChecked = false;
   AppLocalizations _locals;
 
@@ -25,6 +29,9 @@ class _GuideViewState extends State<GuideView> {
 
   @override
   Widget build(BuildContext context) {
+    mqd = MediaQuery.of(context);
+    mqw = mqd.size.width;
+    mqh = mqd.size.height;
     _locals = AppLocalizations.of(context);
 
     return Scaffold(
@@ -33,6 +40,7 @@ class _GuideViewState extends State<GuideView> {
       body: Container(
         width: double.infinity,
         // color: Colors.white,
+        padding: EdgeInsets.only(right: mqw * 0.02),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,

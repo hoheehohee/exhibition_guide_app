@@ -7,6 +7,7 @@ import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_list_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_theme_item_model.dart';
 import 'package:exhibition_guide_app/model/exhibit_theme_model.dart' as ETM;
+import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart' as ECDM;
 import 'package:get/get.dart' as Getx;
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
@@ -36,7 +37,7 @@ class ExhibitProvider with ChangeNotifier {
   ExhibitContentsDataModel _exhibitContentDataThree = ExhibitContentsDataModel.fromJson({"data": []});
   ETM.ExhibitThemeModel _exhibitThemeData = ETM.ExhibitThemeModel.fromJson({"data": []});
   ETM.ExhibitThemeModel _exhibitAllMenuData = ETM.ExhibitThemeModel.fromJson({"data": []});
-  ETM.ExhibitThemeModel _exhibitAllMenuItems = ETM.ExhibitThemeModel.fromJson({"data": []});
+  ExhibitContentsDataModel _exhibitAllMenuItems = ExhibitContentsDataModel.fromJson({"data": []});
 
 
   BookingRegModel _bookingRegData = BookingRegModel.fromJson({});
@@ -70,7 +71,7 @@ class ExhibitProvider with ChangeNotifier {
   ExhibitContentsDataModel get exhibitContentDataTwo => _exhibitContentDataTwo;
   ExhibitContentsDataModel get exhibitContentDataThree => _exhibitContentDataThree;
   ETM.ExhibitThemeModel get exhibitAllMenuData => _exhibitAllMenuData;
-  ETM.ExhibitThemeModel get exhibitAllMenuItems => _exhibitAllMenuItems;
+  ExhibitContentsDataModel get exhibitAllMenuItems => _exhibitAllMenuItems;
 
   BookingRegModel get bookingRegData => _bookingRegData;
   BookingModifyModel get bookingModifyData => _bookingModifyData;
@@ -492,11 +493,11 @@ class ExhibitProvider with ChangeNotifier {
     try{
       Response resp;
       resp = await dio.get(
-          BASE_URL + "/exhibitionData.do",
+          BASE_URL + "/contentsData.do",
           queryParameters: {"exhibitionCode": code}
-      );;
+      );
       final jsonData = json.decode('{"data": $resp}');
-      _exhibitAllMenuItems = ETM.ExhibitThemeModel.fromJson(jsonData);
+      _exhibitAllMenuItems = ExhibitContentsDataModel.fromJson(jsonData);
       _loading = false;
       notifyListeners();
     }catch(error) {

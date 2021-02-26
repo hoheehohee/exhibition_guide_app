@@ -31,9 +31,9 @@ String getContentType(String type) {
 Map<String, dynamic> getExhibitType(String type) {
   Map<String, dynamic> result = {};
 
-  if (type == "A") result = {"title": "상설", "color": 0xffAB8B57};
-  else if (type == "B") result = {"title": "기획", "color": 0xff13687C};
-  else if (type == "plan") result = {"title": "유물", "color": 0xffFF9C00};
+  if (type == "상설") result = {"title": "상설", "color": 0xffAB8B57};
+  else if (type == "기획") result = {"title": "기획", "color": 0xff13687C};
+  else if (type == "유물") result = {"title": "유물", "color": 0xffFF9C00};
 
   return result;
 }

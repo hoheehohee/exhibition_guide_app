@@ -58,7 +58,9 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
       return _locals.main6;
     } else if(title == "5F 전시실" || title == "5th Floor" || title == "5Ｆ 展示室" || title == "5F展厅" ){
       return _locals.main7;
-    } else {
+    } else if(title == "전시물 선택" || title == "Select an exhibit" || title == "选择展品" || title == "展示物を選択" ){
+      return _locals.el4;
+    }else {
       return "";
     }
   }
