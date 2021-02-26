@@ -15,6 +15,7 @@ import 'package:kakao_flutter_sdk/all.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 const _BASE_URL = 'http://220.95.107.101/';
 
@@ -51,41 +52,6 @@ class SocialProvider with ChangeNotifier {
       // _isSocialLogin = false;
       notifyListeners();
     }
-
-    /*final FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();
-    final result = await kakaoSignIn.getUserMe();
-    final KakaoAccountResult account = result.account;
-    if (account != null) {
-      final KakaoAccountResult account = result.account;
-      final userID = account.userID;
-      final userEmail = account.userEmail;
-      final userPhoneNumber = account.userPhoneNumber;
-      final userDisplayID = account.userDisplayID;
-      final userNickname = account.userNickname;
-      final userGender = account.userGender;
-      final userAgeRange = account.userAgeRange;
-      final userBirthday = account.userBirthday;
-      final userProfileImagePath = account.userProfileImagePath;
-      final userThumbnailImagePath = account.userThumbnailImagePath;
-    }*/
-    /*try{
-      FlutterKakaoLogin kakaoSignIn = new FlutterKakaoLogin();
-      final result = await kakaoSignIn.logIn();
-      final KakaoAccountResult account = result.account;
-      Map data = {"snsType": "kakao", "email": account.userEmail};
-      if(data["email"] == null){
-        data["check"] = "C";
-      } else {
-        data["check"] = await checkServer(data);
-      }
-      return data;
-    } catch(e) {
-      // 화면 전환을 위해 임시로 로그인을 성공으로 함
-      print("##### kakaoLogin error: $e");
-      _isSocialLogin = false;
-      // _isSocialLogin = false;
-      notifyListeners();
-    }*/
   }
 
   // 구글 로그인
@@ -168,6 +134,27 @@ class SocialProvider with ChangeNotifier {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
       print("##### naverLogin error: $e");
       _isSocialLogin = true;
+      // _isSocialLogin = false;
+      notifyListeners();
+    }
+  }
+
+  //애플
+  Future<Map> appleLogin() async {
+    try{
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      print(credential);
+
+    } catch(e) {
+      // 화면 전환을 위해 임시로 로그인을 성공으로 함
+      print("##### apple error: $e");
+      _isSocialLogin = false;
       // _isSocialLogin = false;
       notifyListeners();
     }

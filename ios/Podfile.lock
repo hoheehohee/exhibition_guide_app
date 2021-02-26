@@ -26,9 +26,6 @@ PODS:
   - FBSDKLoginKit/Login (8.2.0):
     - FBSDKCoreKit (~> 8.2.0)
   - Flutter (1.0.0)
-  - flutter_kakao_login (1.0.0):
-    - Flutter
-    - KakaoOpenSDK (~> 1.23.3)
   - flutter_login_facebook (0.3.0):
     - FBSDKLoginKit (~> 8.0)
     - Flutter
@@ -57,24 +54,6 @@ PODS:
     - Flutter
   - kakao_flutter_sdk (0.5.4):
     - Flutter
-  - KakaoOpenSDK (1.23.7):
-    - KakaoOpenSDK/KakaoCommon (= 1.23.7)
-    - KakaoOpenSDK/KakaoLink (= 1.23.7)
-    - KakaoOpenSDK/KakaoMessageTemplate (= 1.23.7)
-    - KakaoOpenSDK/KakaoNavi (= 1.23.7)
-    - KakaoOpenSDK/KakaoOpenSDK (= 1.23.7)
-    - KakaoOpenSDK/KakaoPlusFriend (= 1.23.7)
-  - KakaoOpenSDK/KakaoCommon (1.23.7)
-  - KakaoOpenSDK/KakaoLink (1.23.7):
-    - KakaoOpenSDK/KakaoCommon
-    - KakaoOpenSDK/KakaoMessageTemplate
-  - KakaoOpenSDK/KakaoMessageTemplate (1.23.7)
-  - KakaoOpenSDK/KakaoNavi (1.23.7):
-    - KakaoOpenSDK/KakaoCommon
-  - KakaoOpenSDK/KakaoOpenSDK (1.23.7):
-    - KakaoOpenSDK/KakaoMessageTemplate
-  - KakaoOpenSDK/KakaoPlusFriend (1.23.7):
-    - KakaoOpenSDK/KakaoCommon
   - KTVCocoaHTTPServer (1.0.0):
     - CocoaAsyncSocket
   - KTVHTTPCache (2.0.1):
@@ -87,9 +66,11 @@ PODS:
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
-  - sqflite (0.0.2):
+  - sign_in_with_apple (0.0.1):
     - Flutter
-    - FMDB (>= 2.7.5)
+  - sqflite (0.0.1):
+    - Flutter
+    - FMDB (~> 2.7.2)
   - wakelock (0.0.1):
     - Flutter
 
@@ -99,7 +80,6 @@ DEPENDENCIES:
   - beacons_plugin (from `.symlinks/plugins/beacons_plugin/ios`)
   - better_player (from `.symlinks/plugins/better_player/ios`)
   - Flutter (from `Flutter`)
-  - flutter_kakao_login (from `.symlinks/plugins/flutter_kakao_login/ios`)
   - flutter_login_facebook (from `.symlinks/plugins/flutter_login_facebook/ios`)
   - flutter_naver_login (from `.symlinks/plugins/flutter_naver_login/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
@@ -108,6 +88,7 @@ DEPENDENCIES:
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
 
@@ -121,7 +102,6 @@ SPEC REPOS:
     - GoogleSignIn
     - GTMAppAuth
     - GTMSessionFetcher
-    - KakaoOpenSDK
     - KTVCocoaHTTPServer
     - KTVHTTPCache
     - MTBBarcodeScanner
@@ -138,8 +118,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/better_player/ios"
   Flutter:
     :path: Flutter
-  flutter_kakao_login:
-    :path: ".symlinks/plugins/flutter_kakao_login/ios"
   flutter_login_facebook:
     :path: ".symlinks/plugins/flutter_login_facebook/ios"
   flutter_naver_login:
@@ -156,6 +134,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  sign_in_with_apple:
+    :path: ".symlinks/plugins/sign_in_with_apple/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   wakelock:
@@ -171,7 +151,6 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 4afd6ff53d8133a433dbcda44451c9498f8c6ce4
   FBSDKLoginKit: 7181765f2524d7ebf82d9629066c8e6caafc99d0
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_kakao_login: d84044f6caf23c97d8b9d6454073faeffedab9ae
   flutter_login_facebook: 86e1415ecde2d59ca72c5760fd53d1d1952017fb
   flutter_naver_login: 1dbf6d21aae5235cdf76a28ac79cf6871899282f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -181,7 +160,6 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   kakao_flutter_sdk: b9b525a2b41cb75a761bea4b48dba4121f58dce1
-  KakaoOpenSDK: a4ab22b6558598426d17d4dbe630ab08ba1ee48f
   KTVCocoaHTTPServer: df8d7b861e603ff8037e9b2138aca2563a6b768d
   KTVHTTPCache: 588c3eb16f6bd1e6fde1e230dabfb7bd4e490a4d
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
@@ -189,7 +167,8 @@ SPEC CHECKSUMS:
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  sign_in_with_apple: 34f3f5456a45fd7ac5fb42905e2ad31dae061b4a
+  sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   wakelock: bfc7955c418d0db797614075aabbc58a39ab5107
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
