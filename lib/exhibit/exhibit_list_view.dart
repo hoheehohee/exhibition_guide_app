@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
 import 'package:exhibition_guide_app/commons/custon_slider_appbar.dart';
 import 'package:exhibition_guide_app/commons/exhibit_view_bottom.dart';
+import 'package:exhibition_guide_app/commons/slider_no_image.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_detail.dart';
 import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
@@ -63,11 +64,12 @@ class _ExhibitListViewState extends State<ExhibitListView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.microtask(() => {
+    Future.microtask(() {
       if (widget.exhibitionCode != null && widget.exhibitionCode.isNotEmpty) {
-        Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataTwoSel(widget.exhibitionCode)
+        print("###### type2");
+        Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataTwoSel(widget.exhibitionCode);
       } else {
-        Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataSel(widget.contentType, widget.exhibitionType)
+        Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataSel(widget.contentType, widget.exhibitionType);
       }
     });
   }
@@ -130,45 +132,45 @@ class _ExhibitListViewState extends State<ExhibitListView> {
                       scrollDirection: Axis.vertical,
                       child: (
                           _exhibitProv.loading
-                              ? Center(child: CircularProgressIndicator(), heightFactor: 10,)
-                              : Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              _exhibitProv.exhibitContentDataOne.data.length == 0
-                                  ? Container()
-                                  : (
-                                  CarouselSlider(
-                                    options: CarouselOptions(
-                                      aspectRatio: 2.0,
-                                      enableInfiniteScroll: false,
-                                      // enlargeCenterPage: true,
-                                    ),
-                                    items: _imageSliders(_exhibitProv.exhibitContentDataOne.data),
-                                  )
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(mqw * 0.03),
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: _contentItem(
-                                        _exhibitProv.exhibitContentDataTwo,
-                                        title: _locals.main3,
-                                        iconPath: "assets/images/icon/icon-main-relics.png"
+                            ? Center(child: CircularProgressIndicator(), heightFactor: 10,)
+                            : Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                _exhibitProv.exhibitContentDataOne.data.length == 0
+                                    ? SliderNoImage()
+                                    : (
+                                    CarouselSlider(
+                                      options: CarouselOptions(
+                                        aspectRatio: 2.0,
+                                        enableInfiniteScroll: false,
+                                        // enlargeCenterPage: true,
+                                      ),
+                                      items: _imageSliders(_exhibitProv.exhibitContentDataOne.data),
+                                    )
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(mqw * 0.03),
+                                  child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: _contentItem(
+                                          _exhibitProv.exhibitContentDataTwo,
+                                          title: _locals.main3,
+                                          iconPath: "assets/images/icon/icon-main-relics.png"
 
-                                    )
+                                      )
+                                  ),
                                 ),
-                              ),
-                              widget.contentType.isEmpty
-                                  ? Container(
-                                padding: EdgeInsets.all(mqw * 0.03),
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: _contentItem(
-                                        _exhibitProv.exhibitContentDataThree,
-                                        title: _locals.menu3,
-                                        iconPath: 'assets/images/icon/icon-main-sangsul.png'
-                                    )
-                                ),
+                                widget.contentType.isEmpty
+                                    ? Container(
+                                  padding: EdgeInsets.all(mqw * 0.03),
+                                  child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: _contentItem(
+                                          _exhibitProv.exhibitContentDataThree,
+                                          title: _locals.menu3,
+                                          iconPath: 'assets/images/icon/icon-main-sangsul.png'
+                                      )
+                                  ),
                               )
                                   : Container(),
                             ],
@@ -193,6 +195,9 @@ class _ExhibitListViewState extends State<ExhibitListView> {
         child: Container(
           child: TextField(
             style: TextStyle(fontSize: 18),
+            onSubmitted: (value) {
+              Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataSel(widget.contentType, widget.exhibitionType, search: value);
+            },
             decoration: InputDecoration(
               contentPadding: EdgeInsets.only(top: 1),
               filled: true,
@@ -285,41 +290,69 @@ class _ExhibitListViewState extends State<ExhibitListView> {
       ),
       SizedBox(height: mqh * 0.02),
     ];
-    list.data.forEach((item) => {
-      result.add(
-        InkWell(
-          onTap: () {
-            Get.to(ExhibitDetail(item.idx, appbarTitle: widget.contentTitle.isEmpty ? getTitle(title) : getTitle(widget.contentTitle),));
-          },
-          child: Container(
-              height: mqh * 0.1,
-              width: double.infinity,
-              margin: EdgeInsets.only(bottom: mqw * 0.02),
-              decoration: BoxDecoration(
-                // color: Colors.green,
-                  borderRadius: BorderRadius.circular((mqw * 0.03)),
-                  image: DecorationImage(
-                    fit: BoxFit.fill,
-                    colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.25), BlendMode.dstATop),
-                    image: new NetworkImage(
-                        item.contentsImgFile
-                    ),
+    if (list.data.length > 0) {
+      list.data.forEach((item) => {
+        result.add(
+            InkWell(
+              onTap: () {
+                Get.to(ExhibitDetail(item.idx, appbarTitle: widget.contentTitle.isEmpty ? getTitle(title) : getTitle(widget.contentTitle),));
+              },
+              child: Container(
+                  height: mqh * 0.1,
+                  width: double.infinity,
+                  margin: EdgeInsets.only(bottom: mqw * 0.02),
+                  decoration: BoxDecoration(
+                    // color: Colors.green,
+                      borderRadius: BorderRadius.circular((mqw * 0.03)),
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.25), BlendMode.dstATop),
+                        image: new NetworkImage(
+                            item.contentsImgFile
+                        ),
+                      )
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: mqw * 0.08),
+                        child: Text(getTextByLanguage(item, 'title', _settingProv.language), style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                      )
+                    ],
                   )
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: mqw * 0.08),
-                    child: Text(getTextByLanguage(item, 'title', _settingProv.language), style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                  )
-                ],
-              )
-          ),
+            )
         )
-      )
-    });
+      });
+    } else {
+      result.add(
+        Container(
+          height: mqh * 0.1,
+          width: double.infinity,
+          margin: EdgeInsets.only(bottom: mqw * 0.02),
+          padding: EdgeInsets.symmetric(vertical: mqh * 0.02),
+          decoration: BoxDecoration(
+            color: Color(0xffA0A0A0),
+            borderRadius: BorderRadius.circular((mqw * 0.03)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(width: mqw * 0.08,),
+              Image.asset("assets/images/icon/icon-frown.png",),
+              SizedBox(width: mqw * 0.02,),
+              Text(
+                  "No data",
+                  style: TextStyle(fontSize: mqw * 0.05, fontWeight: FontWeight.w600, color: Color(0xff2D4357))
+              )
+            ],
+          )
+        )
+      );
+    }
+
     return result;
   }
 }

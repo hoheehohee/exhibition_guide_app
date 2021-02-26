@@ -105,16 +105,21 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   }
 
   void autoAudioPlay() {
-    // 음성지원 안내가 on일 경우 자동 음성 안내 시작
-    Timer(
-        Duration(seconds: 2), () {
-      if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
-        final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
-        _devicesProv.setExhibitDetAudio(audio);
-        _devicesProv.playAudio();
-      }
+    if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
+      final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+      _devicesProv.setExhibitDetAudio(audio);
+      _devicesProv.playAudio();
     }
-    );
+    // 음성지원 안내가 on일 경우 자동 음성 안내 시작
+    // Timer(
+    //     Duration(seconds: 1), () {
+    //   if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
+    //     final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+    //     _devicesProv.setExhibitDetAudio(audio);
+    //     _devicesProv.playAudio();
+    //   }
+    // }
+    // );
   }
 
   @override

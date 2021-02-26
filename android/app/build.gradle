@@ -52,14 +52,6 @@ android {
         versionName flutterVersionName
     }
 
-    signingConfigs {
-        debug {
-            storeFile file('C:\\Users\\kwakyoungho\\.android\\debug.keystore')
-            storePassword 'java202009!!'
-            keyAlias 'androiddebugkey'
-            keyPassword 'java202009!!'
-        }
-    }
 
 //    signingConfigs {
 //        release {

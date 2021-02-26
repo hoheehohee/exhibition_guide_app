@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:exhibition_guide_app/commons/custon_slider_appbar.dart';
 import 'package:exhibition_guide_app/commons/exhibit_view_bottom.dart';
+import 'package:exhibition_guide_app/commons/slider_no_image.dart';
 import 'package:exhibition_guide_app/constant.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart' as ECDM;
@@ -115,6 +116,9 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
           height: 55,
           child: TextField(
             style: TextStyle(fontSize: 18),
+            onSubmitted: (value) {
+              Provider.of<ExhibitProvider>(context, listen: false).setExhibitHighlightListSel(search: value);
+            },
             decoration: InputDecoration(
               contentPadding: EdgeInsets.only(top: 1),
               filled: true,
@@ -149,14 +153,18 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
               ),
             ),
             SizedBox(height: 5,),
-            CarouselSlider(
-              options: CarouselOptions(
-                aspectRatio: 2.0,
-                enableInfiniteScroll: false,
-                // enlargeCenterPage: true,
-              ),
-              items: _imageSliders(list.data, title),
-            ),
+            list.data.length == 0
+            ? SliderNoImage()
+            : (
+                CarouselSlider(
+                  options: CarouselOptions(
+                    aspectRatio: 2.0,
+                    enableInfiniteScroll: false,
+                    // enlargeCenterPage: true,
+                  ),
+                  items: _imageSliders(list.data, title),
+                )
+            )
           ],
         )
     );

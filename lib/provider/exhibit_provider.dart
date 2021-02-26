@@ -165,24 +165,25 @@ class ExhibitProvider with ChangeNotifier {
   }
 
   //전시유물, 전시물 목록 API조회
-  Future<void> setExhibitContentDataSel(String type, String exhibitionType) async {
+  Future<void> setExhibitContentDataSel(String type, String exhibitionType, { String search }) async {
     _loading = true;
     init();
     Response respOne;
     Response respTwo;
     Response respThree;
 
+    print("###### search: ${{"contentsType": type, "exhibitionType": exhibitionType, "highlightYN": 'Y', "searchString": search}.toString()}");
     try {
       respOne = await dio.get(
         BASE_URL + '/contentsData.do',
-        queryParameters: {"contentsType": type, "exhibitionType": exhibitionType, "highlightYN": 'Y'}
+        queryParameters: {"contentsType": type, "exhibitionType": exhibitionType, "highlightYN": 'Y', "searchString": search}
       );
       final jsonData = json.decode('{"data": $respOne}');
       _exhibitContentDataOne = ExhibitContentsDataModel.fromJson(jsonData);
 
       respTwo = await dio.get(
         BASE_URL + '/contentsData.do',
-        queryParameters: {"contentsType": type.isEmpty ? 'B' : type, "exhibitionType": exhibitionType }
+        queryParameters: {"contentsType": type.isEmpty ? 'B' : type, "exhibitionType": exhibitionType,  "searchString": search }
       );
 
       final jsonDataTwo = json.decode('{"data": $respTwo}');
@@ -287,7 +288,7 @@ class ExhibitProvider with ChangeNotifier {
   }
 
   // 하이라이트 전시물 목록
-  Future<void> setExhibitHighlightListSel () async {
+  Future<void> setExhibitHighlightListSel ({ String search }) async {
     _loading = true;
     init();
     Response respOne;
@@ -297,21 +298,21 @@ class ExhibitProvider with ChangeNotifier {
     try {
       respOne = await dio.get(
           BASE_URL + '/contentsData.do',
-          queryParameters: {"contentsType": "B", "highlightYN": 'Y'}
+          queryParameters: {"contentsType": "B", "highlightYN": 'Y', "searchString": search}
       );
       final jsonData = json.decode('{"data": $respOne}');
       _exhibitHighlightDataOne = ExhibitContentsDataModel.fromJson(jsonData);
 
       respTwo = await dio.get(
           BASE_URL + '/contentsData.do',
-          queryParameters: {"contentsType": "A", "highlightYN": 'Y', "exhibitionType": "A"}
+          queryParameters: {"contentsType": "A", "highlightYN": 'Y', "exhibitionType": "A", "searchString": search}
       );
       final jsonDataTwo = json.decode('{"data": $respTwo}');
       _exhibitHighlightDataTwo = ExhibitContentsDataModel.fromJson(jsonDataTwo);
 
       respThree = await dio.get(
           BASE_URL + '/contentsData.do',
-          queryParameters: {"contentsType": "A", "highlightYN": 'Y', "exhibitionType": "B"}
+          queryParameters: {"contentsType": "A", "highlightYN": 'Y', "exhibitionType": "B", "searchString": search}
       );
       final jsonDataThree = json.decode('{"data": $respThree}');
       _exhibitHighlightDataThree = ExhibitContentsDataModel.fromJson(jsonDataThree);
