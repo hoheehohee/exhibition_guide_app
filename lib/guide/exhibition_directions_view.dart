@@ -35,9 +35,9 @@ class ExhivitDirectionsView extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      addressForm(_locals.map1, '부산광역시 남구 홍곡로 320번길 100', 'assets/images/icon/icon-location-map.png'),
+                      addressForm(_locals.map1, _locals.address, 'assets/images/icon/icon-location-map.png'),
                       SizedBox(height: mqw * 0.05,),
-                      addressForm(_locals.bk9, '051-629-8600', 'assets/images/icon/icon-tel.png'),
+                      addressForm(_locals.bk9, _locals.addressPhone, 'assets/images/icon/icon-tel.png'),
                     ],
                   )
               ),
