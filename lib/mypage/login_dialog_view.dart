@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Response;
@@ -237,6 +240,38 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                       ),
                     ],
                   )),
+              SizedBox(
+                height: 12,
+              ),
+          Visibility(
+            visible: Platform.isIOS,
+              child:
+              MaterialButton(
+                  onPressed: () async {
+                    var login = await _social.appleLogin();
+                    if (login["check"] == "N") {
+                      AgreeDialogView(login['snsType'], login['email']);
+                    }
+                  },
+                  color: Color(0xffE5E6E7),
+                  minWidth: double.infinity,
+                  padding: EdgeInsets.symmetric(vertical: mqh * 0.02),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/images/icon/icon-google.png", width: mqw * 0.06, fit: BoxFit.fill,),
+                      SizedBox(width: 8),
+                      Text(
+                        _locals.login5,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ))),
             ],
           )),
     );

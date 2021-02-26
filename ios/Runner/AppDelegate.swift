@@ -1,6 +1,5 @@
 import UIKit
 import Flutter
-import KakaoOpenSDK
 import CoreLocation
 import NaverThirdPartyLogin
 import FBSDKCoreKit
@@ -21,19 +20,10 @@ import FBSDKCoreKit
       return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
-  override func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-      if KOSession.handleOpen(url) {
-          return true
-      }
-      return false
-  }
-
   override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
       let scheme = url.scheme
 
-      if KOSession.handleOpen(url) {
-          return true
-      } else if scheme!.contains("naver"){
+      if scheme!.contains("naver"){
         return NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
       } else if scheme!.contains("fb"){
         ApplicationDelegate.shared.application(
