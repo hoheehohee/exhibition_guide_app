@@ -37,6 +37,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   var mqd;
   var mqw;
   var mqh;
+  var audioTimer;
   String idx;
   ExhibitProvider _exhibit;
   DevicesProvider _devicesProv;
@@ -103,23 +104,26 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
         break;
     }
   }
-
-  void autoAudioPlay() {
+  void t() {
     if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
       final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
       _devicesProv.setExhibitDetAudio(audio);
       _devicesProv.playAudio();
     }
+  }
+
+  void autoAudioPlay() {
     // 음성지원 안내가 on일 경우 자동 음성 안내 시작
-    // Timer(
-    //     Duration(seconds: 1), () {
-    //   if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
-    //     final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
-    //     _devicesProv.setExhibitDetAudio(audio);
-    //     _devicesProv.playAudio();
-    //   }
-    // }
-    // );
+    // auioTimer = new Timer.periodic(const Duration(milliseconds: 100), t);
+    audioTimer = Timer(
+        Duration(seconds: 1), () {
+        if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
+          final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+          _devicesProv.setExhibitDetAudio(audio);
+          _devicesProv.playAudio();
+        }
+      }
+    );
   }
 
   @override
@@ -157,6 +161,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             : null),
       ),
       onWillPop: () async {
+
         Provider.of<DevicesProvider>(context, listen: false).stopAudio();
         return true;
       }

@@ -43,6 +43,10 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>2837155739868665</string>
+	<key>FacebookDisplayName</key>
+	<string>국립일제강제동원역사관</string>
 	<key>KAKAO_APP_KEY</key>
 	<string>fb73046ab2e433c0bf267b62692607d6</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -55,14 +59,6 @@
 		<string>naversearchapp</string>
 		<string>naversearchthirdlogin</string>
 	</array>
-	<key>kServiceAppUrlScheme</key>
-	<string>naverejfkcifnvidf</string>
-	<key>kConsumerKey</key>
-	<string>XI9NTAtdXR3E7_LCoJ3p</string>
-	<key>kConsumerSecret</key>
-	<string>DDIt5NzI_i</string>
-	<key>kServiceAppName</key>
-	<string>국립일제강제동원역사관</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -101,9 +97,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-    <key>FacebookAppID</key>
-    <string>2837155739868665</string>
-    <key>FacebookDisplayName</key>
-    <string>국립일제강제동원역사관</string>
+	<key>kConsumerKey</key>
+	<string>XI9NTAtdXR3E7_LCoJ3p</string>
+	<key>kConsumerSecret</key>
+	<string>DDIt5NzI_i</string>
+	<key>kServiceAppName</key>
+	<string>국립일제강제동원역사관</string>
+	<key>kServiceAppUrlScheme</key>
+	<string>naverejfkcifnvidf</string>
 </dict>
 </plist>

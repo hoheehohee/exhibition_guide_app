@@ -29,32 +29,37 @@ class ExhibitItems extends StatelessWidget {
         final data = _exhibitProv.exhibitAllMenuItems.data;
         Map<String, dynamic> type = getExhibitType(data[index].exhibitionType);
 
-        return Container(
-            height: mqh * 0.1,
-            padding: EdgeInsets.only(left: mqw * 0.06),
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                    width: mqw * 0.13,
-                    height: mqh * 0.04,
-                    decoration: BoxDecoration(
-                        color: Color(type["color"]),
-                        borderRadius: BorderRadius.all(Radius.circular(5))
-                    ),
-                    child: Center(
-                        child: Text(type["title"], style: TextStyle(color: Colors.white, fontSize: 16)))
-                ),
-                SizedBox(width: 10,),
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(data[index].exhibitionName, style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500))
-                )
-              ],
-            )
+        return InkWell(
+          onTap: () {
+            print("##### click: ${data[index].exhibitionCode}");
+          },
+          child: Container(
+              height: mqh * 0.1,
+              padding: EdgeInsets.only(left: mqw * 0.06),
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.grey)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                      width: mqw * 0.13,
+                      height: mqh * 0.04,
+                      decoration: BoxDecoration(
+                          color: Color(type["color"]),
+                          borderRadius: BorderRadius.all(Radius.circular(5))
+                      ),
+                      child: Center(
+                          child: Text(type["title"], style: TextStyle(color: Colors.white, fontSize: mqh * 0.025)))
+                  ),
+                  SizedBox(width: 10,),
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(data[index].exhibitionName, style: TextStyle(fontSize: mqh * 0.029, fontWeight: FontWeight.w500))
+                  )
+                ],
+              )
+          ),
         );
       }
     );

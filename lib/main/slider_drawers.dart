@@ -2,6 +2,7 @@ import 'package:exhibition_guide_app/booking/booking_view.dart';
 import 'package:exhibition_guide_app/crm/notice_list_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
+import 'package:exhibition_guide_app/exhibit/exhibit_theme_view.dart';
 import 'package:exhibition_guide_app/setting/language_view.dart';
 import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:exhibition_guide_app/setting/setting_view.dart';
@@ -32,11 +33,13 @@ class SliderDrawers extends StatelessWidget {
       { 'title': _locals.menu2, 'idx': 1 },
       { 'title': _locals.menu3, 'idx': 2 },
       { 'title': _locals.menu4, 'idx': 3 },
-      { 'title': _locals.menu5, 'idx': 4 },
-      { 'title': _locals.menu6, 'idx': 5 },
-      { 'title': _locals.etc1, 'idx': 6 },
-      { 'title': _locals.menu7, 'idx': 7 },
-      { 'title': _locals.menu8, 'idx': 8 },
+      { 'title': _locals.main6, 'idx': 4 },
+      { 'title': _locals.main7, 'idx': 5 },
+      { 'title': _locals.menu5, 'idx': 6 },
+      { 'title': _locals.menu6, 'idx': 7 },
+      { 'title': _locals.etc1, 'idx': 8 },
+      { 'title': _locals.menu7, 'idx': 9 },
+      { 'title': _locals.menu8, 'idx': 10 },
     ];
 
     List<Widget> result = [
@@ -96,17 +99,33 @@ class SliderDrawers extends StatelessWidget {
                         contentIconPath: "",
                       ));
                       break;
-                    case 4: Get.to(NoticeListView()); break;
-                    case 5: Get.to(SettingView()); break;
-                    case 6: Get.to(LanguageView()); break;
-                    case 7:
+                    case 4:
+                      Get.offAll(
+                          ExhibitThemeView(
+                            appBarTitle: "4F 전시실",
+                            location: 'A',
+                          )
+                      );
+                      break;
+                    case 5:
+                      Get.to(
+                          ExhibitThemeView(
+                            appBarTitle: _locals.main7,
+                            location: 'B',
+                          )
+                      );
+                      break;
+                    case 6: Get.to(NoticeListView()); break;
+                    case 7: Get.to(SettingView()); break;
+                    case 8: Get.to(LanguageView()); break;
+                    case 9:
                       if(!await isLogin()){
                           g_showMyDialog(_locals.alert1, context);
                       } else {
                           Get.to(BookingView());
                       }
                       break;
-                    case 8: Get.to(MyPageView(0)); break;
+                    case 10: Get.to(MyPageView(0)); break;
                   }
                 },
                 child: Row(

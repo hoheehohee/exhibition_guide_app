@@ -494,8 +494,7 @@ class ExhibitProvider with ChangeNotifier {
       resp = await dio.get(
           BASE_URL + "/exhibitionData.do",
           queryParameters: {"exhibitionCode": code}
-      );
-
+      );;
       final jsonData = json.decode('{"data": $resp}');
       _exhibitAllMenuItems = ETM.ExhibitThemeModel.fromJson(jsonData);
       _loading = false;
