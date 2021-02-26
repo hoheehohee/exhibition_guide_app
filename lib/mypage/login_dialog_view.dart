@@ -253,7 +253,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                       AgreeDialogView(login['snsType'], login['email']);
                     }
                   },
-                  color: Color(0xffE5E6E7),
+                  color: Colors.black,
                   minWidth: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: mqh * 0.02),
                   shape: RoundedRectangleBorder(
@@ -261,13 +261,14 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/images/icon/icon-google.png", width: mqw * 0.06, fit: BoxFit.fill,),
+                      Image.asset("assets/images/icon/icon-apple.png", width: mqw * 0.06, fit: BoxFit.fill,),
                       SizedBox(width: 8),
                       Text(
-                        _locals.login5,
+                        _locals.login6,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white
                         ),
                       ),
                     ],

@@ -141,6 +141,7 @@
     "login3": "Continue with Naver",
     "login4": "Continue with Facebook",
     "login5": "Continue with Google",
+    "login6": "Continue with Apple ID",
 
     "mypage1": "LoginㆍSign Up",
     "mypage2": "More services are\navailable after logging in.",
@@ -340,6 +341,7 @@
     "@login3": { "description": "" },
     "@login4": { "description": "" },
     "@login5": { "description": "" },
+    "@login6": { "description": "" },
 
     "@mypage1": { "description": "" },
     "@mypage2": { "description": "" },
