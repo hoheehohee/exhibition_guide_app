@@ -250,6 +250,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
         ),
         InkWell(
           onTap: () {
+            _devicesProv.stopAudio();
             Get.to(ExhibitAllListView());
           },
           child: Container(
