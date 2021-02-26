@@ -34,6 +34,8 @@ class DevicesProvider with ChangeNotifier {
   String _beaconResult = '';
   String _audioUrl = '';
   String _beforeBeaconIdx = "-1";
+  String _minor = "";
+  String _major = "";
   int _nrMessaggesReceived = 0;
 
   bool _playing = false; // 재성버튼 활성 default
@@ -105,8 +107,8 @@ class DevicesProvider with ChangeNotifier {
   }
 
   void init() async {
-    print("#####Platform.isAndroid: ${Platform.isAndroid}");
-    print("##### _isRunning: $_isRunning");
+    // print("#####Platform.isAndroid: ${Platform.isAndroid}");
+    // print("##### _isRunning: $_isRunning");
     if (!_isRunning) return;
 
     // 백그라운드에서 실행
@@ -123,9 +125,10 @@ class DevicesProvider with ChangeNotifier {
     }
 
     await BeaconsPlugin.listenToBeacons(beaconEventsController);
-    // 비콘 정보
-    await BeaconsPlugin.addRegion("", "FDA50693-A4E2-4FB1-AFCF-C6EB07647825");
 
+    // 비콘 정보
+    await BeaconsPlugin.addRegion("", "fda50693-a4e2-4fb1-afcf-c6eb07647825");
+    // fda50693-a4e2-4fb1-afcf-c6eb07647825
     // UUID에 맞는 비콘 연결
     beaconEventsController.stream.listen((data) {
         // print("##########beaconEventsController: $data");
@@ -135,7 +138,16 @@ class DevicesProvider with ChangeNotifier {
           try{
             Map beacon = jsonDecode(data);
             beaconData = BeaconModel.fromJson(beacon);
-            beaconContentSelCall();
+            // print("#####_major: $_major");
+
+            // 안드로이드 addRegion에 안걸릴 때
+            if (beaconData.uuid == "fda50693-a4e2-4fb1-afcf-c6eb07647825"
+                ||beaconData.uuid == "FDA50693-A4E2-4FB1-AFCF-C6EB07647825") {
+              beaconContentSelCall();
+              _major = beaconData.major;
+              _minor = beaconData.minor;
+            }
+
           }catch(error) {
             print("error: $error");
           }
@@ -173,6 +185,7 @@ class DevicesProvider with ChangeNotifier {
     Dio dio = new Dio();
     Response resp;
     List<BetterPlayerDataSource> temp = [];
+
     try{
 
       SharedPreferences prefs = await SharedPreferences.getInstance();

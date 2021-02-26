@@ -118,6 +118,7 @@ class ExhibitViewBottom extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(iconPath, color: Colors.white, height: 28,),
+                SizedBox(height: 1,),
                 Text(title, style: TextStyle(color: Colors.white))
               ],
             ),
