@@ -184,7 +184,7 @@ class _MainViewState extends State<MainView> {
                             fit: BoxFit.fill,
                           ),
                           onTap: () {
-                            _showMyDialog();
+                            // _showMyDialog();
                           },
                         ),
                         SizedBox(width: mqw * 0.01,),

@@ -16,8 +16,7 @@ import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-
-const _BASE_URL = 'http://220.95.107.101/';
+import '../message.dart';
 
 class SocialProvider with ChangeNotifier {
   String _error;
@@ -194,7 +193,7 @@ class SocialProvider with ChangeNotifier {
     Response resp;
 
     try {
-      resp = await dio.get("${_BASE_URL}userCheckData.do?snsType=${data['snsType']}&email=${data['email']}");
+      resp = await dio.get("${BASE_URL}/userCheckData.do?snsType=${data['snsType']}&email=${data['email']}");
       var map = Map<String, dynamic>.from(json.decode(resp.toString()));
       if(map["status"] == "N"){
         Get.off(AgreeDialogView(data['snsType'], data['email']));
@@ -223,7 +222,7 @@ class SocialProvider with ChangeNotifier {
     Response resp;
 
     try {
-      resp = await dio.get("${_BASE_URL}userCheckData.do?snsType=${data['snsType']}&email=${data['email']}");
+      resp = await dio.get("${BASE_URL}/userCheckData.do?snsType=${data['snsType']}&email=${data['email']}");
       var map = Map<String, dynamic>.from(json.decode(resp.toString()));
 
       if(map["status"] == "Y"){
@@ -233,7 +232,7 @@ class SocialProvider with ChangeNotifier {
         _email = data["email"];
         _isSocialLogin = true;
       } else {
-        resp = await dio.get("${_BASE_URL}userJoinData.do?snsType=${data['snsType']}&email=${data['email']}");
+        resp = await dio.get("${BASE_URL}/userJoinData.do?snsType=${data['snsType']}&email=${data['email']}");
         if(map["status"] == "Y"){
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('loginId', map["loginID"]);
