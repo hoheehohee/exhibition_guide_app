@@ -3,6 +3,7 @@ import Flutter
 import CoreLocation
 import NaverThirdPartyLogin
 import FBSDKCoreKit
+import GoogleMaps
 
 
 @UIApplicationMain
@@ -15,6 +16,7 @@ import FBSDKCoreKit
   ) -> Bool {
 
       locationManager.requestAlwaysAuthorization()
+      GMSServices.provideAPIKey("AIzaSyAwbzi5R0Zvwcr4LBd_ZFsj1AWEQNp35N8")
       GeneratedPluginRegistrant.register(with: self)
 
       return super.application(application, didFinishLaunchingWithOptions: launchOptions)

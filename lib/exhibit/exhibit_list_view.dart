@@ -143,6 +143,8 @@ class _ExhibitListViewState extends State<ExhibitListView> {
                                       options: CarouselOptions(
                                         aspectRatio: 2.0,
                                         enableInfiniteScroll: false,
+                                        viewportFraction: 1.0,
+                                        enlargeCenterPage: false,
                                         // enlargeCenterPage: true,
                                       ),
                                       items: _imageSliders(_exhibitProv.exhibitContentDataOne.data),
@@ -215,7 +217,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
   List<Widget> _imageSliders(List<ECDM.Data> imageList) {
     return imageList.map((item) => Container(
       child: Container(
-        margin: EdgeInsets.all(mqw * 0.01),
+        margin: EdgeInsets.all(mqw * 0.02),
         child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             child: Stack(
