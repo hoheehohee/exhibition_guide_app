@@ -111,7 +111,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
 
   Widget _textInput() {
     return Padding(
-        padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+        padding: EdgeInsets.only(top: 10, left: mqw * 0.03, right: mqw * 0.03, bottom: 10),
         child: Container(
           height: 55,
           child: TextField(
@@ -139,7 +139,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 20),
+              padding: EdgeInsets.only(left: mqw * 0.03),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -160,6 +160,8 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
                   options: CarouselOptions(
                     aspectRatio: 2.0,
                     enableInfiniteScroll: false,
+                    viewportFraction: 1.0,
+                    enlargeCenterPage: false,
                     // enlargeCenterPage: true,
                   ),
                   items: _imageSliders(list.data, title),
@@ -173,7 +175,7 @@ class _ExhibitHighlightViewState extends State<ExhibitHighlightView> {
   List<Widget> _imageSliders(List<ECDM.Data> imageList, String title) {
     return imageList.map((item) => Container(
       child: Container(
-        margin: EdgeInsets.all(mqw * 0.01),
+        margin: EdgeInsets.all(mqw * 0.02),
         child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
             child: Stack(

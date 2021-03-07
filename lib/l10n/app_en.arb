@@ -204,6 +204,9 @@
     "address": "Honggok-ro, 320beon-gil, Nam-gu, Busan, the Republic of Korea",
     "addressPhone": "+82-51-629-8600",
 
+    "main_address": "Honggok-ro, 320beon-gil, Nam-gu, Busan, the Republic of Korea",
+    "main_tel": "+82-51-629-8600",
+
     "@main1": { "description": "" },
     "@main2": { "description": "" },
     "@main3": { "description": "" },
@@ -405,6 +408,9 @@
     "@etc14": { "description": "" },
 
     "@address": { "description": "" },
-    "@addressPhone": { "description": "" }
+    "@addressPhone": { "description": "" },
+
+    "@main_address": { "description": "" },
+    "@main_tel": { "description": "" }
 
 }

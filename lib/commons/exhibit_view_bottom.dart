@@ -10,9 +10,16 @@ import '../constant.dart';
 import 'custom_image_icon_btn.dart';
 
 class ExhibitViewBottom extends StatelessWidget {
+  var mqd;
+  var mqw;
+  var mqh;
 
   @override
   Widget build(BuildContext context) {
+    mqd = MediaQuery.of(context);
+    mqw = mqd.size.width;
+    mqh = mqd.size.height;
+
     final DevicesProvider _deviceProv = Provider.of<DevicesProvider>(context);
     final AppLocalizations _locals = AppLocalizations.of(context);
 
@@ -25,8 +32,9 @@ class ExhibitViewBottom extends StatelessWidget {
                 height: 50,
                 width: double.infinity,
                 color: Colors.black,
+                padding: EdgeInsets.only(left: mqw * 0.03),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -42,29 +50,30 @@ class ExhibitViewBottom extends StatelessWidget {
                           ),
                           onAction: () {
                             _deviceProv.becaonScan(!_deviceProv.isRunning);
-                          },
-                        )
-                      ],
-                    ),
-                    SizedBox(width: 20,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(_locals.hr3, style: TextStyle(fontSize: 14, color: Colors.white), overflow: TextOverflow.ellipsis,),
-                        SizedBox(width: 5,),
-                        CustomImageIconBtn(
-                          px: 50.0,
-                          iconPath: (
-                            _deviceProv.autoPlayAudio
-                              ? 'assets/images/toogle-main-on.png'
-                              : 'assets/images/toogle-main-off.png'
-                          ),
-                          onAction: () {
                             _deviceProv.setAutoPlayAudio(!_deviceProv.autoPlayAudio);
                           },
                         )
                       ],
                     ),
+                    // SizedBox(width: 20,),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.start,
+                    //   children: [
+                    //     Text(_locals.hr3, style: TextStyle(fontSize: 14, color: Colors.white), overflow: TextOverflow.ellipsis,),
+                    //     SizedBox(width: 5,),
+                    //     CustomImageIconBtn(
+                    //       px: 50.0,
+                    //       iconPath: (
+                    //         _deviceProv.autoPlayAudio
+                    //           ? 'assets/images/toogle-main-on.png'
+                    //           : 'assets/images/toogle-main-off.png'
+                    //       ),
+                    //       onAction: () {
+                    //         _deviceProv.setAutoPlayAudio(!_deviceProv.autoPlayAudio);
+                    //       },
+                    //     )
+                    //   ],
+                    // ),
                   ],
                 )
             ),

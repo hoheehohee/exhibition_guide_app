@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingProvider with ChangeNotifier {
   bool _isNetwork = true;
-  double _fontSize = 18;
+  double _fontSize = 16;
   String _language = 'ko';
   Locale _locale;
 

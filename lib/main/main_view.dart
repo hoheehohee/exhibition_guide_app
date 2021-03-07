@@ -394,7 +394,12 @@ class _MainViewState extends State<MainView> {
                               Text(_locals.main14, style: TextStyle(fontSize: 15, color: Colors.white)),
                               SizedBox(height: mqh * 0.008),
                               Text(
-                                FOOTER_ADDRESS,
+                                _locals.main_address,
+                                style: TextStyle(fontSize: 12, color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                _locals.main_tel,
                                 style: TextStyle(fontSize: 12, color: Colors.white),
                                 textAlign: TextAlign.center,
                               ),

@@ -365,6 +365,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                                       ),
                                       onAction: () {
                                         _devicesProv.becaonScan(!_devicesProv.isRunning);
+                                        _devicesProv.setAutoPlayAudio(!_devicesProv.autoPlayAudio);
                                       },
                                     ),
                                     Text(_locals.hr5, style: TextStyle(fontSize: mqw * 0.035, height: mqh * 0.0005)),
@@ -372,36 +373,36 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                                 )
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(bottom: mqh * 0.01),
-                              child: (
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      CustomImageIconBtn(
-                                        px: mqw * 0.2,
-                                        iconPath: (
-                                            _devicesProv.autoPlayAudio
-                                                ? 'assets/images/toogle-main-on.png'
-                                                : 'assets/images/toogle-main-off.png'
-                                        ),
-                                        onAction: () {
-                                          _devicesProv.setAutoPlayAudio(!_devicesProv.autoPlayAudio);
-                                          // if (!_devicesProv.autoPlayAudio) {
-                                          //   final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
-                                          //   _devicesProv.setExhibitDetAudio(audio);
-                                          //   _devicesProv.playAudio();
-                                          // } else {
-                                          //   _devicesProv.stopAudio();
-                                          // }
-                                        },
-                                      ),
-                                      Text(_locals.hr6, style: TextStyle(fontSize: mqw * 0.035, height: mqh * 0.0005)),
-                                    ],
-                                  )
-                              ),
-                            )
+                            // Container(
+                            //   margin: EdgeInsets.only(bottom: mqh * 0.01),
+                            //   child: (
+                            //       Column(
+                            //         mainAxisAlignment: MainAxisAlignment.center,
+                            //         crossAxisAlignment: CrossAxisAlignment.center,
+                            //         children: [
+                            //           CustomImageIconBtn(
+                            //             px: mqw * 0.2,
+                            //             iconPath: (
+                            //                 _devicesProv.autoPlayAudio
+                            //                     ? 'assets/images/toogle-main-on.png'
+                            //                     : 'assets/images/toogle-main-off.png'
+                            //             ),
+                            //             onAction: () {
+                            //               _devicesProv.setAutoPlayAudio(!_devicesProv.autoPlayAudio);
+                            //               // if (!_devicesProv.autoPlayAudio) {
+                            //               //   final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+                            //               //   _devicesProv.setExhibitDetAudio(audio);
+                            //               //   _devicesProv.playAudio();
+                            //               // } else {
+                            //               //   _devicesProv.stopAudio();
+                            //               // }
+                            //             },
+                            //           ),
+                            //           Text(_locals.hr6, style: TextStyle(fontSize: mqw * 0.035, height: mqh * 0.0005)),
+                            //         ],
+                            //       )
+                            //   ),
+                            // )
                           ]
                       )
                   )
@@ -416,7 +417,11 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                 width: double.infinity,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: Text(_text, textScaleFactor: 1.2,),
+                  child: Text(
+                    _text,
+                    textScaleFactor: 1.2,
+                    style: TextStyle(fontSize: _settingProv.fontSize),
+                  ),
                 )
             )
         )
