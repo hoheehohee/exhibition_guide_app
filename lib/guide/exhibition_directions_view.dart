@@ -152,7 +152,7 @@ class ExhivitDirectionsView extends StatelessWidget {
           markerId: MarkerId("marker_1"),
           position: _kMapCenter,
           icon: _markerIcon,
-          infoWindow: InfoWindow(title: 'I am a marker!')
+          // infoWindow: InfoWindow(title: 'I am a marker!')
       ),
     ].toSet();
   }
