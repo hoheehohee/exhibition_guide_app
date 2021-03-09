@@ -220,7 +220,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                 flex: 1,
                 child: Text(
                     !_loading ? _exhibit.getTextByLanguage(-1, "exhibition_name"): '',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff555657))
+                    style: TextStyle(fontSize: _settingProv.fontSize, fontWeight: FontWeight.bold, color: Color(0xff555657))
                 ),
               ),
               Align(
@@ -279,7 +279,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                 Flexible(
                   child: Text(
                     !_loading ? _exhibit.getTextByLanguage(-1, "title") : '',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff555657)),
+                    style: TextStyle(fontSize: _settingProv.fontSize, fontWeight: FontWeight.bold, color: Color(0xff555657)),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
