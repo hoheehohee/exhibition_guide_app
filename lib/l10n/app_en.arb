@@ -200,6 +200,7 @@
     "etc12":"Canceled",
     "etc13":"There was no cancellation",
     "etc14":"All exhibition commentary, salseong exhibition hall, exhibits, other/planned exhibitions",
+    "etc15":"No application target",
 
     "address": "Honggok-ro, 320beon-gil, Nam-gu, Busan, the Republic of Korea",
     "addressPhone": "+82-51-629-8600",
@@ -406,6 +407,7 @@
     "@etc12": { "description": "" },
     "@etc13": { "description": "" },
     "@etc14": { "description": "" },
+    "@etc15": { "description": "" },
 
     "@address": { "description": "" },
     "@addressPhone": { "description": "" },

@@ -93,6 +93,10 @@ class _BookingStateViewState extends State<BookingStateView> {
     types += date.type4 == 'Y' ? ","+_locals.bk31 : "";
     types += date.type5 == 'Y' ? ","+_locals.bk32 : "";
     types += date.type6 == 'Y' ? ","+_locals.bk33 : "";
+
+    if(types == ""){
+      types = _locals.etc15;
+    }
     return types.substring(0,1) == "," ? types.substring(1,types.length) : types;
   }
 

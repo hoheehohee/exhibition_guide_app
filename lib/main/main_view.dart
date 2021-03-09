@@ -391,7 +391,6 @@ class _MainViewState extends State<MainView> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(_locals.main14, style: TextStyle(fontSize: 15, color: Colors.white)),
                               SizedBox(height: mqh * 0.008),
                               Text(
                                 _locals.main_address,
