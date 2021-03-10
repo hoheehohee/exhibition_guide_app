@@ -23,11 +23,16 @@ class SocialProvider with ChangeNotifier {
   bool _isSocialLogin = false;
   String _email;
   String _snsType;
+  String _applyYN;
+  String _openYN;
 
   String get error => _error;
   bool get isSocialLogin => _isSocialLogin;
   String get email => _email;
   String get snsType => _snsType;
+  String get applyYN => _applyYN;
+  String get openYN => _openYN;
+
 
   // 카카오 로그인
   Future<Map> kakaoLogin() async {
@@ -263,6 +268,21 @@ class SocialProvider with ChangeNotifier {
 
     _isSocialLogin = false;
     notifyListeners();
+  }
+
+  Future<void> menuChek() async {
+    Dio dio = new Dio();
+    print("##### menuChek ");
+    Response resp;
+    try {
+      resp = await dio.get("${BASE_URL}/reservationOpenMenuData.do");
+      var map = Map<String, dynamic>.from(json.decode(resp.toString()));
+      _applyYN = map["applyYN"];
+      _openYN = map["openYN"];
+      notifyListeners();
+    }catch(error){
+      print('##### menuChek: $error');
+    }
   }
 
 }
