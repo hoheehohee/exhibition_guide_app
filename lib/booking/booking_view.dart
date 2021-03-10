@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:select_form_field/select_form_field.dart';
 
 import '../constant.dart';
 import 'booking_check.dart';
@@ -88,6 +89,42 @@ class _BookingViewState extends State<BookingView> {
         child: CircularProgressIndicator(),
       );
     }
+
+    final List<Map<String, dynamic>> _items = [
+      {
+        'value': '09',
+        'label': '09',
+      },
+      {
+        'value': '10',
+        'label': '10',
+      },
+      {
+        'value': '11',
+        'label': '11',
+      },
+      {
+        'value': '12',
+        'label': '12',
+      },
+      {
+        'value': '13',
+        'label': '13',
+      },
+      {
+        'value': '14',
+        'label': '14',
+      },
+      {
+        'value': '15',
+        'label': '15',
+      },
+      {
+        'value': '16',
+        'label': '16',
+      }
+    ];
+
     return Container(
         width: double.infinity,
         color: Colors.white,
@@ -167,24 +204,34 @@ class _BookingViewState extends State<BookingView> {
                                     borderRadius: BorderRadius.circular(5.0)),
                                 contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: mqw * 0.03)
                             ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: bookingData.applyTime,
-                                hint: Text(_locals.bk6),
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                iconSize: 20,
-                                isExpanded: true,
-                                isDense: true,
-                                onChanged: (newValue) {
-                                  _exhibitProd.setBookingData('applyTime', newValue);
-                                },
-                                items: time.map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
+                            // child: DropdownButtonHideUnderline(
+                            //   child: DropdownButton<String>(
+                            //     value: bookingData.applyTime,
+                            //     hint: Text(_locals.bk6),
+                            //     icon: Icon(Icons.keyboard_arrow_down),
+                            //     iconSize: 20,
+                            //     isExpanded: true,
+                            //     isDense: true,
+                            //     onChanged: (newValue) {
+                            //       _exhibitProd.setBookingData('applyTime', newValue);
+                            //     },
+                            //     items: time.map<DropdownMenuItem<String>>((String value) {
+                            //       return DropdownMenuItem<String>(
+                            //         value: value,
+                            //         child: Text(value),
+                            //       );
+                            //     }).toList(),
+                            //   ),
+                            // )
+                            child: SelectFormField(
+                              type: SelectFormFieldType.dropdown, // or can be dialog
+                              // initialValue: 'circle',
+                              icon: Icon(Icons.access_time),
+                              labelText: _locals.bk6,
+                              items: _items,
+                              onChanged: (val) => {
+                                _exhibitProd.setBookingData('applyTime', val)
+                              },
                             )
                         ),
                         SizedBox(height: mqh * 0.02,),
