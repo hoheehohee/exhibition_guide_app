@@ -269,7 +269,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                   ),
                   child: Center(
                     child: Text(
-                      _exhibit.exhibitItem != null ? getContentType(_exhibit.exhibitItem['contentsType']) : '',
+                      _exhibit.exhibitItem != null ? getContentType(_exhibit.exhibitItem['contentsType'], _locals.el3, _locals.el5) : '',
                       style: TextStyle(color: Colors.white, fontSize: 18, height: 1),
                       overflow: TextOverflow.ellipsis,
                     ),

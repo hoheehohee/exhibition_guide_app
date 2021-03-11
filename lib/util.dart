@@ -19,10 +19,10 @@ String getTextByLanguage(item, String key, String language) {
 }
 
 // 전시물 구분
-String getContentType(String type) {
+String getContentType(String type, String el3, String el5) {
   var result = "";
-  if (type == 'A') result = "패널";
-  else if (type == 'B') result = "유물";
+  if (type == 'A') result = el5;
+  else if (type == 'B') result = el3;
 
   return result;
 }
