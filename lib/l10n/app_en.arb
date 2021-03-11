@@ -43,6 +43,7 @@
     "el2": "Featured",
     "el3": "Relics",
     "el4": "Select an exhibit",
+    "el5": "Panel",
 
     "bk1": "Make Reservations",
     "bk2": "Reservation Details",
@@ -250,6 +251,7 @@
     "@el2": { "description": "" },
     "@el3": { "description": "" },
     "@el4": { "description": "" },
+    "@el5": { "description": "" },
 
     "@bk1":  { "description": "" },
     "@bk2":  { "description": "" },
