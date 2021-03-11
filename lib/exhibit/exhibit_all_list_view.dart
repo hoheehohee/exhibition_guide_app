@@ -1,6 +1,7 @@
 import 'package:exhibition_guide_app/commons/custom_image_icon_btn.dart';
 import 'package:exhibition_guide_app/model/exhibit_theme_model.dart' as ETM;
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
+import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../constant.dart';
 import 'exhibit_items.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../util.dart';
 
 class ExhibitAllListView extends StatefulWidget {
 
@@ -23,6 +25,7 @@ class _ExhibitAllListViewState extends State<ExhibitAllListView> {
   AppLocalizations _locals;
   ExhibitProvider _exhibitProv;
   final List<String> _categoryList = ['전시 카테고리1', '전시 카테고리2', '전시 카테고리3', '전시 카테고리4', '전시 카테고리5'];
+  SettingProvider _settingProv;
 
   @override
   void initState() {
@@ -40,6 +43,7 @@ class _ExhibitAllListViewState extends State<ExhibitAllListView> {
     mqh = mqd.size.height;
     _locals = AppLocalizations.of(context);
     _exhibitProv = Provider.of<ExhibitProvider>(context);
+    _settingProv = Provider.of<SettingProvider>(context);
 
     return Scaffold(
       appBar: _appBar(),
@@ -108,7 +112,7 @@ class _ExhibitAllListViewState extends State<ExhibitAllListView> {
     List<Widget> items = [];
     for(var i = 0; i < _categoryList.data.length; i++) {
       items.add(
-          Center(child: Text(_categoryList.data[i].exhibitionName, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)))
+          Center(child: Text(getTextByLanguage(_categoryList.data[i], 'exhibition_name', _settingProv.language), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)))
       );
     }
     return items;
