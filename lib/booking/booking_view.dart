@@ -164,7 +164,8 @@ class _BookingViewState extends State<BookingView> {
                         InputDecorator(
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0)),
+                                  borderRadius: BorderRadius.circular(5.0)
+                                ),
                                 contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: mqw * 0.03)
                             ),
                             child: DropdownButtonHideUnderline(
@@ -174,7 +175,8 @@ class _BookingViewState extends State<BookingView> {
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 iconSize: 20,
                                 isExpanded: true,
-                                isDense: true,
+                                // isDense: true,
+                                  // elevation: 10,
                                 onChanged: (newValue) {
                                   _exhibitProd.setBookingData('applyTime', newValue);
                                 },

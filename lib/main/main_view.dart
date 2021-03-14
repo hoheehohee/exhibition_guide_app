@@ -226,7 +226,7 @@ class _MainViewState extends State<MainView> {
                           children: [
                             Text(
                                 AppLocalizations.of(context).text1,
-                                style: TextStyle(fontSize: 21, color: Colors.white, fontWeight: FontWeight.bold)),
+                                style: TextStyle(fontSize: mqw * 0.05, color: Colors.white, fontWeight: FontWeight.bold)),
                             // Text(
                             //     '싶으신가요?',
                             //     style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
@@ -371,6 +371,7 @@ class _MainViewState extends State<MainView> {
                                   ),
                                   onPressed: () {
                                     _deviceProv.becaonScan(!_deviceProv.isRunning);
+                                    _deviceProv.setAutoPlayAudio(!_deviceProv.autoPlayAudio);
                                   },
                                 ),
                               )

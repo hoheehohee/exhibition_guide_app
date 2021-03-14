@@ -39,11 +39,11 @@ class CustomMainButton extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(imgPath, width: mqw * 0.11, height: mqh* 0.05, fit: BoxFit.fill,),
+            Image.asset(imgPath, height: mqh * 0.06, fit: BoxFit.fill,),
             SizedBox(height: 10,),
             Text(
               title,
-              style: TextStyle(fontSize: 16, color: Color(0xff546573), fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: mqw * 0.03, color: Color(0xff546573), fontWeight: FontWeight.w500),
               textAlign: TextAlign.center,
             )
           ],

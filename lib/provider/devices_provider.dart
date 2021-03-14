@@ -64,6 +64,7 @@ class DevicesProvider with ChangeNotifier {
     final deacon = prefs.getBool("beaconOnOff");
     final audio = prefs.getBool("autoPlayAudio");
 
+    print("###### audio: $audio");
     _isRunning = deacon == null ? false : deacon;
     _autoPlayAudio = audio == null ? false : audio;
 
@@ -93,6 +94,8 @@ class DevicesProvider with ChangeNotifier {
 
     if (type) {
       init();
+      // await BeaconsPlugin.startMonitoring;
+      // await BeaconsPlugin.runInBackground(true);
     } else {
       await BeaconsPlugin.stopMonitoring;
       if (Platform.isAndroid) {
@@ -110,10 +113,6 @@ class DevicesProvider with ChangeNotifier {
     // print("#####Platform.isAndroid: ${Platform.isAndroid}");
     // print("##### _isRunning: $_isRunning");
     if (!_isRunning) return;
-
-    // 백그라운드에서 실행
-    // await BeaconsPlugin.startMonitoring;
-    // await BeaconsPlugin.runInBackground(true);
 
     if (Platform.isAndroid) {
       await BeaconsPlugin.startMonitoring;
@@ -143,6 +142,7 @@ class DevicesProvider with ChangeNotifier {
             // 안드로이드 addRegion에 안걸릴 때
             if (beaconData.uuid == "fda50693-a4e2-4fb1-afcf-c6eb07647825"
                 ||beaconData.uuid == "FDA50693-A4E2-4FB1-AFCF-C6EB07647825") {
+
               beaconContentSelCall();
               _major = beaconData.major;
               _minor = beaconData.minor;
@@ -161,15 +161,18 @@ class DevicesProvider with ChangeNotifier {
       print("##### error: $error");
     });
 
+    await BeaconsPlugin.runInBackground(true);
+
     if (Platform.isAndroid) {
       BeaconsPlugin.channel.setMethodCallHandler((call) async {
+        print("#####call.method: ${call.method}");
         if (call.method == 'scannerReady') {
           await BeaconsPlugin.startMonitoring;
           setIsRunning(true);
         }
       });
     } else if (Platform.isIOS) {
-      await BeaconsPlugin.runInBackground(true);
+      // await BeaconsPlugin.runInBackground(true);
       await BeaconsPlugin.startMonitoring;
       setIsRunning(true);
     }
@@ -229,7 +232,6 @@ class DevicesProvider with ChangeNotifier {
   void scan() async {
     try {
       String barcode = await BarcodeScanner.scan();
-      print("#### barcode: ${barcode}");
       qrCodeDataSel(barcode);
     }catch(e) {
       print("#### scan error: $e");

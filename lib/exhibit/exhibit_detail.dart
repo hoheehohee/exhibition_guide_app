@@ -74,7 +74,6 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     Future.microtask((){
       // Provider.of<DevicesProvider>(context, listen: false).playAudio(),
       idx = widget.idx.toString();
-      print("####### idx: $idx");
       Provider.of<DevicesProvider>(context, listen: false).setBeforeBeaconIdx(idx.toString());
       Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx);
     });
@@ -106,19 +105,19 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
         break;
     }
   }
-  void t() {
-    if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
-      final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
-      _devicesProv.setExhibitDetAudio(audio);
-      _devicesProv.playAudio();
-    }
-  }
+  // void t() {
+  //   if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
+  //     final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+  //     _devicesProv.setExhibitDetAudio(audio);
+  //     _devicesProv.playAudio();
+  //   }
+  // }
 
   void autoAudioPlay() {
     // 음성지원 안내가 on일 경우 자동 음성 안내 시작
     // auioTimer = new Timer.periodic(const Duration(milliseconds: 100), t);
     Timer(
-        Duration(seconds: 1), () {
+        Duration(seconds: 2), () {
         if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
           final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
           _devicesProv.setExhibitDetAudio(audio);
@@ -288,11 +287,11 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
           ),
         ),
         Container(
-            height: 200,
+            height: mqh * 0.4,
             width: double.infinity,
             child: Image.network(
                 _exhibit.exhibitItem != null ? _exhibit.exhibitItem['contentsImgFile'] : '',
-                fit: BoxFit.fill
+                fit: BoxFit.cover
             )
         ),
         Container(
@@ -325,7 +324,6 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                       onAction: () async {
                         _devicesProv.stopAudio();
                         final video = _exhibit.getTextByLanguage(-1, 'videoFile');
-                        print("##### video: $video");
                         await _devicesProv.setExhibitDetVideo(video);
                         Get.to(ExhibitVideoView());
                       },
