@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../constant.dart';
 import 'booking_check.dart';
+import 'package:select_form_field/select_form_field.dart';
 
 class BookingModify extends StatefulWidget {
   BookingModify(this.applyID);
@@ -28,6 +29,40 @@ class _BookingModify extends State<BookingModify> {
   AppLocalizations _locals;
   int applyID;
 
+  final List<Map<String, dynamic>> _items = [
+    {
+      'value': '09',
+      'label': '09',
+    },
+    {
+      'value': '10',
+      'label': '10',
+    },
+    {
+      'value': '11',
+      'label': '11',
+    },
+    {
+      'value': '12',
+      'label': '12',
+    },
+    {
+      'value': '13',
+      'label': '13',
+    },
+    {
+      'value': '14',
+      'label': '14',
+    },
+    {
+      'value': '15',
+      'label': '15',
+    },
+    {
+      'value': '16',
+      'label': '16',
+    }
+  ];
   var time;
   List<Map<String, String>> language;
 
@@ -42,6 +77,7 @@ class _BookingModify extends State<BookingModify> {
   TextEditingController dateText;
   List<Map<String, String>> obstacle;
   var bookingData;
+  TextEditingController applyTime;
 
 
   @override
@@ -65,7 +101,7 @@ class _BookingModify extends State<BookingModify> {
 
   @override
   Widget build(BuildContext context) {
-    print("vie1");
+
 
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
@@ -100,6 +136,8 @@ class _BookingModify extends State<BookingModify> {
     groupPersonnelController = TextEditingController(text: bookingData.groupPersonnel);
     groupPersonnelController.selection = TextSelection.fromPosition(TextPosition(offset: groupPersonnelController.text.length));
     dateText = TextEditingController()..text = bookingData.applyDate;
+    applyTime = TextEditingController(text: bookingData.applyTime.toString());
+
 
     return Scaffold(
       appBar: _appBar(),
@@ -197,24 +235,34 @@ class _BookingModify extends State<BookingModify> {
                                     borderRadius: BorderRadius.circular(5.0)),
                                 contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: mqw * 0.03)
                             ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: bookingData.applyTime,
-                                hint: Text(_locals.bk6),
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                iconSize: 20,
-                                isExpanded: true,
-                                isDense: true,
-                                onChanged: (newValue) {
-                                  _exhibitProd.setBookingData('applyTime', newValue);
-                                },
-                                items: time.map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
+                            // child: DropdownButtonHideUnderline(
+                            //   child: DropdownButton<String>(
+                            //     value: bookingData.applyTime,
+                            //     hint: Text(_locals.bk6),
+                            //     icon: Icon(Icons.keyboard_arrow_down),
+                            //     iconSize: 20,
+                            //     isExpanded: true,
+                            //     isDense: true,
+                            //     onChanged: (newValue) {
+                            //       _exhibitProd.setBookingData('applyTime', newValue);
+                            //     },
+                            //     items: time.map<DropdownMenuItem<String>>((String value) {
+                            //       return DropdownMenuItem<String>(
+                            //         value: value,
+                            //         child: Text(value),
+                            //       );
+                            //     }).toList(),
+                            //   ),
+                            // )
+                            child: SelectFormField(
+                              type: SelectFormFieldType.dropdown, // or can be dialog
+                              controller: applyTime,
+                              icon: Icon(Icons.access_time),
+                              labelText: _locals.bk6,
+                              items: _items,
+                              onChanged: (val) => {
+                                _exhibitProd.setBookingData('applyTime', val)
+                              },
                             )
                         ),
                         SizedBox(height: mqh * 0.02,),

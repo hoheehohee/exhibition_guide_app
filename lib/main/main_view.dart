@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:exhibition_guide_app/booking/booking_view.dart';
 import 'package:exhibition_guide_app/commons/custom_main_button.dart';
 import 'package:exhibition_guide_app/crm/notice_list_view.dart';
+import 'package:exhibition_guide_app/crm/qna_write.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_theme_view.dart';
@@ -70,6 +71,7 @@ class _MainViewState extends State<MainView> {
     // social 로그인 체크
     Future.microtask(() {
       Provider.of<SocialProvider>(context, listen: false).socialLoginCheck();
+      Provider.of<SocialProvider>(context, listen: false).menuChek();
       Provider.of<DevicesProvider>(context, listen: false).init();
     });
   }
@@ -184,7 +186,7 @@ class _MainViewState extends State<MainView> {
                             fit: BoxFit.fill,
                           ),
                           onTap: () {
-                            _showMyDialog();
+                            // _showMyDialog();
                           },
                         ),
                         SizedBox(width: mqw * 0.01,),
@@ -343,17 +345,35 @@ class _MainViewState extends State<MainView> {
                                 title: _locals.main10,
                                 imgPath: 'assets/images/icon/icon-main-notice.png',
                               ),
-                              CustomMainButton(
-                                onTap: () async {
-                                  if(!await isLogin()){
-                                    g_showMyDialog(_locals.alert1, context);
-                                  } else {
-                                    Get.to(BookingView());
-                                  }
-                                },
-                                title: _locals.main11,
-                                imgPath: 'assets/images/icon/icon-main-docent.png',
+                              Visibility(
+                                  visible: _social.openYN == "Y" ,
+                                  child: CustomMainButton(
+                                    onTap: () async {
+                                      if(!await isLogin()){
+                                        g_showMyDialog(_locals.alert1, context);
+                                      } else {
+                                        Get.to(BookingView());
+                                      }
+                                    },
+                                    title: _locals.main11,
+                                    imgPath: 'assets/images/icon/icon-main-docent.png',
+                                  ),
                               ),
+                              Visibility(
+                                visible: _social.openYN == "N" ,
+                                child: CustomMainButton(
+                                  onTap: () async {
+                                    if(!await isLogin()){
+                                      g_showMyDialog(_locals.alert1, context);
+                                    } else {
+                                      Get.to(QnaWrite());
+                                    }
+                                  },
+                                  title: _locals.main12,
+                                  imgPath: 'assets/images/icon/icon-edit.png',
+                                ),
+                              )
+
                             ],
                           ),
                           Padding(
@@ -392,7 +412,6 @@ class _MainViewState extends State<MainView> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(_locals.main14, style: TextStyle(fontSize: 15, color: Colors.white)),
                               SizedBox(height: mqh * 0.008),
                               Text(
                                 _locals.main_address,

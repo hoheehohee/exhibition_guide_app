@@ -85,6 +85,21 @@ class _BookingStateViewState extends State<BookingStateView> {
       return "D${difference > 0 ? "+${difference}" : difference}";
   }
 
+  String getType(var date) {
+    String types = "";
+    types += date.type1 == 'Y' ? _locals.bk28 : "";
+    types += date.type2 == 'Y' ? ","+_locals.bk29 : "";
+    types += date.type3 == 'Y' ? ","+_locals.bk30 : "";
+    types += date.type4 == 'Y' ? ","+_locals.bk31 : "";
+    types += date.type5 == 'Y' ? ","+_locals.bk32 : "";
+    types += date.type6 == 'Y' ? ","+_locals.bk33 : "";
+
+    if(types == ""){
+      types = _locals.etc15;
+    }
+    return types.substring(0,1) == "," ? types.substring(1,types.length) : types;
+  }
+
   Future<void> _showMyDialog(String message) async {
     return showDialog<void>(
       context: context,
@@ -304,6 +319,9 @@ class _BookingStateViewState extends State<BookingStateView> {
                                                 var state = await _mypage.setApplyCancel(_mypage.bookingList.data[index].applyID);
                                                 if(state == "Y"){
                                                   g_showMyDialog(_locals.etc12, context);
+                                                  Future.microtask(() => {
+                                                    Provider.of<MyPageProvider>(context, listen: false).setBookingStatListSel(status, monthCount)
+                                                  });
                                                 }else{
                                                   g_showMyDialog(_locals.etc13, context);
                                                 }
@@ -373,8 +391,7 @@ class _BookingStateViewState extends State<BookingStateView> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          _locals.etc14,
+                        child: Text(getType(_mypage.bookingList.data[index]),
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black54),
                         ),
                       )

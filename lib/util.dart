@@ -19,10 +19,10 @@ String getTextByLanguage(item, String key, String language) {
 }
 
 // 전시물 구분
-String getContentType(String type) {
+String getContentType(String type, String el3, String el5) {
   var result = "";
-  if (type == 'A') result = "패널";
-  else if (type == 'B') result = "유물";
+  if (type == 'A') result = el5;
+  else if (type == 'B') result = el3;
 
   return result;
 }
@@ -67,7 +67,7 @@ String applyType(BookingRegModel bd) {
   var result = "";
 
   bd.toJson().forEach((key, value) {
-    if (key == "type1" &&  value == 'Y') result += "유아여부 / ";
+    if (key == "type1" &&  value == 'Y') result += "유아 / ";
     else if (key == "type2" &&  value == 'Y') result += "초등저학년 (1-3) / ";
     else if (key == "type3" &&  value == 'Y') result += "초등고학년 (4-6) / ";
     else if (key == "type4" &&  value == 'Y') result += "중학생 / ";
@@ -75,7 +75,7 @@ String applyType(BookingRegModel bd) {
     else if (key == "type6" &&  value == 'Y') result += "성인 / ";
   });
 
-  if (result.isNotEmpty) result = result.substring(1, result.length - 2);
+  if (result.isNotEmpty) result = result.substring(0, result.length - 2);
   return result;
 }
 

@@ -43,6 +43,7 @@
     "el2": "Featured",
     "el3": "Relics",
     "el4": "Select an exhibit",
+    "el5": "Panel",
 
     "bk1": "Make Reservations",
     "bk2": "Reservation Details",
@@ -141,7 +142,7 @@
     "login3": "Continue with Naver",
     "login4": "Continue with Facebook",
     "login5": "Continue with Google",
-    "login6": "Continue with Apple ID",
+    "login6": "Sign in with Apple",
 
     "mypage1": "LoginㆍSign Up",
     "mypage2": "More services are\navailable after logging in.",
@@ -200,6 +201,7 @@
     "etc12":"Canceled",
     "etc13":"There was no cancellation",
     "etc14":"All exhibition commentary, salseong exhibition hall, exhibits, other/planned exhibitions",
+    "etc15":"No application target",
 
     "address": "Honggok-ro, 320beon-gil, Nam-gu, Busan, the Republic of Korea",
     "addressPhone": "+82-51-629-8600",
@@ -249,6 +251,7 @@
     "@el2": { "description": "" },
     "@el3": { "description": "" },
     "@el4": { "description": "" },
+    "@el5": { "description": "" },
 
     "@bk1":  { "description": "" },
     "@bk2":  { "description": "" },
@@ -406,6 +409,7 @@
     "@etc12": { "description": "" },
     "@etc13": { "description": "" },
     "@etc14": { "description": "" },
+    "@etc15": { "description": "" },
 
     "@address": { "description": "" },
     "@addressPhone": { "description": "" },

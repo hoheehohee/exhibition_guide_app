@@ -498,6 +498,7 @@ class ExhibitProvider with ChangeNotifier {
       );
       final jsonData = json.decode('{"data": $resp}');
       _exhibitAllMenuItems = ExhibitContentsDataModel.fromJson(jsonData);
+      print(jsonData);
       _loading = false;
       notifyListeners();
     }catch(error) {
