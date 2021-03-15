@@ -35,8 +35,11 @@ class _BookingViewState extends State<BookingView> {
     // TODO: implement initState
     super.initState();
 
+    Provider.of<ExhibitProvider>(context, listen: false).setInitialBookingModifyData();
+
     Future.microtask(() {
       Provider.of<ExhibitProvider>(context, listen: false).setHolidaySel();
+
     });
   }
 

@@ -147,10 +147,6 @@ class _BookingModify extends State<BookingModify> {
   }
 
   Widget renderVidew() {
-
-
-
-
     if (_exhibitProd.loading) {
       return Center(
         child: CircularProgressIndicator(),

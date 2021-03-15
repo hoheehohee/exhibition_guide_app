@@ -79,6 +79,8 @@ class ExhibitProvider with ChangeNotifier {
   get exhibitList => _exhibitList;
   get exhibitItem => _exhibitItem;
 
+
+
   ExhibitProvider() {
     init();
   }
@@ -99,6 +101,10 @@ class ExhibitProvider with ChangeNotifier {
     else if (_language == 'ja') l = "_jpn";
 
     return index > -1 ? item.toJson()[key + l] : _exhibitItem[key + l];
+  }
+
+  void setInitialBookingModifyData() {
+    _bookingRegData = BookingRegModel.fromJson({});
   }
 
   void setMenyType(String type) {

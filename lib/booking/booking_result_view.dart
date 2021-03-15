@@ -196,7 +196,7 @@ class BookingResultView extends StatelessWidget {
                 ),
                 child: Text(_locals.apply11, style: TextStyle(fontSize: 20, color: Colors.white)),
                 onPressed: () {
-                  Get.to(MainView());
+                  Get.offAll(MainView());
                 },
               ),
             )
