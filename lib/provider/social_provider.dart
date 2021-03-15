@@ -17,6 +17,7 @@ import 'package:kakao_flutter_sdk/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../message.dart';
+import 'package:http/http.dart' as http;
 
 class SocialProvider with ChangeNotifier {
   String _error;
@@ -153,7 +154,9 @@ class SocialProvider with ChangeNotifier {
         ],
       );
 
-      print(credential);
+      Map data = {"snsType": "apple", "email": credential.email};
+      data["check"] = await checkServer(data);
+      return data;
 
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
@@ -200,7 +203,7 @@ class SocialProvider with ChangeNotifier {
     try {
       resp = await dio.get("${BASE_URL}/userCheckData.do?snsType=${data['snsType']}&email=${data['email']}");
       var map = Map<String, dynamic>.from(json.decode(resp.toString()));
-      if(map["status"] == "N"){
+      if(map["status"] == "N" && data['email'] != null){
         Get.off(AgreeDialogView(data['snsType'], data['email']));
       } else if(map["status"] == "Y"){
         SharedPreferences prefs = await SharedPreferences.getInstance();

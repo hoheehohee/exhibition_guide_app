@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../constant.dart';
 import 'agree_dialog_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../util.dart';
 
 class LoginDialogView extends StatefulWidget {
   @override
@@ -249,8 +250,8 @@ class _LoginDialogViewState extends State<LoginDialogView> {
               MaterialButton(
                   onPressed: () async {
                     var login = await _social.appleLogin();
-                    if (login["check"] == "N") {
-                      AgreeDialogView(login['snsType'], login['email']);
+                    if(login["email"] == null) {
+                      g_showMyDialog(_locals.etc16, context);
                     }
                   },
                   color: Colors.black,
