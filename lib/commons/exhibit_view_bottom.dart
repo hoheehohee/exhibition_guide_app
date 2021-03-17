@@ -39,20 +39,20 @@ class ExhibitViewBottom extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(_locals.hr2, style: TextStyle(fontSize: 14, color: Colors.white)),
-                        SizedBox(width: 5,),
                         CustomImageIconBtn(
                           px: 50.0,
                           iconPath: (
-                            _deviceProv.isRunning
-                              ? 'assets/images/toogle-main-on.png'
-                              : 'assets/images/toogle-main-off.png'
+                              _deviceProv.isRunning
+                                  ? 'assets/images/toogle-main-on.png'
+                                  : 'assets/images/toogle-main-off.png'
                           ),
                           onAction: () {
                             _deviceProv.becaonScan(!_deviceProv.isRunning);
                             _deviceProv.setAutoPlayAudio(!_deviceProv.autoPlayAudio);
                           },
-                        )
+                        ),
+                        SizedBox(width: 5,),
+                        Text(_locals.hr2, style: TextStyle(fontSize: 14, color: Colors.white)),
                       ],
                     ),
                     // SizedBox(width: 20,),
