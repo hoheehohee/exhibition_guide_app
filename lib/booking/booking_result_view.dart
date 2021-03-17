@@ -30,6 +30,30 @@ class BookingResultView extends StatelessWidget {
     _locals = AppLocalizations.of(context);
     BookingRegModel bd = _exhibitProv.bookingRegData;
 
+    String obstacleStatus(String value) {
+      if (value == '1' || value == null || value == '') return _locals.etc21;
+      else if (value == '2') return _locals.etc22;
+      else if (value == '3') return _locals.etc23;
+      else if (value == '4') return _locals.etc24;
+      else if (value == '5') return _locals.etc25;
+    }
+
+    String applyType(BookingRegModel bd) {
+      var result = "";
+
+      bd.toJson().forEach((key, value) {
+        if (key == "type1" &&  value == 'Y') result += "${_locals.bk28} / ";
+        else if (key == "type2" &&  value == 'Y') result += "${_locals.bk29} / ";
+        else if (key == "type3" &&  value == 'Y') result += "${_locals.bk30} / ";
+        else if (key == "type4" &&  value == 'Y') result += "${_locals.bk31} / ";
+        else if (key == "type5" &&  value == 'Y') result += "${_locals.bk32} / ";
+        else if (key == "type6" &&  value == 'Y') result += "${_locals.bk33} / ";
+      });
+
+      if (result.isNotEmpty) result = result.substring(0, result.length - 2);
+      return result;
+    }
+
     return Scaffold(
       backgroundColor: Color(0xffE1E2E3),
       appBar: PreferredSize(
