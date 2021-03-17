@@ -436,7 +436,7 @@ class ExhibitProvider with ChangeNotifier {
       final result = json.decode(resp.toString());
       _bookingRegData = BookingRegModel.fromJson(result);
 
-      Getx.Get.offAll(BookingResultView());
+      Getx.Get.to(BookingResultView());
 
     } catch(error) {
       print("##### setBookingDetSelCall error: $error");
