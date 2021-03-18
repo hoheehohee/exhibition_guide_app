@@ -10,6 +10,8 @@ import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:exhibition_guide_app/setting/language_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:provider/provider.dart';
 
 import '../main/main_view.dart';
@@ -151,7 +153,10 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     return WillPopScope(
       child: Scaffold(
         appBar: _appBar(),
-        body: _mainView(),
+        body: _loading ?
+          Center(
+            child: Loading(indicator: BallPulseIndicator(), size: 100.0,color: Colors.cyan),
+          ):_mainView(),
         bottomNavigationBar: (
           _audioPlayShow
             ? (
