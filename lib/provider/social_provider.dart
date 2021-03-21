@@ -272,7 +272,6 @@ class SocialProvider with ChangeNotifier {
 
   Future<void> menuChek() async {
     Dio dio = new Dio();
-    print("##### menuChek ");
     Response resp;
     try {
       resp = await dio.get("${BASE_URL}/reservationOpenMenuData.do");

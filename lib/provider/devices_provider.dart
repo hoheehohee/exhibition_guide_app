@@ -64,7 +64,6 @@ class DevicesProvider with ChangeNotifier {
     final deacon = prefs.getBool("beaconOnOff");
     final audio = prefs.getBool("autoPlayAudio");
 
-    print("###### audio: $audio");
     _isRunning = deacon == null ? false : deacon;
     _autoPlayAudio = audio == null ? false : audio;
 
@@ -89,13 +88,13 @@ class DevicesProvider with ChangeNotifier {
 
   void becaonScan(bool type) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("beaconOnOff", type);
-    _isRunning = type;
 
+    _isRunning = type;
+    print("#### beaconOnOff: $type");
+    print("##### ${beaconEventsController.hasListener}");
     if (type) {
+      prefs.setBool("beaconOnOff", type);
       init();
-      // await BeaconsPlugin.startMonitoring;
-      // await BeaconsPlugin.runInBackground(true);
     } else {
       await BeaconsPlugin.stopMonitoring;
       if (Platform.isAndroid) {
@@ -111,7 +110,6 @@ class DevicesProvider with ChangeNotifier {
 
   void init() async {
     // print("#####Platform.isAndroid: ${Platform.isAndroid}");
-    // print("##### _isRunning: $_isRunning");
     if (!_isRunning) return;
 
     if (Platform.isAndroid) {
@@ -130,7 +128,7 @@ class DevicesProvider with ChangeNotifier {
     // fda50693-a4e2-4fb1-afcf-c6eb07647825
     // UUID에 맞는 비콘 연결
     beaconEventsController.stream.listen((data) {
-        // print("##########beaconEventsController: $data");
+        print("##########beaconEventsController: $data");
         if (data.isNotEmpty) {
           _beaconResult = data;
           setBeaconConnect(true);
@@ -143,9 +141,14 @@ class DevicesProvider with ChangeNotifier {
             if (beaconData.uuid == "fda50693-a4e2-4fb1-afcf-c6eb07647825"
                 ||beaconData.uuid == "FDA50693-A4E2-4FB1-AFCF-C6EB07647825") {
 
-              beaconContentSelCall();
+              if (_major == beaconData.major && _minor == beaconData.minor) return;
+
+              print("$_major ||||| ${beaconData.major} ");
+              print("$_minor ||||| ${beaconData.minor} ");
               _major = beaconData.major;
               _minor = beaconData.minor;
+
+              beaconContentSelCall();
             }
 
           }catch(error) {
@@ -199,6 +202,7 @@ class DevicesProvider with ChangeNotifier {
         "Major": beaconData.major,
         "Minor": beaconData.minor,
       });
+      print('##### beaconContentSelCall: $resp');
       final jsonData = json.decode("$resp");
       _exhibitItem = ExhibitItemModel.fromJson(jsonData);
 
@@ -222,7 +226,7 @@ class DevicesProvider with ChangeNotifier {
       }
 
     }catch(error) {
-      // becaonScan(false);
+      becaonScan(false);
       print("#### beaconContentSelCall error: $error");
     }
     notifyListeners();
