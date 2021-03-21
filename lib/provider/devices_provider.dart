@@ -42,7 +42,9 @@ class DevicesProvider with ChangeNotifier {
   bool _isRunning = true;
   bool _beaconConnect = false;
   bool _autoPlayAudio = false;
+  bool _isBeaconLoading = false;
 
+  bool get isBeaconLoading => _isBeaconLoading;
   bool get isRunning => _isRunning;
   bool get isPlaying => _playing;
   bool get isBeaconConnect => _beaconConnect;
@@ -54,6 +56,12 @@ class DevicesProvider with ChangeNotifier {
 
   DevicesProvider() {
     setDevicePreferences();
+  }
+
+  void initailBeaconData() {
+    _major = "";
+    _minor = "";
+    print("##### initailBeaconData");
   }
   void setBeforeBeaconIdx (String idx) {
     _beforeBeaconIdx = idx;
@@ -85,22 +93,32 @@ class DevicesProvider with ChangeNotifier {
     _beaconConnect = type;
     notifyListeners();
   }
+  void setIsBeaonLoading(result) {
+    _isBeaconLoading = result;
+  }
 
   void becaonScan(bool type) async{
+    _isBeaconLoading = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     _isRunning = type;
     print("#### beaconOnOff: $type");
-    print("##### ${beaconEventsController.hasListener}");
+    print("#### isPaused: ${ beaconEventsController.isPaused}");
+    print("#### isBlank: ${ beaconEventsController.isBlank}");
+    print("#### hasListener: ${ beaconEventsController.hasListener}");
+    print("#### isClosed: ${ beaconEventsController.isClosed}");
+    prefs.setBool("beaconOnOff", type);
     if (type) {
-      prefs.setBool("beaconOnOff", type);
-      init();
+        init();
+
     } else {
       await BeaconsPlugin.stopMonitoring;
       if (Platform.isAndroid) {
         await BeaconsPlugin.runInBackground(false);
       }
+      _isBeaconLoading = false;
     }
+    // _isBeaconLoading = false;
     notifyListeners();
   }
 
@@ -113,8 +131,10 @@ class DevicesProvider with ChangeNotifier {
     if (!_isRunning) return;
 
     if (Platform.isAndroid) {
+
       await BeaconsPlugin.startMonitoring;
       await BeaconsPlugin.runInBackground(true);
+      _isBeaconLoading = false;
 
       await BeaconsPlugin.setDisclosureDialogMessage(
           title: "Need Location Permission",
@@ -139,12 +159,10 @@ class DevicesProvider with ChangeNotifier {
 
             // 안드로이드 addRegion에 안걸릴 때
             if (beaconData.uuid == "fda50693-a4e2-4fb1-afcf-c6eb07647825"
-                ||beaconData.uuid == "FDA50693-A4E2-4FB1-AFCF-C6EB07647825") {
+                || beaconData.uuid == "FDA50693-A4E2-4FB1-AFCF-C6EB07647825") {
 
               if (_major == beaconData.major && _minor == beaconData.minor) return;
 
-              print("$_major ||||| ${beaconData.major} ");
-              print("$_minor ||||| ${beaconData.minor} ");
               _major = beaconData.major;
               _minor = beaconData.minor;
 
@@ -177,6 +195,7 @@ class DevicesProvider with ChangeNotifier {
     } else if (Platform.isIOS) {
       // await BeaconsPlugin.runInBackground(true);
       await BeaconsPlugin.startMonitoring;
+      _isBeaconLoading = false;
       setIsRunning(true);
     }
   }

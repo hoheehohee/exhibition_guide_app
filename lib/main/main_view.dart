@@ -14,6 +14,8 @@ import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:exhibition_guide_app/guide/guide_view.dart';
@@ -376,24 +378,29 @@ class _MainViewState extends State<MainView> {
 
                             ],
                           ),
-                          Padding(
-                              padding: EdgeInsets.only(top: mqh  * 0.02),
-                              child: SizedBox(
-                                width: 87,
-                                child: IconButton(
-                                  padding: EdgeInsets.all(0),
-                                  icon: Image.asset(
-                                    _deviceProv.isRunning
-                                        ? 'assets/images/toogle-main-on.png'
-                                        : 'assets/images/toogle-main-off.png',
-                                    width: mqw * 0.25,
-                                    fit: BoxFit.fill,
-                                  ),
-                                  onPressed: () {
-                                    _deviceProv.becaonScan(!_deviceProv.isRunning);
-                                    _deviceProv.setAutoPlayAudio(!_deviceProv.autoPlayAudio);
-                                  },
-                                ),
+                          _deviceProv.isBeaconLoading
+                          ? (
+                            Loading(indicator: BallPulseIndicator(), size: 100.0,color: Colors.cyan)
+                          ) :(
+                              Padding(
+                                  padding: EdgeInsets.only(top: mqh  * 0.02),
+                                  child: SizedBox(
+                                    width: 87,
+                                    child: IconButton(
+                                      padding: EdgeInsets.all(0),
+                                      icon: Image.asset(
+                                        _deviceProv.isRunning
+                                            ? 'assets/images/toogle-main-on.png'
+                                            : 'assets/images/toogle-main-off.png',
+                                        width: mqw * 0.25,
+                                        fit: BoxFit.fill,
+                                      ),
+                                      onPressed: () {
+                                        _deviceProv.becaonScan(!_deviceProv.isRunning);
+                                        _deviceProv.setAutoPlayAudio(!_deviceProv.autoPlayAudio);
+                                      },
+                                    ),
+                                  )
                               )
                           ),
                           Text(

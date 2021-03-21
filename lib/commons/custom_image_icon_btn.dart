@@ -5,10 +5,12 @@ class CustomImageIconBtn extends StatelessWidget {
     Key key,
     this.px,
     this.iconPath,
-    this.onAction
+    this.onAction,
+    this.disabled = false
   }) : super(key: key);
 
   final double px;
+  final bool disabled;
   final String iconPath;
   final onAction;
 
@@ -23,7 +25,7 @@ class CustomImageIconBtn extends StatelessWidget {
           fit: BoxFit.fill,
         ),
       ),
-      onPressed: () {
+      onPressed: disabled ? null : () {
         if (onAction != null) {
           onAction();
         }

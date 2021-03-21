@@ -88,6 +88,8 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     //앱 상태 변경 이벤트 해제
     //문제는 앱 종료시 dispose함수가 호출되지 않아 해당 함수를 실행 할 수가 없다.
     WidgetsBinding.instance.removeObserver(this);
+    _devicesProv.initailBeaconData();
+    _devicesProv.setBeforeBeaconIdx("-1");
     super.dispose();
   }
 
@@ -103,6 +105,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
         break;
       case AppLifecycleState.detached:
         Provider.of<DevicesProvider>(context, listen: false).stopAudio();
+        Provider.of<DevicesProvider>(context, listen: false).dispose();
         print("##### detached");
         break;
     }
@@ -120,6 +123,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     // auioTimer = new Timer.periodic(const Duration(milliseconds: 100), t);
     Timer(
         Duration(seconds: 2), () {
+          // print(_devicesProv.autoPlayAudio );
         if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
           final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
           _devicesProv.setExhibitDetAudio(audio);
@@ -371,17 +375,26 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    CustomImageIconBtn(
-                                      px: mqw * 0.2,
-                                      iconPath: (
-                                          _devicesProv.isRunning
-                                              ? 'assets/images/toogle-main-on.png'
-                                              : 'assets/images/toogle-main-off.png'
-                                      ),
-                                      onAction: () {
-                                        _devicesProv.becaonScan(!_devicesProv.isRunning);
-                                        _devicesProv.setAutoPlayAudio(!_devicesProv.autoPlayAudio);
-                                      },
+                                    _devicesProv.isBeaconLoading
+                                    ? (
+                                        Loading(indicator: BallPulseIndicator(), size: 50.0,color: Colors.cyan)
+                                    ): (
+                                      CustomImageIconBtn(
+                                        px: mqw * 0.2,
+                                        disabled: _devicesProv.isBeaconLoading,
+                                        iconPath: (
+                                            _devicesProv.isRunning
+                                                ? 'assets/images/toogle-main-on.png'
+                                                : 'assets/images/toogle-main-off.png'
+                                        ),
+                                        onAction: () {
+                                          // _devicesProv.setIsBeaonLoading(true);
+
+                                          _devicesProv.becaonScan(!_devicesProv.isRunning);
+                                          _devicesProv.setAutoPlayAudio(!_devicesProv.autoPlayAudio);
+
+                                        },
+                                      )
                                     ),
                                     Text(_locals.hr5, style: TextStyle(fontSize: mqw * 0.035, height: mqh * 0.0005)),
                                   ],
