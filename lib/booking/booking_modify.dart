@@ -116,11 +116,11 @@ class _BookingModify extends State<BookingModify> {
     ];
 
     obstacle = [
-      {'title': '없음', 'value': '1'},
-      {'title': '시각장애', 'value': '2'},
-      {'title': '청각장애', 'value': '3'},
-      {'title': '지체장애', 'value': '4'},
-      {'title': '기타', 'value': '5'},
+      {'title': _locals.etc21, 'value': '1'},
+      {'title': _locals.etc22, 'value': '2'},
+      {'title': _locals.etc23, 'value': '3'},
+      {'title': _locals.etc24, 'value': '4'},
+      {'title': _locals.etc25, 'value': '5'},
     ];
 
     time = ['09', '10', '11', '12', '13', '14', '15', '16'];

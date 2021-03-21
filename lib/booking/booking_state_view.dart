@@ -338,7 +338,7 @@ class _BookingStateViewState extends State<BookingStateView> {
                                                         border: Border.all(color: Color(0xffA58C60), width: 2),
                                                       ),
                                                       child: Center(
-                                                          child: Text('신청취소', style: TextStyle(color: Color(0xffA58C60))
+                                                          child: Text(_locals.etc17, style: TextStyle(color: Color(0xffA58C60))
                                                           )
                                                       )
                                                   )
@@ -348,18 +348,105 @@ class _BookingStateViewState extends State<BookingStateView> {
                                           Container(
                                               width: 70,
                                               height: 25,
-                                              // margin: EdgeInsets.only(left: 5),
+                                              // margin: EdgeInsets.all(10),
                                               // padding: EdgeInsets.all(3),
                                               // decoration: BoxDecoration(
                                               //   color: Colors.grey,
                                               // ),
-                                              child: Center(
-                                                  child:Image.asset(getStatusText(_mypage.bookingList.data[index].status), width: 70,)
-                                                  // child: Text(
-                                                  //     getStatusText(_mypage.bookingList.data[index].status),
-                                                  //     style: TextStyle(color: Colors.white)
-                                                  // )
-                                              )
+                                              child:
+                                              Row(
+                                              children: [
+                                                  Visibility(
+                                                    visible: _mypage.bookingList.data[index].status == 'B',
+                                                    child: Container(
+                                                    width: 70,
+                                                    height: 32,
+                                                    padding: EdgeInsets.all(3),
+                                                    decoration: BoxDecoration(
+                                                        color: Color(0x8A000000),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        _locals.etc20,
+                                                        style: TextStyle(color: Colors.white, fontSize: 12, height: 1),
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ),
+                                                  )
+                                                ),
+                                                Visibility(
+                                                    visible: _mypage.bookingList.data[index].status == 'C',
+                                                    child: Container(
+                                                      width: 70,
+                                                      height: 32,
+                                                      padding: EdgeInsets.all(3),
+                                                      decoration: BoxDecoration(
+                                                        color: Color(0xffA58C60),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          _locals.etc17,
+                                                          style: TextStyle(color: Colors.white, fontSize: 12, height: 1),
+                                                          overflow: TextOverflow.ellipsis,
+                                                        ),
+                                                      ),
+                                                    )
+                                                ),
+                                                Visibility(
+                                                    visible: _mypage.bookingList.data[index].status == 'N',
+                                                    child: Container(
+                                                      width: 70,
+                                                      height: 32,
+                                                      padding: EdgeInsets.all(3),
+                                                      decoration: BoxDecoration(
+                                                        color: Color(0x1F000000),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          _locals.etc18,
+                                                          style: TextStyle(color: Colors.black, fontSize: 12, height: 1),
+                                                          overflow: TextOverflow.ellipsis,
+                                                        ),
+                                                      ),
+                                                    )
+                                                ),
+                                                Visibility(
+                                                    visible: _mypage.bookingList.data[index].status == 'AC-1',
+                                                    child: Container(
+                                                      width: 70,
+                                                      height: 32,
+                                                      padding: EdgeInsets.all(3),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.red,
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          _locals.etc17,
+                                                          style: TextStyle(color: Colors.white, fontSize: 12, height: 1),
+                                                          overflow: TextOverflow.ellipsis,
+                                                        ),
+                                                      ),
+                                                    )
+                                                ),
+                                                Visibility(
+                                                    visible: _mypage.bookingList.data[index].status == 'Y-1',
+                                                    child: Container(
+                                                      width: 70,
+                                                      height: 32,
+                                                      padding: EdgeInsets.all(3),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.cyan,
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          _locals.etc19,
+                                                          style: TextStyle(color: Colors.white, fontSize: 12, height: 1),
+                                                          overflow: TextOverflow.ellipsis,
+                                                        ),
+                                                      ),
+                                                    )
+                                                ),
+                                              ])
                                           )
                                         ]
                                     )

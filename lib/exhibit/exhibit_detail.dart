@@ -10,6 +10,8 @@ import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:exhibition_guide_app/setting/language_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:provider/provider.dart';
 
 import '../main/main_view.dart';
@@ -151,7 +153,10 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
     return WillPopScope(
       child: Scaffold(
         appBar: _appBar(),
-        body: _mainView(),
+        body: _loading ?
+          Center(
+            child: Loading(indicator: BallPulseIndicator(), size: 100.0,color: Colors.cyan),
+          ):_mainView(),
         bottomNavigationBar: (
           _audioPlayShow
             ? (
@@ -297,7 +302,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
         Container(
             height: mqh * 0.09,
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
               color: Color(0xffF7F8F9),
               border: Border(bottom: BorderSide(width: 1, color: Colors.grey))
@@ -308,34 +313,46 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             children: [
               Row(
                   children: [
-                    _imageIconBtn(
-                      px: 40.0,
-                      onAction: () {
-                        setState(() {
-                          _audioPlayShow = true;
-                        });
-                        final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
-                        _devicesProv.setExhibitDetAudio(audio);
-                      },
-                      iconPath: 'assets/images/icon/icon-headset.png',
+                    Visibility(
+                    visible: _exhibit.getTextByLanguage(-1, 'voiceFile') == "",
+                    child:
+                      _imageIconBtn(
+                        px: 40.0,
+                        onAction: () {
+                          setState(() {
+                            _audioPlayShow = true;
+                          });
+                          final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+                          _devicesProv.setExhibitDetAudio(audio);
+                        },
+                        iconPath: 'assets/images/icon/icon-headset.png',
+                      )
                     ),
-                    _imageIconBtn(
-                      px: 40.0,
-                      onAction: () async {
-                        _devicesProv.stopAudio();
-                        final video = _exhibit.getTextByLanguage(-1, 'videoFile');
-                        await _devicesProv.setExhibitDetVideo(video);
-                        Get.to(ExhibitVideoView());
-                      },
-                      iconPath: 'assets/images/icon/icon-movie.png',
+                    Visibility(
+                        visible: _exhibit.getTextByLanguage(-1, 'videoFile') != "",
+                        child:
+                            _imageIconBtn(
+                              px: 40.0,
+                              onAction: () async {
+                                _devicesProv.stopAudio();
+                                final video = _exhibit.getTextByLanguage(-1, 'videoFile');
+                                await _devicesProv.setExhibitDetVideo(video);
+                                Get.to(ExhibitVideoView());
+                              },
+                              iconPath: 'assets/images/icon/icon-movie.png',
+                            )
                     ),
-                    _imageIconBtn(
-                      px: 40.0,
-                      onAction: () {
-                        _devicesProv.stopAudio();
-                        Get.to(ExhibitionMapView());
-                      },
-                      iconPath: 'assets/images/icon/icon-map-d.png',
+                    Visibility(
+                        visible: _exhibit.exhibitItem['locationFile'] != "",
+                        child:
+                                _imageIconBtn(
+                                  px: 40.0,
+                                  onAction: () {
+                                    _devicesProv.stopAudio();
+                                    Get.to(ExhibitionMapView());
+                                  },
+                                  iconPath: 'assets/images/icon/icon-map-d.png',
+                                )
                     )
                   ]
               ),
