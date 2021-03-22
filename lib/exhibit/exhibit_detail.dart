@@ -105,7 +105,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
         break;
       case AppLifecycleState.detached:
         Provider.of<DevicesProvider>(context, listen: false).stopAudio();
-        Provider.of<DevicesProvider>(context, listen: false).dispose();
+        // Provider.of<DevicesProvider>(context, listen: false).dispose();
         print("##### detached");
         break;
     }

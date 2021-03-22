@@ -109,8 +109,7 @@ class DevicesProvider with ChangeNotifier {
     print("#### isClosed: ${ beaconEventsController.isClosed}");
     prefs.setBool("beaconOnOff", type);
     if (type) {
-        init();
-
+      init();
     } else {
       await BeaconsPlugin.stopMonitoring;
       if (Platform.isAndroid) {
@@ -127,15 +126,15 @@ class DevicesProvider with ChangeNotifier {
   }
 
   void init() async {
-    // print("#####Platform.isAndroid: ${Platform.isAndroid}");
     if (!_isRunning) return;
 
     if (Platform.isAndroid) {
 
       await BeaconsPlugin.startMonitoring;
       await BeaconsPlugin.runInBackground(true);
-      _isBeaconLoading = false;
 
+      _isBeaconLoading = false;
+      await BeaconsPlugin.clearDisclosureDialogShowFlag(true);
       await BeaconsPlugin.setDisclosureDialogMessage(
           title: "Need Location Permission",
           message: "This app collects location data to work with beacons.");
@@ -143,12 +142,16 @@ class DevicesProvider with ChangeNotifier {
 
     await BeaconsPlugin.listenToBeacons(beaconEventsController);
 
+    // BeaconsPlugin.setDebugLevel(2);
     // 비콘 정보
     await BeaconsPlugin.addRegion("", "fda50693-a4e2-4fb1-afcf-c6eb07647825");
+    // await BeaconsPlugin.addRegion("wwwhohee42878", "FDA50693-A4E2-4FB1-AFCF-C6EB07647825").then((result) {
+    //   print("####################: $result");
+    // });
+
     // fda50693-a4e2-4fb1-afcf-c6eb07647825
     // UUID에 맞는 비콘 연결
     beaconEventsController.stream.listen((data) {
-        print("##########beaconEventsController: $data");
         if (data.isNotEmpty) {
           _beaconResult = data;
           setBeaconConnect(true);
@@ -181,8 +184,8 @@ class DevicesProvider with ChangeNotifier {
     onError: (error) {
       print("##### error: $error");
     });
-
-    await BeaconsPlugin.runInBackground(true);
+    print("#####Platform.isAndroid52225: ${_isBeaconLoading}");
+    // await BeaconsPlugin.runInBackground(true);
 
     if (Platform.isAndroid) {
       BeaconsPlugin.channel.setMethodCallHandler((call) async {
