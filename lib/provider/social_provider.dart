@@ -153,8 +153,7 @@ class SocialProvider with ChangeNotifier {
           AppleIDAuthorizationScopes.fullName,
         ],
       );
-
-      Map data = {"snsType": "apple", "email": credential.email};
+      Map data = {"snsType": "apple", "email": credential.identityToken};
       data["check"] = await checkServer(data);
       return data;
 
@@ -208,9 +207,15 @@ class SocialProvider with ChangeNotifier {
       } else if(map["status"] == "Y"){
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('loginId', map["loginID"]);
-        await prefs.setString('email', data["email"]);
         await prefs.setString('snsType', data["snsType"]);
-        _email = data["email"];
+
+        if(data["snsType"] != "apple") {
+          await prefs.setString('email', data["email"]);
+          _email = data["email"];
+        } else {
+          await prefs.setString('email', "apple");
+          _email = "apple";
+        }
         _snsType = data["snsType"];
         _isSocialLogin = true;
         notifyListeners();
