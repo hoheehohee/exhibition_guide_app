@@ -95,6 +95,7 @@ class DevicesProvider with ChangeNotifier {
   }
   void setIsBeaonLoading(result) {
     _isBeaconLoading = result;
+    notifyListeners();
   }
 
   void becaonScan(bool type) async{
@@ -102,14 +103,16 @@ class DevicesProvider with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     _isRunning = type;
-    print("#### beaconOnOff: $type");
-    print("#### isPaused: ${ beaconEventsController.isPaused}");
-    print("#### isBlank: ${ beaconEventsController.isBlank}");
-    print("#### hasListener: ${ beaconEventsController.hasListener}");
-    print("#### isClosed: ${ beaconEventsController.isClosed}");
+    // print("#### isPaused: ${ beaconEventsController.isPaused}");
+    // print("#### isBlank: ${ beaconEventsController.isBlank}");
+    // print("#### hasListener: ${ beaconEventsController.hasListener}");
+    // print("#### isClosed: ${ beaconEventsController.isClosed}");
     prefs.setBool("beaconOnOff", type);
     if (type) {
       init();
+      Timer(Duration(seconds: 10), () {
+        if (!_isBeaconLoading) setIsBeaonLoading(false);
+      });
     } else {
       await BeaconsPlugin.stopMonitoring;
       if (Platform.isAndroid) {
@@ -117,7 +120,6 @@ class DevicesProvider with ChangeNotifier {
       }
       _isBeaconLoading = false;
     }
-    // _isBeaconLoading = false;
     notifyListeners();
   }
 
@@ -132,8 +134,9 @@ class DevicesProvider with ChangeNotifier {
 
       await BeaconsPlugin.startMonitoring;
       await BeaconsPlugin.runInBackground(true);
-
       _isBeaconLoading = false;
+
+
       await BeaconsPlugin.clearDisclosureDialogShowFlag(true);
       await BeaconsPlugin.setDisclosureDialogMessage(
           title: "Need Location Permission",
@@ -145,9 +148,6 @@ class DevicesProvider with ChangeNotifier {
     // BeaconsPlugin.setDebugLevel(2);
     // 비콘 정보
     await BeaconsPlugin.addRegion("", "fda50693-a4e2-4fb1-afcf-c6eb07647825");
-    // await BeaconsPlugin.addRegion("wwwhohee42878", "FDA50693-A4E2-4FB1-AFCF-C6EB07647825").then((result) {
-    //   print("####################: $result");
-    // });
 
     // fda50693-a4e2-4fb1-afcf-c6eb07647825
     // UUID에 맞는 비콘 연결
@@ -184,12 +184,9 @@ class DevicesProvider with ChangeNotifier {
     onError: (error) {
       print("##### error: $error");
     });
-    print("#####Platform.isAndroid52225: ${_isBeaconLoading}");
-    // await BeaconsPlugin.runInBackground(true);
 
     if (Platform.isAndroid) {
       BeaconsPlugin.channel.setMethodCallHandler((call) async {
-        print("#####call.method: ${call.method}");
         if (call.method == 'scannerReady') {
           await BeaconsPlugin.startMonitoring;
           setIsRunning(true);

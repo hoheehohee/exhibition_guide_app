@@ -181,7 +181,7 @@ class _MainViewState extends State<MainView> {
                       children: [
                         InkWell(
                           child: Image.asset(
-                            _deviceProv.isBeaconConnect
+                            _deviceProv.isRunning
                                 ? 'assets/images/icon/icon-bluetooth-on.png'
                                 : 'assets/images/icon/icon-bluetooth-off.png',
                             width: mqw * 0.11,
