@@ -294,7 +294,7 @@ class _ProfileViewState extends State<ProfileView> {
                   children: [
                     Text(_social.isSocialLogin && _mypage.applyCount != null ? _mypage.applyCount.applyEnd.toString():"0", style: TextStyle(color: Color(0xffA48C60), fontWeight: FontWeight.bold, fontSize: 18)),
                     SizedBox(height: 10,),
-                    Text(_locals.as8, style: TextStyle(fontSize: 13),)
+                    Text(_locals.as5, style: TextStyle(fontSize: 13),)
                   ],
                 ),
               ],
