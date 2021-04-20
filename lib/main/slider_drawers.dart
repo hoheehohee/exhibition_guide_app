@@ -1,20 +1,24 @@
 import 'package:exhibition_guide_app/booking/booking_view.dart';
 import 'package:exhibition_guide_app/crm/notice_list_view.dart';
+import 'package:exhibition_guide_app/crm/qna_write.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_highlight_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_theme_view.dart';
+import 'package:exhibition_guide_app/provider/social_provider.dart';
 import 'package:exhibition_guide_app/setting/language_view.dart';
 import 'package:exhibition_guide_app/mypage/mypage_view.dart';
 import 'package:exhibition_guide_app/setting/setting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import '../util.dart';
 import 'main_view.dart';
 
 class SliderDrawers extends StatelessWidget {
   AppLocalizations _locals;
+  SocialProvider _social;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,7 @@ class SliderDrawers extends StatelessWidget {
   }
 
   List<Widget> drawerItems(BuildContext context) {
+    _social = Provider.of<SocialProvider>(context);
 
     final List<Map<String, dynamic>> drawersItemList = [
       { 'title': _locals.menu1, 'idx': 0 },
@@ -38,7 +43,7 @@ class SliderDrawers extends StatelessWidget {
       { 'title': _locals.menu5, 'idx': 6 },
       { 'title': _locals.menu6, 'idx': 7 },
       { 'title': _locals.etc1, 'idx': 8 },
-      { 'title': _locals.menu7, 'idx': 9 },
+      { 'title':  _social.openYN == "Y" ? _locals.main11 : _locals.main12, 'idx': 9 },
       { 'title': _locals.menu8, 'idx': 10 },
     ];
 
@@ -122,7 +127,11 @@ class SliderDrawers extends StatelessWidget {
                       if(!await isLogin()){
                           g_showMyDialog(_locals.alert1, context);
                       } else {
+                        if(_social.openYN == "Y") {
                           Get.to(BookingView());
+                        } else {
+                          Get.to(QnaWrite());
+                        }
                       }
                       break;
                     case 10: Get.to(MyPageView(0)); break;
