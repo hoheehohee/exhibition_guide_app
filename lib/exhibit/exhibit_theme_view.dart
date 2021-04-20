@@ -128,7 +128,7 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
                   },
                   child: Container(
                     width: double.infinity,
-                    height: item.isOpen ? mqh * 0.22 : mqh * 0.17,
+                    height: mqh * 0.17,
                     decoration: BoxDecoration(
                         borderRadius: (
                             item.isOpen
@@ -191,10 +191,13 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
                             color: Colors.white,
                             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8.0), bottomRight: Radius.circular(8.0))
                         ),
-                        child: Text(
-                          getTextByLanguage(item, 'content', _settingProv.language),
-                          style: TextStyle(fontSize: 18),
-                        ),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Text(
+                            getTextByLanguage(item, 'content', _settingProv.language),
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        )
                       ),
                     )
                 ) : Container()

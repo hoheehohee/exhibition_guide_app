@@ -57,7 +57,7 @@ class _QnaDetailState extends State<QnaDetail> with WidgetsBindingObserver {
                   decoration: BoxDecoration(
                     border: Border(bottom: BorderSide(color: Colors.grey)),
                   ),
-                  child: _question() // 문의글 타이틀
+                  child: _question() // 문의글 내용
               ),
               _qna.getValue("answers") == null ? Container():_answer()
             ]
