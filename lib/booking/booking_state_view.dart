@@ -57,7 +57,7 @@ class _BookingStateViewState extends State<BookingStateView> {
         break;
       case "AC":
         {
-          statusText = "assets/images/status/badge-cancel-red.png";
+          statusText = "assets/images/status/badge-cancel.png";
         }
         break;
       case "Y":
@@ -375,7 +375,7 @@ class _BookingStateViewState extends State<BookingStateView> {
                                                   )
                                                 ),
                                                 Visibility(
-                                                    visible: _mypage.bookingList.data[index].status == 'C',
+                                                    visible: _mypage.bookingList.data[index].status == 'C' || _mypage.bookingList.data[index].status == 'AC',
                                                     child: Container(
                                                       width: 70,
                                                       height: 32,
@@ -429,13 +429,13 @@ class _BookingStateViewState extends State<BookingStateView> {
                                                     )
                                                 ),
                                                 Visibility(
-                                                    visible: _mypage.bookingList.data[index].status == 'Y-1',
+                                                    visible: _mypage.bookingList.data[index].status == 'Y',
                                                     child: Container(
                                                       width: 70,
                                                       height: 32,
                                                       padding: EdgeInsets.all(3),
                                                       decoration: BoxDecoration(
-                                                        color: Colors.cyan,
+                                                        color: Colors.indigo,
                                                       ),
                                                       child: Center(
                                                         child: Text(
