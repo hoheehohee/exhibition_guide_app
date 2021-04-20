@@ -245,11 +245,11 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                 height: 12,
               ),
           Visibility(
-            visible: Platform.isIOS,
+            visible: Platform.isAndroid,
               child:
               MaterialButton(
                   onPressed: () async {
-                    var login = await _social.appleLogin();
+                    var login = await _social.appleLogin_aos();
                     if(login["email"] == null) {
                       g_showMyDialog(_locals.etc16, context);
                     }
@@ -274,6 +274,36 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                       ),
                     ],
                   ))),
+              Visibility(
+                  visible: Platform.isIOS,
+                  child:
+                  MaterialButton(
+                      onPressed: () async {
+                        var login = await _social.appleLogin_ios();
+                        if(login["email"] == null) {
+                          g_showMyDialog(_locals.etc16, context);
+                        }
+                      },
+                      color: Colors.black,
+                      minWidth: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: mqh * 0.02),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/images/icon/icon-apple.png", width: mqw * 0.06, fit: BoxFit.fill,),
+                          SizedBox(width: 8),
+                          Text(
+                            _locals.login6,
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white
+                            ),
+                          ),
+                        ],
+                      ))),
             ],
           )),
     );

@@ -145,14 +145,41 @@ class SocialProvider with ChangeNotifier {
   }
 
   //애플
-  Future<Map> appleLogin() async {
+  Future<Map> appleLogin_aos() async {
     try{
+      var redirectURL = "https://lava-hyper-lantana.glitch.me/callbacks/sign_in_with_apple";
       final credential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
+          webAuthenticationOptions: WebAuthenticationOptions(
+              clientId: "kr.or.fomo.android",
+              redirectUri: Uri.parse(redirectURL))
       );
+
+      Map data = {"snsType": "apple", "email": credential.identityToken};
+      data["check"] = await checkServer(data);
+      return data;
+
+    } catch(e) {
+      // 화면 전환을 위해 임시로 로그인을 성공으로 함
+      print("##### apple error: $e");
+      _isSocialLogin = false;
+      // _isSocialLogin = false;
+      notifyListeners();
+    }
+  }
+
+  Future<Map> appleLogin_ios() async {
+    try{
+      final credential = await SignInWithApple.getAppleIDCredential(
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName,
+          ]
+      );
+
       Map data = {"snsType": "apple", "email": credential.identityToken};
       data["check"] = await checkServer(data);
       return data;
