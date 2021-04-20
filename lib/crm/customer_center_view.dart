@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:exhibition_guide_app/mypage/faq_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:exhibition_guide_app/util.dart';
 
 class CustomerCenterView extends StatefulWidget {
 
@@ -103,12 +104,15 @@ class _CustomerCenterViewState extends State<CustomerCenterView> {
                                           borderRadius: BorderRadius.circular(10.0),
                                         ),
                                         child: Text(_locals.customer4, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600)),
-                                        onPressed: () {
-                                          Get.to(
-                                            QnaWrite(),
-                                            // QnaDetail(),
-                                            transition: Transition.rightToLeft
-                                          );
+                                        onPressed: () async {
+                                          if(!await isLogin()){
+                                              g_showMyDialog(_locals.alert1, context);
+                                          } else {
+                                            Get.to(
+                                              QnaWrite(),
+                                              transition: Transition.rightToLeft
+                                            );
+                                          }
                                         },
                                       )
                                     ]
