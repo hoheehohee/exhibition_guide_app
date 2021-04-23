@@ -500,7 +500,7 @@ class _BookingStateViewState extends State<BookingStateView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 60,),
-              Text('조회된 정보가 없습니다.', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600))
+              Text(_locals.etc27, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600))
             ],
           ),
         )

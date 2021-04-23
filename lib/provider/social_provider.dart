@@ -158,7 +158,7 @@ class SocialProvider with ChangeNotifier {
               redirectUri: Uri.parse(redirectURL))
       );
 
-      Map data = {"snsType": "apple", "email": credential.identityToken, "name":""};
+      Map data = {"snsType": "apple", "email": credential.identityToken, "name":"apple"};
       data["check"] = await checkServer(data);
       return data;
 

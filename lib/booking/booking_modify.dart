@@ -670,7 +670,7 @@ class _BookingModify extends State<BookingModify> {
       String nowD = DateFormat('yyyyMMdd').format(DateTime.now());
       String selDay = DateFormat('yyyyMMdd').format(picked);
       if (nowD == selDay) {
-        _customDialog("오늘날짜 선택은 불가능합니다.");
+        _customDialog(_locals.etc28);
       } else {
         _exhibitProd.setBookingData('applyDate', DateFormat('yyyy-MM-dd').format(picked));
       }
@@ -679,7 +679,7 @@ class _BookingModify extends State<BookingModify> {
 
   void _customDialog(String result) {
     Get.defaultDialog(
-      title: "알림",
+      title: _locals.etc29,
       titleStyle: TextStyle(),
       middleText: result,
       confirm: FlatButton(
@@ -692,7 +692,7 @@ class _BookingModify extends State<BookingModify> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0),
             ),
-            child: Text("확인", style: TextStyle(fontSize: 18, color: Colors.white)),
+            child: Text(_locals.etc30, style: TextStyle(fontSize: 18, color: Colors.white)),
           )
       ),
     );
