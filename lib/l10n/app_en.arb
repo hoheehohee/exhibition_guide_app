@@ -217,6 +217,8 @@
     "etc28":"You cannot select today’s date",
     "etc29":"Notifications",
     "etc30":"Confirm",
+    "etc31":"Your inquiry has been accepted",
+    "etc32":"Registration",
 
     "address": "Honggok-ro, 320beon-gil, Nam-gu, Busan, the Republic of Korea",
     "addressPhone": "+82-51-629-8600",
@@ -440,6 +442,8 @@
     "@etc28": { "description": "" },
     "@etc29": { "description": "" },
     "@etc30": { "description": "" },
+    "@etc31": { "description": "" },
+    "@etc32": { "description": "" },
 
     "@address": { "description": "" },
     "@addressPhone": { "description": "" },

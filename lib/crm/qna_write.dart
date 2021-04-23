@@ -21,11 +21,11 @@ class QnaWrite extends StatelessWidget {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text("알림"),
-          content: SingleChildScrollView(child:new Text("문의가 등록되었습니다.")),
+          title: new Text(_locals.etc29),
+          content: SingleChildScrollView(child:new Text(_locals.etc31)),
           actions: <Widget>[
             new FlatButton(
-              child: new Text("닫기"),
+              child: new Text(_locals.etc30),
               onPressed: () {
                 Get.to(MyPageView(0));
               },
@@ -70,7 +70,7 @@ class QnaWrite extends StatelessWidget {
                   child: _title() // 문의글 타이틀
                 ),
                 Expanded(
-                    child: _inputForm() // 입력폼
+                    child: _inputForm(context) // 입력폼
                 )
               ]
           ),
@@ -101,7 +101,7 @@ class QnaWrite extends StatelessWidget {
   }
 
   // 입력 폼
-  Widget _inputForm() {
+  Widget _inputForm(BuildContext context) {
     return Container(
         color: Colors.white,
         width: double.infinity,
@@ -111,7 +111,23 @@ class QnaWrite extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(_locals.qna3, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              // Text(_locals.qna3, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(_locals.qna3, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  RaisedButton(
+                    color: Color(0xff293F52),
+                    child: Text(_locals.etc32, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),
+                    onPressed: () async{
+                      var status = await _myPageProvider.setQna(myController.text);
+                      if(status == "Y") {
+                        _showDialog(context);
+                      }
+                    },
+                  ),
+                ],
+              ),
               SizedBox(height: 10),
               Expanded(
                 child: TextField(
