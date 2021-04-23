@@ -1,23 +1,40 @@
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
+import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-class QnaDetail extends StatefulWidget {
+class QnaDetailView extends StatefulWidget {
+  final int idx;
+  QnaDetailView(this.idx);
+
   @override
   _QnaDetailState createState() => _QnaDetailState();
 }
 
-class _QnaDetailState extends State<QnaDetail> {
+class _QnaDetailState extends State<QnaDetailView> {
   var mqd;
   var mqw;
   var mqh;
+  var _qna;
   AppLocalizations _locals;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() => {
+      Provider.of<MyPageProvider>(context, listen: false).getQna(widget.idx)
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     mqd = MediaQuery.of(context);
     mqw = mqd.size.width;
     mqh = mqd.size.height;
+    _qna = Provider.of<MyPageProvider>(context);
     _locals = AppLocalizations.of(context);
 
     return Scaffold(
@@ -39,16 +56,18 @@ class _QnaDetailState extends State<QnaDetail> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(_locals.qna7, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                  Text("2020-12-04")
+                  Text(DateFormat('yyyy. MM. dd').format(DateFormat('yyyy-MM-dd').parse(_qna.getValue("questionsDate"))), style: TextStyle(fontSize: 16), textAlign: TextAlign.right,)
                 ],
               ),
             ),
             Padding(
               padding: EdgeInsets.all(mqw * 0.05),
-              child: Text("이용예약을 12월 18일 신청하였는데 승인이 안되어서 물어봅니다.\n언제뜸 승인나는지요"),
+              child: Text(_qna.getValue("questions"), style: TextStyle(fontSize: 20)),
             ),
             Expanded(
-              child: Align(
+              child: _qna.getValue("answers") == null
+                  ? Container()
+                  : Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   color: Colors.white,
@@ -66,16 +85,22 @@ class _QnaDetailState extends State<QnaDetail> {
                             Image.asset("assets/images/reply-logo.png", width: mqw * 0.2,),
                             SizedBox(width: mqw * 0.03,),
                             Expanded(
-                              child: Text(_locals.qna8, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)
+                                child: Text(_locals.qna8, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)
                             ),
-                            Text("2020-12-04")
+                            Text(DateFormat('yyyy. MM. dd').format(DateFormat('yyyy-MM-dd').parse(_qna.getValue("answerDate"))), style: TextStyle(fontSize: 16), textAlign: TextAlign.right,)
                           ],
                         ),
                       ),
                       Divider(color: Colors.grey,),
-                      Padding(
-                        padding: EdgeInsets.all(mqh * 0.03),
-                        child: Text("가나다라마바사 아차카타파하"),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                            padding: EdgeInsets.all(mqh * 0.03),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: Text(_qna.getValue("answers"), style: TextStyle(fontSize: 20))
+                            )
+                        ),
                       )
                     ],
                   ),

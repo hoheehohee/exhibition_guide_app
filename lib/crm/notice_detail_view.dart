@@ -75,10 +75,13 @@ class _NoticeDetailViewState extends State<NoticeDetailView> {
                     flex: 1,
                     child: Padding(
                       padding: EdgeInsets.all(mqw * 0.05),
-                      child: Text(
-                        _mypageProv.noticeDetail.content,
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xff7E7F80)),
-                      ),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Text(
+                          _mypageProv.noticeDetail.content,
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xff7E7F80)),
+                        ),
+                      )
                     )
                 )
               ],

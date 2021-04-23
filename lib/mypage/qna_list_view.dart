@@ -1,3 +1,4 @@
+import 'package:exhibition_guide_app/crm/qna_detail.dart';
 import 'package:exhibition_guide_app/crm/qna_view.dart';
 import 'package:exhibition_guide_app/model/qna_list_model.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +119,9 @@ class _QnaListViewState extends State<QnaListView> {
                   ),
                 ])),
         onTap: () {
-          Get.to(QnaDetail(list.data[index].qnaID),
+          // Get.to(QnaDetail(list.data[index].qnaID),
+          //     transition: Transition.fadeIn);
+          Get.to(QnaDetailView(list.data[index].qnaID),
               transition: Transition.fadeIn);
         },
       )),

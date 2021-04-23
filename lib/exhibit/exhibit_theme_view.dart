@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:exhibition_guide_app/commons/custon_slider_appbar.dart';
 import 'package:exhibition_guide_app/commons/exhibit_view_bottom.dart';
+import 'package:exhibition_guide_app/commons/slider_no_image.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_list_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/message.dart';
@@ -126,49 +128,78 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
                       item.isOpen = !item.isOpen;
                     });
                   },
-                  child: Container(
-                    width: double.infinity,
-                    height: item.isOpen ? mqh * 0.22 : mqh * 0.17,
-                    decoration: BoxDecoration(
-                        borderRadius: (
-                            item.isOpen
-                                ? BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0))
-                                : BorderRadius.circular(8.0)
-                        ),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            item.imgPath,
+                  child: CachedNetworkImage(
+                    imageUrl: item.imgPath,
+                    errorWidget: (context, url, error) => Container(
+                        height: mqh * 0.1,
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: mqh * 0.02),
+                        decoration: BoxDecoration(
+                          color: Color(0xffA0A0A0),
+                          borderRadius: (
+                              item.isOpen
+                                  ? BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0))
+                                  : BorderRadius.circular(8.0)
                           ),
-                          onError: (dynamic error, StackTrace stackTrace) {
-                            setState(() {
-                              item.imgPath = IMAGE_ERROR;
-                            });
-                          }
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(width: mqw * 0.03,),
+                            Text(
+                              getTextByLanguage(item, 'title', _settingProv.language),
+                              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(width: mqw * 0.2),
+                            Image.asset("assets/images/icon/icon-frown.png",),
+                            SizedBox(width: mqw * 0.02,),
+                            Text(
+                                "No data",
+                                style: TextStyle(fontSize: mqw * 0.05, fontWeight: FontWeight.w600, color: Color(0xff2D4357))
+                            )
+                          ],
                         )
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: mqw * 0.03),
-                          child: Text(
-                            getTextByLanguage(item, 'title', _settingProv.language),
-                            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                    imageBuilder: (context, imageProvider) {
+                      return Container(
+                          width: double.infinity,
+                          height: mqh * 0.17,
+                          decoration: BoxDecoration(
+                              borderRadius: (
+                                  item.isOpen
+                                      ? BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0))
+                                      : BorderRadius.circular(8.0)
+                              ),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: imageProvider
+                              )
                           ),
-                        ),
-                        SizedBox(height: 5,),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: mqw * 0.03),
-                          child: Text(
-                            getTextByLanguage(item, 'subTitle', _settingProv.language),
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          ),
-                        )
-                      ],
-                    )
-                  ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: mqw * 0.03),
+                                child: Text(
+                                  getTextByLanguage(item, 'title', _settingProv.language),
+                                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              SizedBox(height: 5,),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: mqw * 0.03),
+                                child: Text(
+                                  getTextByLanguage(item, 'subTitle', _settingProv.language),
+                                  style: TextStyle(color: Colors.white, fontSize: 18),
+                                ),
+                              )
+                            ],
+                          )
+                      );
+                    },
+                  )
+
                 ),
                 item.isOpen ? (
                     InkWell(
@@ -191,10 +222,13 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
                             color: Colors.white,
                             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8.0), bottomRight: Radius.circular(8.0))
                         ),
-                        child: Text(
-                          getTextByLanguage(item, 'content', _settingProv.language),
-                          style: TextStyle(fontSize: 18),
-                        ),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Text(
+                            getTextByLanguage(item, 'content', _settingProv.language),
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        )
                       ),
                     )
                 ) : Container()
