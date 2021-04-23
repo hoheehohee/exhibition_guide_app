@@ -59,6 +59,11 @@ class _ProfileViewState extends State<ProfileView> {
           icon = "assets/images/facebook.png";
         }
         break;
+      case "apple":
+        {
+          icon = "assets/images/apple_icon.png";
+        }
+        break;
     }
     return icon;
   }
@@ -124,7 +129,7 @@ class _ProfileViewState extends State<ProfileView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.asset(getSnsIcon(_social.snsType), fit: BoxFit.fill,),
+          Image.asset(getSnsIcon(_social.snsType), fit: BoxFit.fill,  width: 50, height: 50),
           SizedBox(width: mqw * 0.03,),
           Text(_social.email, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         ],

@@ -158,7 +158,7 @@ class SocialProvider with ChangeNotifier {
               redirectUri: Uri.parse(redirectURL))
       );
 
-      Map data = {"snsType": "apple", "email": credential.identityToken};
+      Map data = {"snsType": "apple", "email": credential.identityToken, "name":""};
       data["check"] = await checkServer(data);
       return data;
 
@@ -180,7 +180,7 @@ class SocialProvider with ChangeNotifier {
           ]
       );
 
-      Map data = {"snsType": "apple", "email": credential.identityToken};
+      Map data = {"snsType": "apple", "email": credential.identityToken, "name":credential.givenName};
       data["check"] = await checkServer(data);
       return data;
 
@@ -240,8 +240,8 @@ class SocialProvider with ChangeNotifier {
           await prefs.setString('email', data["email"]);
           _email = data["email"];
         } else {
-          await prefs.setString('email', "apple");
-          _email = "apple";
+          await prefs.setString('email', data["name"]);
+          _email = data["name"];
         }
         _snsType = data["snsType"];
         _isSocialLogin = true;
