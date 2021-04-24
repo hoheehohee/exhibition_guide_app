@@ -31,7 +31,14 @@ class CustomSliderAppbar extends StatelessWidget {
         px: 15.0,
         iconPath: "assets/images/button/btn-back.png",
         onAction: () {
-          Get.offAll(MainView());
+          if(title == "4F 전시실" || title == "4th Floor" || title == "４Ｆ 展示室" || title == "4F展厅" ){
+            Get.back();
+          } else if(title == "5F 전시실" || title == "5th Floor" || title == "5Ｆ 展示室" || title == "5F展厅" ){
+            Get.back();
+          } else {
+            Get.offAll(MainView());
+          }
+
         },
       ),
     );

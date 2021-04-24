@@ -100,14 +100,12 @@ class DevicesProvider with ChangeNotifier {
 
   void becaonScan(bool type) async{
     _isBeaconLoading = true;
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     _isRunning = type;
-    // print("#### isPaused: ${ beaconEventsController.isPaused}");
-    // print("#### isBlank: ${ beaconEventsController.isBlank}");
-    // print("#### hasListener: ${ beaconEventsController.hasListener}");
-    // print("#### isClosed: ${ beaconEventsController.isClosed}");
     prefs.setBool("beaconOnOff", type);
+
     if (type) {
       init();
       Timer(Duration(seconds: 10), () {
@@ -197,6 +195,7 @@ class DevicesProvider with ChangeNotifier {
       await BeaconsPlugin.startMonitoring;
       _isBeaconLoading = false;
       setIsRunning(true);
+      notifyListeners();
     }
   }
 

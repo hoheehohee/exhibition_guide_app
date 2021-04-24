@@ -45,7 +45,7 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
   String getTitle(String title){
     if(title == "전시유물" || title == "Relics" || title == "展示遺物" || title == "展示遺物" || title == "展示文物" ){
       return _locals.menu2;
-    } else if(title == "상설전시" || title == "Permanent Exhibition" || title == "常設展示" || title == "常设展览" ){
+    } else if(title == "전시물" || title == "Permanent Exhibition" || title == "常設展示" || title == "常设展览" ){
       return _locals.menu3;
     } else if(title == "기획전시" || title == "Featured Exhibition" || title == "企画展示" || title == "策划展览" ){
       return _locals.menu4;

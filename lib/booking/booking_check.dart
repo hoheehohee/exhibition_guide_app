@@ -141,7 +141,7 @@ class BookingCheck extends StatelessWidget {
                                   SizedBox(height: 10),
                                   Container(
                                     width: double.infinity,
-                                    child: Text('전체 전시해설, 상설전시실, 전시유물, 기타/기획전시', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                                    child: Text('전체 전시해설, 전시물실, 전시유물, 기타/기획전시', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                                   ),
 
                                 ]

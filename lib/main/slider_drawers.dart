@@ -88,9 +88,9 @@ class SliderDrawers extends StatelessWidget {
                       break;
                     case 2:
                       Get.offAll(ExhibitListView(
-                        appBarTitle: "상설전시",
+                        appBarTitle: "전시물",
                         contentType: 'A',
-                        contentTitle: "상설전시",
+                        contentTitle: "전시물",
                         exhibitionType: 'A',
                         contentIconPath: "assets/images/icon/icon-main-sangsul.png",
                       ));

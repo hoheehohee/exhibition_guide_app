@@ -8,6 +8,7 @@ import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/main/slider_drawers.dart';
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart' as ECDM;
 import 'package:exhibition_guide_app/model/exhibit_content_data_model.dart';
+import 'package:exhibition_guide_app/provider/devices_provider.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:exhibition_guide_app/provider/setting_provider.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,9 @@ class _ExhibitListViewState extends State<ExhibitListView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Provider.of<DevicesProvider>(context, listen: false).stopAudio();
     Future.microtask(() {
+
       if (widget.exhibitionCode != null && widget.exhibitionCode.isNotEmpty) {
         print("###### type2");
         Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataTwoSel(widget.exhibitionCode);
@@ -77,7 +80,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
   String getTitle(String title){
     if(title == "전시유물" || title == "Relics" || title == "展示遺物" || title == "展示遺物" || title == "展示文物" ){
       return _locals.menu2;
-    } else if(title == "상설전시" || title == "Permanent Exhibition" || title == "常設展示" || title == "常设展览" ){
+    } else if(title == "전시물" || title == "Permanent Exhibition" || title == "常設展示" || title == "常设展览" ){
       return _locals.menu3;
     } else if(title == "기획전시" || title == "Featured Exhibition" || title == "企画展示" || title == "策划展览" ){
       return _locals.menu4;

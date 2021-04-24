@@ -50,7 +50,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   String getTitle(String title){
     if(title == "전시유물" || title == "Relics" || title == "展示遺物" || title == "展示遺物" || title == "展示文物" ){
       return _locals.menu2;
-    } else if(title == "상설전시" || title == "Permanent Exhibition" || title == "常設展示" || title == "常设展览" ){
+    } else if(title == "전시물" || title == "Permanent Exhibition" || title == "常設展示" || title == "常设展览" ){
       return _locals.menu3;
     } else if(title == "기획전시" || title == "Featured Exhibition" || title == "企画展示" || title == "策划展览" ){
       return _locals.menu4;
@@ -78,9 +78,10 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
       idx = widget.idx.toString();
       Provider.of<DevicesProvider>(context, listen: false).setBeforeBeaconIdx(idx.toString());
       Provider.of<ExhibitProvider>(context, listen: false).setExhibitDetSel(widget.idx);
+      autoAudioPlay();
     });
 
-    autoAudioPlay();
+
   }
 
   @override
@@ -102,8 +103,13 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
       case AppLifecycleState.inactive:
         break;
       case AppLifecycleState.paused:
+        Provider.of<DevicesProvider>(context, listen: false).stopAudio();
         break;
       case AppLifecycleState.detached:
+        // Timer(
+        //     Duration(seconds: 1), () {
+        //   _devicesProv.stopAudio();
+        // });
         Provider.of<DevicesProvider>(context, listen: false).stopAudio();
         // Provider.of<DevicesProvider>(context, listen: false).dispose();
         print("##### detached");
@@ -121,8 +127,13 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
   void autoAudioPlay() {
     // 음성지원 안내가 on일 경우 자동 음성 안내 시작
     // auioTimer = new Timer.periodic(const Duration(milliseconds: 100), t);
+    // if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
+    //   final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
+    //   _devicesProv.setExhibitDetAudio(audio);
+    //   _devicesProv.playAudio();
+    // }
     Timer(
-        Duration(seconds: 2), () {
+        Duration(seconds: 1), () {
           // print(_devicesProv.autoPlayAudio );
         if (_devicesProv.autoPlayAudio && _exhibit.exhibitItem != null) {
           final audio = _exhibit.getTextByLanguage(-1, 'voiceFile');
@@ -171,8 +182,10 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             : null),
       ),
       onWillPop: () async {
-
-        Provider.of<DevicesProvider>(context, listen: false).stopAudio();
+        Timer(
+            Duration(seconds: 1), () {
+          _devicesProv.stopAudio();
+        });
         return true;
       }
     );
@@ -187,8 +200,11 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
             IconButton(
                 icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
                 onPressed: () {
-                  Get.back();
-                  _devicesProv.stopAudio();
+                  Timer(
+                      Duration(seconds: 1), () {
+                        _devicesProv.stopAudio();
+                        Get.back();
+                  });
                 }
             )
           )
@@ -198,8 +214,11 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
           px: 25.0,
           iconPath: 'assets/images/button/btn-home.png',
           onAction: () {
-            _devicesProv.stopAudio();
-            Get.offAll(MainView());
+            Timer(
+                Duration(seconds: 1), () {
+              _devicesProv.stopAudio();
+              Get.offAll(MainView());
+            });
           }
         ),
       ]
