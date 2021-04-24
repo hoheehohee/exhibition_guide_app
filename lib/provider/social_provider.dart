@@ -230,7 +230,7 @@ class SocialProvider with ChangeNotifier {
       resp = await dio.get("${BASE_URL}/userCheckData.do?snsType=${data['snsType']}&email=${data['email']}");
       var map = Map<String, dynamic>.from(json.decode(resp.toString()));
       if(map["status"] == "N" && data['email'] != null){
-        Get.off(AgreeDialogView(data['snsType'], data['email']));
+        Get.off(AgreeDialogView(data['snsType'], data['email'], data['name']));
       } else if(map["status"] == "Y"){
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('loginId', map["loginID"]);
@@ -281,10 +281,17 @@ class SocialProvider with ChangeNotifier {
         if(map1["status"] == "J"){
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('loginId', map1["loginID"]);
-          await prefs.setString('email', data["email"]);
           await prefs.setString('snsType', data["snsType"]);
-          _email = data["email"];
           _snsType = data["snsType"];
+
+          if(data["snsType"] != "apple") {
+            await prefs.setString('email', data["email"]);
+            _email = data["email"];
+          } else {
+            await prefs.setString('email', data["name"]);
+            _email = data["name"];
+          }
+
           _isSocialLogin = true;
         }
       }

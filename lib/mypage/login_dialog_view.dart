@@ -133,7 +133,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                   onPressed: () async {
                     var login = await _social.kakaoLogin();
                     if (login == null || login["check"] == "N") {
-                      AgreeDialogView(login['snsType'], login['email']);
+                      AgreeDialogView(login['snsType'], login['email'],"");
                     }
                   },
                   color: kKakaoColor,
@@ -161,7 +161,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                   onPressed: () async {
                     var login = await _social.naverLogin();
                     if (login["check"] == "N") {
-                      AgreeDialogView(login['snsType'], login['email']);
+                      AgreeDialogView(login['snsType'], login['email'], "");
                     }
                   },
                   color: kNaverColor,
@@ -190,7 +190,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                 onPressed: () async {
                   var login = await _social.facebookLogin();
                   if (login["check"] == "N") {
-                    AgreeDialogView(login['snsType'], login['email']);
+                    AgreeDialogView(login['snsType'], login['email'], "");
                   }
                 },
                 color: kFacebookColor,
@@ -219,7 +219,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                   onPressed: () async {
                     var login = await _social.googleLogin();
                     if (login["check"] == "N") {
-                      AgreeDialogView(login['snsType'], login['email']);
+                      AgreeDialogView(login['snsType'], login['email'], "");
                     }
                   },
                   color: Color(0xffE5E6E7),
