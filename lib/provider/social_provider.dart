@@ -158,7 +158,7 @@ class SocialProvider with ChangeNotifier {
               redirectUri: Uri.parse(redirectURL))
       );
 
-      Map data = {"snsType": "apple", "email": credential.identityToken};
+      Map data = {"snsType": "apple", "email": credential.identityToken, "name":"apple"};
       data["check"] = await checkServer(data);
       return data;
 
@@ -180,7 +180,7 @@ class SocialProvider with ChangeNotifier {
           ]
       );
 
-      Map data = {"snsType": "apple", "email": credential.identityToken};
+      Map data = {"snsType": "apple", "email": credential.identityToken, "name":credential.givenName};
       data["check"] = await checkServer(data);
       return data;
 
@@ -240,8 +240,8 @@ class SocialProvider with ChangeNotifier {
           await prefs.setString('email', data["email"]);
           _email = data["email"];
         } else {
-          await prefs.setString('email', "apple");
-          _email = "apple";
+          await prefs.setString('email', data["name"]);
+          _email = data["name"];
         }
         _snsType = data["snsType"];
         _isSocialLogin = true;
@@ -260,6 +260,7 @@ class SocialProvider with ChangeNotifier {
     Dio dio = new Dio();
     print("##### joinServer ");
     Response resp;
+    Response resp1;
 
     try {
       resp = await dio.get("${BASE_URL}/userCheckData.do?snsType=${data['snsType']}&email=${data['email']}");
@@ -269,19 +270,25 @@ class SocialProvider with ChangeNotifier {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('loginId', map["loginID"]);
         await prefs.setString('email', data['email']);
+        await prefs.setString('snsType', data["snsType"]);
         _email = data["email"];
+        _snsType = data["snsType"];
         _isSocialLogin = true;
       } else {
-        resp = await dio.get("${BASE_URL}/userJoinData.do?snsType=${data['snsType']}&email=${data['email']}");
-        if(map["status"] == "Y"){
+        resp1 = await dio.get("${BASE_URL}/userJoinData.do?snsType=${data['snsType']}&email=${data['email']}");
+        var map1 = Map<String, dynamic>.from(json.decode(resp1.toString()));
+
+        if(map1["status"] == "J"){
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('loginId', map["loginID"]);
+          await prefs.setString('loginId', map1["loginID"]);
           await prefs.setString('email', data["email"]);
+          await prefs.setString('snsType', data["snsType"]);
           _email = data["email"];
           _snsType = data["snsType"];
           _isSocialLogin = true;
         }
       }
+      notifyListeners();
       return "Y";
     }catch(error){
       print('##### joinServer: $error');

@@ -287,18 +287,39 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(width: 15,),
-                Container(
-                  width: 50,
-                  height: 32,
-                  decoration: BoxDecoration(
-                      color: Color(0xffA58C60),
-                      borderRadius: BorderRadius.all(Radius.circular(5))
-                  ),
-                  child: Center(
-                    child: Text(
-                      _exhibit.exhibitItem != null ? getContentType(_exhibit.exhibitItem['contentsType'], _locals.el3, _locals.el5) : '',
-                      style: TextStyle(color: Colors.white, fontSize: 18, height: 1),
-                      overflow: TextOverflow.ellipsis,
+                Visibility(
+                    visible: _exhibit.exhibitItem != null && _exhibit.exhibitItem['contentsType'] == "A",
+                    child: Container(
+                      width: 50,
+                      height: 32,
+                      decoration: BoxDecoration(
+                          color: Color(0xffA58C60),
+                          borderRadius: BorderRadius.all(Radius.circular(5))
+                      ),
+                      child: Center(
+                        child: Text(
+                          _locals.el5,
+                          style: TextStyle(color: Colors.white, fontSize: 18, height: 1),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                ),
+                Visibility(
+                  visible: _exhibit.exhibitItem != null && _exhibit.exhibitItem['contentsType'] == "B",
+                  child: Container(
+                    width: 50,
+                    height: 32,
+                    decoration: BoxDecoration(
+                        color: Color(0xff13687c),
+                        borderRadius: BorderRadius.all(Radius.circular(5))
+                    ),
+                    child: Center(
+                      child: Text(
+                        _locals.el3,
+                        style: TextStyle(color: Colors.white, fontSize: 18, height: 1),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ),

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:exhibition_guide_app/provider/mypage_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class QnaListView extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class QnaListView extends StatefulWidget {
 
 class _QnaListViewState extends State<QnaListView> {
   MyPageProvider _mypage;
+  AppLocalizations _locals;
 
   @override
   void initState() {
@@ -26,6 +28,7 @@ class _QnaListViewState extends State<QnaListView> {
   Widget _randerListView() {
     final loading = _mypage.loading;
     final QnaListModel list = _mypage.qnaList;
+    _locals = AppLocalizations.of(context);
 
     // 로딩중이면서 목록이 없을 때
     if (loading && (list.data.length == 0)) {
@@ -35,7 +38,7 @@ class _QnaListViewState extends State<QnaListView> {
     }
     // 로딩중이 아닌데 목록이 없을 때
     if (!loading && list.data.length == 0) {
-      return Center(child: Text('목록이 없습니다.'));
+      return Center(child: Text(_locals.etc26));
     }
 
     return ListView.builder(

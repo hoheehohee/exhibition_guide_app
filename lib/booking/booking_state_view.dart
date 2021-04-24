@@ -1,16 +1,13 @@
-import 'package:exhibition_guide_app/booking/booking_detail_view.dart';
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
-import 'package:exhibition_guide_app/main/main_view.dart';
 import 'package:exhibition_guide_app/provider/exhibit_provider.dart';
 import 'package:exhibition_guide_app/provider/mypage_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../util.dart';
 import 'booking_modify.dart';
-import 'booking_view.dart';
 
 class BookingStateView extends StatefulWidget {
   BookingStateView(this.status);
@@ -156,7 +153,7 @@ class _BookingStateViewState extends State<BookingStateView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _selectForm(),
-              _applyItems(),
+              _mypage.bookingList.dataCount == 0 ? _notLogin() : _applyItems(),
         ])
       ),
     );
@@ -486,6 +483,25 @@ class _BookingStateViewState extends State<BookingStateView> {
                 ),
               )
             )
+          ),
+        )
+    );
+  }
+
+  Widget _notLogin() {
+    return Center(
+        child: Container(
+          height: 150,
+          width: double.infinity,
+          color: Colors.white,
+          margin: EdgeInsets.all(6),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 60,),
+              Text(_locals.etc27, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600))
+            ],
           ),
         )
     );
