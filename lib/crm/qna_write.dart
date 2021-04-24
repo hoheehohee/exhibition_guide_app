@@ -27,7 +27,7 @@ class QnaWrite extends StatelessWidget {
             new FlatButton(
               child: new Text(_locals.etc30),
               onPressed: () {
-                Get.to(MyPageView(0));
+                Get.off(MyPageView(0));
               },
             ),
           ],

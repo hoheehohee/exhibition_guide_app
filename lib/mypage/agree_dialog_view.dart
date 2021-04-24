@@ -309,7 +309,7 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
                           var join = await _social.joinServer(data);
                           if(join == "Y"){
                             await g_showMyDialog(_locals.alert6, context);
-                            Get.to(MyPageView(0));
+                            Get.off(MyPageView(0));
                           }
                         }
                   },
