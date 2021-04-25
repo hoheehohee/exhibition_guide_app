@@ -126,7 +126,12 @@ class DevicesProvider with ChangeNotifier {
   }
 
   void init() async {
-    if (!_isRunning) return;
+    if (!_isRunning) {
+      if (Platform.isIOS) {
+        setIsBeaonLoading(false);
+      }
+      return;
+    }
 
     if (Platform.isAndroid) {
 
@@ -193,9 +198,8 @@ class DevicesProvider with ChangeNotifier {
     } else if (Platform.isIOS) {
       // await BeaconsPlugin.runInBackground(true);
       await BeaconsPlugin.startMonitoring;
-      _isBeaconLoading = false;
+      setIsBeaonLoading(false);
       setIsRunning(true);
-      notifyListeners();
     }
   }
 
