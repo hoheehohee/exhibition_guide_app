@@ -12,8 +12,9 @@ import 'mypage_view.dart';
 class AgreeDialogView extends StatefulWidget {
   final String snsType;
   final String email;
+  final String name;
 
-  AgreeDialogView(this.snsType, this.email);
+  AgreeDialogView(this.snsType, this.email, this.name);
 
   @override
   _AgreeDialogViewState createState() => _AgreeDialogViewState();
@@ -304,11 +305,11 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
                         } else if(!retention){
                           g_showMyDialog(_locals.alert5, context);
                         } else {
-                          Map data = {"snsType": widget.snsType, "email": widget.email};
+                          Map data = {"snsType": widget.snsType, "email": widget.email, "name":widget.name};
                           var join = await _social.joinServer(data);
                           if(join == "Y"){
                             await g_showMyDialog(_locals.alert6, context);
-                            Get.to(MyPageView(0));
+                            Get.off(MyPageView(0));
                           }
                         }
                   },

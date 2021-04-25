@@ -33,8 +33,8 @@
 			<string>com.example.exhibitionGuideApp2</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakaofb73046ab2e433c0bf267b62692607d6</string>
-				<string>naverejfkcifnvidf</string>
+				<string>kakao92171a32648f836ef5946da743070f49</string>
+				<string>naveruzV5Vm0JMd</string>
 				<string>fb2837155739868665</string>
 				<string>com.googleusercontent.apps.760281444534-lqe7tljp6tdhud77srke70nhbgu3q829</string>
 			</array>
@@ -48,7 +48,7 @@
 	<key>FacebookDisplayName</key>
 	<string>국립일제강제동원역사관</string>
 	<key>KAKAO_APP_KEY</key>
-	<string>fb73046ab2e433c0bf267b62692607d6</string>
+	<string>92171a32648f836ef5946da743070f49</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaofb73046ab2e433c0bf267b62692607d6</string>
