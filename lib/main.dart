@@ -16,8 +16,8 @@ import 'provider/setting_provider.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  KakaoContext.clientId = "fb73046ab2e433c0bf267b62692607d6";
-  KakaoContext.javascriptClientId = "0cebd12ebcbdd2b2fd398e87d07b300a";
+  KakaoContext.clientId = "92171a32648f836ef5946da743070f49";
+  KakaoContext.javascriptClientId = "c58110022ae2050a821d63d28eda67cc";
   runApp(MyApp());
 }
 

@@ -1,4 +1,5 @@
 import 'package:exhibition_guide_app/commons/custom_default_appbar.dart';
+import 'package:exhibition_guide_app/commons/custom_mypage_appbar.dart';
 import 'package:exhibition_guide_app/mypage/profile_vilew.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _MyPageViewState extends State<MyPageView> {
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(mqd.size.height * 0.07),
-          child: CustomDefaultAppbar(title: _locals.menu8)
+          child: CustomMypageAppbar(title: _locals.menu8)
       ),
       body: Center(
           child: Container(

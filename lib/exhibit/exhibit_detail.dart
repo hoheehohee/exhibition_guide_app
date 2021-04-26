@@ -358,7 +358,7 @@ class _ExhibitDetailState extends State<ExhibitDetail> with WidgetsBindingObserv
               Row(
                   children: [
                     Visibility(
-                    visible: _exhibit.getTextByLanguage(-1, 'voiceFile') == "",
+                    visible: _exhibit.getTextByLanguage(-1, 'voiceFile') != "",
                     child:
                       _imageIconBtn(
                         px: 40.0,
