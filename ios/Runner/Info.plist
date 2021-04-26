@@ -34,9 +34,9 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakao92171a32648f836ef5946da743070f49</string>
-				<string>naveruzV5Vm0JMd</string>
+				<string>naverejfkcifnvidf</string>
 				<string>fb2837155739868665</string>
-				<string>com.googleusercontent.apps.760281444534-lqe7tljp6tdhud77srke70nhbgu3q829</string>
+				<string>com.googleusercontent.apps.548962810931-93sovutavtfjioludp1v154lpjt8umoc</string>
 			</array>
 		</dict>
 		<dict/>
@@ -51,7 +51,7 @@
 	<string>92171a32648f836ef5946da743070f49</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>kakaofb73046ab2e433c0bf267b62692607d6</string>
+		<string>kakao92171a32648f836ef5946da743070f49</string>
 		<string>kakaokompassauth</string>
 		<string>storykompassauth</string>
 		<string>kakaolink</string>
@@ -98,12 +98,12 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>kConsumerKey</key>
-	<string>XI9NTAtdXR3E7_LCoJ3p</string>
+	<string>DHFfNsGsIFdLNv94ExBT</string>
 	<key>kConsumerSecret</key>
-	<string>DDIt5NzI_i</string>
+	<string>uzV5Vm0JMd</string>
 	<key>kServiceAppName</key>
 	<string>국립일제강제동원역사관</string>
-	<key>kServiceAppUrlScheme</key>
+	<key>kUrlSampleAppUrlScheme</key>
 	<string>naverejfkcifnvidf</string>
 </dict>
 </plist>
