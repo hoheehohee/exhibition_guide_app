@@ -242,7 +242,7 @@ class _ProfileViewState extends State<ProfileView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset("assets/images/icon/icon-edit.png", width: mqw * 0.07,),
+                  Image.asset("assets/images/icon/icon-pen2.png", width: mqw * 0.07,),
                   SizedBox(width: 20,),
                   Text(_locals.mypage5, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)
                 ],
