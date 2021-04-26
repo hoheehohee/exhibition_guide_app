@@ -138,12 +138,10 @@ class DevicesProvider with ChangeNotifier {
       await BeaconsPlugin.startMonitoring;
       await BeaconsPlugin.runInBackground(true);
       _isBeaconLoading = false;
-
-
-      await BeaconsPlugin.clearDisclosureDialogShowFlag(true);
       await BeaconsPlugin.setDisclosureDialogMessage(
           title: "Need Location Permission",
           message: "This app collects location data to work with beacons.");
+      // await BeaconsPlugin.clearDisclosureDialogShowFlag(true);
     }
 
     await BeaconsPlugin.listenToBeacons(beaconEventsController);

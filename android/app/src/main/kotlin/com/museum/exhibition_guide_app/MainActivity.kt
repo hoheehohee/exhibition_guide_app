@@ -15,6 +15,6 @@ class MainActivity: FlutterActivity() {
         super.onResume()
 
         //Stop Background service, app is in foreground
-        BeaconsPlugin.stopBackgroundService(this)
+//        BeaconsPlugin.stopBackgroundService(this)
     }
 }
