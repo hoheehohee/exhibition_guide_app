@@ -313,7 +313,9 @@ class SocialProvider with ChangeNotifier {
   void logout() async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String isSeeGuide = await prefs.getString('isSeeGuide');
     prefs.clear();
+    await prefs.setString('isSeeGuide', isSeeGuide);
 
     _isSocialLogin = false;
     notifyListeners();
