@@ -103,7 +103,7 @@
 	<string>uzV5Vm0JMd</string>
 	<key>kServiceAppName</key>
 	<string>국립일제강제동원역사관</string>
-	<key>kUrlSampleAppUrlScheme</key>
+	<key>kServiceAppUrlScheme</key>
 	<string>naverejfkcifnvidf</string>
 </dict>
 </plist>
