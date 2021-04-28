@@ -102,19 +102,18 @@ class DevicesProvider with ChangeNotifier {
     _isBeaconLoading = true;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     _isRunning = type;
     prefs.setBool("beaconOnOff", type);
-
     if (type) {
       init();
+      await BeaconsPlugin.startMonitoring();
       Timer(Duration(seconds: 10), () {
         if (!_isBeaconLoading) setIsBeaonLoading(false);
       });
     } else {
-      await BeaconsPlugin.stopMonitoring;
+      await BeaconsPlugin.stopMonitoring();
       if (Platform.isAndroid) {
-        await BeaconsPlugin.runInBackground(false);
+        // await BeaconsPlugin.runInBackground(false);
       }
       _isBeaconLoading = false;
     }
@@ -134,22 +133,20 @@ class DevicesProvider with ChangeNotifier {
     }
 
     if (Platform.isAndroid) {
-
-      await BeaconsPlugin.startMonitoring;
+      await BeaconsPlugin.startMonitoring();
       await BeaconsPlugin.runInBackground(true);
+
       _isBeaconLoading = false;
       await BeaconsPlugin.setDisclosureDialogMessage(
           title: "Need Location Permission",
           message: "This app collects location data to work with beacons.");
       // await BeaconsPlugin.clearDisclosureDialogShowFlag(true);
     }
-
     await BeaconsPlugin.listenToBeacons(beaconEventsController);
-
-    // BeaconsPlugin.setDebugLevel(2);
+    BeaconsPlugin.setDebugLevel(2);
     // 비콘 정보
-    await BeaconsPlugin.addRegion("", "fda50693-a4e2-4fb1-afcf-c6eb07647825");
-
+    // await BeaconsPlugin.clearRegions();
+    await BeaconsPlugin.addRegion("test", "fda50693-a4e2-4fb1-afcf-c6eb07647825");
     // fda50693-a4e2-4fb1-afcf-c6eb07647825
     // UUID에 맞는 비콘 연결
     beaconEventsController.stream.listen((data) {
@@ -186,16 +183,17 @@ class DevicesProvider with ChangeNotifier {
       print("##### error: $error");
     });
 
+    await BeaconsPlugin.runInBackground(true);
     if (Platform.isAndroid) {
       BeaconsPlugin.channel.setMethodCallHandler((call) async {
         if (call.method == 'scannerReady') {
-          await BeaconsPlugin.startMonitoring;
+          await BeaconsPlugin.startMonitoring();
           setIsRunning(true);
         }
       });
     } else if (Platform.isIOS) {
       // await BeaconsPlugin.runInBackground(true);
-      await BeaconsPlugin.startMonitoring;
+      await BeaconsPlugin.startMonitoring();
       setIsBeaonLoading(false);
       setIsRunning(true);
     }

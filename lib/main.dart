@@ -22,6 +22,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (context) => LocaleProvider(),
