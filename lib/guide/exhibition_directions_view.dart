@@ -20,6 +20,7 @@ class ExhivitDirectionsView extends StatelessWidget {
   );
   final _kMapCenter = LatLng(35.125163649815526, 129.09232157495816);
 
+
   @override
   Widget build(BuildContext context) {
 
@@ -57,7 +58,8 @@ class ExhivitDirectionsView extends StatelessWidget {
                   child: Container(
                     height: mqh * 0.35,
                     width: double.infinity,
-                    child: GoogleMap(
+                    child:
+                    GoogleMap(
                       mapType: MapType.normal,
                       markers: _createMarker(),
                       initialCameraPosition: point,
@@ -151,11 +153,12 @@ class ExhivitDirectionsView extends StatelessWidget {
       Marker(
           markerId: MarkerId("marker_1"),
           position: _kMapCenter,
-          icon: _markerIcon,
+          // icon: _markerIcon,
           // infoWindow: InfoWindow(title: 'I am a marker!')
       ),
     ].toSet();
   }
+
 
   Widget addressForm(String title, String subTitle, String iconPath) {
     return Row(

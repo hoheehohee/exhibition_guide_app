@@ -36,7 +36,7 @@
 				<string>kakao92171a32648f836ef5946da743070f49</string>
 				<string>naverejfkcifnvidf</string>
 				<string>fb2837155739868665</string>
-				<string>com.googleusercontent.apps.548962810931-93sovutavtfjioludp1v154lpjt8umoc</string>
+				<string>com.googleusercontent.apps.548962810931-uo3kgtn2vmvcqiivsdtuigkimghstrdj</string>
 			</array>
 		</dict>
 		<dict/>
@@ -103,7 +103,7 @@
 	<string>uzV5Vm0JMd</string>
 	<key>kServiceAppName</key>
 	<string>국립일제강제동원역사관</string>
-	<key>kUrlSampleAppUrlScheme</key>
+	<key>kServiceAppUrlScheme</key>
 	<string>naverejfkcifnvidf</string>
 </dict>
 </plist>
