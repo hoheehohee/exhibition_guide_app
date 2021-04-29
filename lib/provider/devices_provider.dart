@@ -134,7 +134,7 @@ class DevicesProvider with ChangeNotifier {
 
     if (Platform.isAndroid) {
       await BeaconsPlugin.startMonitoring();
-      await BeaconsPlugin.runInBackground(true);
+      await BeaconsPlugin.runInBackground(false);
 
       _isBeaconLoading = false;
       await BeaconsPlugin.setDisclosureDialogMessage(
@@ -143,10 +143,13 @@ class DevicesProvider with ChangeNotifier {
       // await BeaconsPlugin.clearDisclosureDialogShowFlag(true);
     }
     await BeaconsPlugin.listenToBeacons(beaconEventsController);
+
     BeaconsPlugin.setDebugLevel(2);
     // 비콘 정보
     // await BeaconsPlugin.clearRegions();
-    await BeaconsPlugin.addRegion("test", "fda50693-a4e2-4fb1-afcf-c6eb07647825");
+    print("111");
+    await BeaconsPlugin.addRegion("", "fda50693-a4e2-4fb1-afcf-c6eb07647825");
+    print("qwer");
     // fda50693-a4e2-4fb1-afcf-c6eb07647825
     // UUID에 맞는 비콘 연결
     beaconEventsController.stream.listen((data) {
@@ -183,7 +186,8 @@ class DevicesProvider with ChangeNotifier {
       print("##### error: $error");
     });
 
-    await BeaconsPlugin.runInBackground(true);
+    // await BeaconsPlugin.runInBackground(true);
+
     if (Platform.isAndroid) {
       BeaconsPlugin.channel.setMethodCallHandler((call) async {
         if (call.method == 'scannerReady') {

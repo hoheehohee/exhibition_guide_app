@@ -75,7 +75,7 @@ class _MainViewState extends State<MainView> {
     Future.microtask(() {
       Provider.of<SocialProvider>(context, listen: false).socialLoginCheck();
       Provider.of<SocialProvider>(context, listen: false).menuChek();
-      // Provider.of<DevicesProvider>(context, listen: false).init();
+      Provider.of<DevicesProvider>(context, listen: false).init();
     });
   }
 
