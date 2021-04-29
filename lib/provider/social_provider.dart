@@ -147,7 +147,7 @@ class SocialProvider with ChangeNotifier {
   //애플
   Future<Map> appleLogin_aos() async {
     try{
-      var redirectURL = "https://lava-hyper-lantana.glitch.me/callbacks/sign_in_with_apple";
+      var redirectURL = "https://www.fomo.or.kr/signInWithApple.do";
       final credential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
@@ -313,7 +313,9 @@ class SocialProvider with ChangeNotifier {
   void logout() async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String isSeeGuide = await prefs.getString('isSeeGuide');
     prefs.clear();
+    await prefs.setString('isSeeGuide', isSeeGuide);
 
     _isSocialLogin = false;
     notifyListeners();
