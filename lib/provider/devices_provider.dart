@@ -257,7 +257,9 @@ class DevicesProvider with ChangeNotifier {
   // qr코드 스캔 함수 (simulator는 지원 안됨)
   void scan() async {
     try {
-      String barcode = await BarcodeScanner.scan();
+      // String barcode = await BarcodeScanner.scan();
+      ScanResult qrScanResult = await BarcodeScanner.scan();
+      String barcode = qrScanResult.rawContent;
       qrCodeDataSel(barcode);
     }catch(e) {
       print("#### scan error: $e");
