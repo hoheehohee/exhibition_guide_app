@@ -43,8 +43,8 @@ class _AgreeDialogViewState extends State<AgreeDialogView> {
     return Material(
       type: MaterialType.transparency,
       child: Container(
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.only(top: 30),
+        padding: EdgeInsets.only(left: 10, right:10),
+        margin: EdgeInsets.only(top: 15),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(

@@ -40,7 +40,7 @@ class _LoginDialogViewState extends State<LoginDialogView> {
         type: MaterialType.transparency,
         child: Container(
           padding: EdgeInsets.all(20),
-          margin: EdgeInsets.only(top: 50),
+          margin: EdgeInsets.only(top: 30),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
