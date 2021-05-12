@@ -280,9 +280,6 @@ class _LoginDialogViewState extends State<LoginDialogView> {
                   MaterialButton(
                       onPressed: () async {
                         var login = await _social.appleLogin_ios();
-                        if(login["email"] == null) {
-                          g_showMyDialog(_locals.etc16, context);
-                        }
                       },
                       color: Colors.black,
                       minWidth: double.infinity,
