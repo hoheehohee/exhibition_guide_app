@@ -293,8 +293,13 @@ class SocialProvider with ChangeNotifier {
             await prefs.setString('email', data["email"]);
             _email = data["email"];
           } else {
-            await prefs.setString('email', data["name"]);
-            _email = data["name"];
+            if(data["name"] != null) {
+              await prefs.setString('email', data["name"]);
+              _email = data["name"];
+            } else {
+              await prefs.setString('email', 'apple');
+              _email = 'apple';
+            }
           }
 
           _isSocialLogin = true;
