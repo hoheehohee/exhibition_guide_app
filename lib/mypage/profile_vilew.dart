@@ -129,7 +129,7 @@ class _ProfileViewState extends State<ProfileView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.asset(getSnsIcon(_social.snsType), fit: BoxFit.fill,  width: 50, height: 50),
+          Image.asset(getSnsIcon(_social.snsType), fit: BoxFit.fill,  width: 24, height: 24),
           SizedBox(width: mqw * 0.03,),
           Text(_social.email, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         ],
