@@ -146,6 +146,7 @@ class ExhibitProvider with ChangeNotifier {
       var map = Map<String, dynamic>.from(jsonData);
       var data = ExhibitListModel.fromJson(map);
       _exhibitList = data.exhibitItem;
+      print("######### $data");
 
       _loading = false;
       notifyListeners();
@@ -163,6 +164,7 @@ class ExhibitProvider with ChangeNotifier {
     try{
       resp = await dio.get(BASE_URL + '/contentsDataDetail.do', queryParameters: {"idx": idx});
       _exhibitItem = jsonDecode(resp.toString());
+      print("######### $idx");
       _loading = false;
       notifyListeners();
     }catch(error) {

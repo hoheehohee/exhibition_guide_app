@@ -216,7 +216,7 @@ class _ExhibitThemeViewState extends State<ExhibitThemeView> {
                       },
                       child: Container(
                         width: double.infinity,
-                        height: mqh * 0.22,
+                        height: mqh * 0.17,
                         padding: EdgeInsets.all(mqw * 0.03),
                         decoration: BoxDecoration(
                             color: Colors.white,
