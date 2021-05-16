@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:exhibition_guide_app/message.dart';
@@ -54,9 +55,11 @@ class MyPageProvider with ChangeNotifier {
       String loginId = prefs.getString('loginId');
       resp = await dio.get(BASE_URL + '/qnaListData.do', queryParameters: { "loginID": loginId });
       final jsonData = json.decode("$resp");
+
       if(jsonData["state"] != "NU") {
         _qnaList = QnaListModel.fromJson(jsonData);
       }
+      print("##### jsonData: $jsonData");
       _loading = false;
       notifyListeners();
     }catch(error) {
