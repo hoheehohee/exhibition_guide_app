@@ -106,7 +106,7 @@ class _QnaListViewState extends State<QnaListView> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(30))),
                                     child: Center(
-                                        child: Text("답변완료",
+                                        child: Text(_locals.mypage11,
                                             style: TextStyle(
                                                 color: Colors.white)))))
                           ]),
