@@ -6,6 +6,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:beacons_plugin/beacons_plugin.dart';
 import 'package:better_player/better_player.dart';
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:exhibition_guide_app/exhibit/exhibit_detail.dart';
 import 'package:exhibition_guide_app/message.dart';
@@ -270,7 +271,7 @@ class DevicesProvider with ChangeNotifier {
     try{
       Response resp;
       Dio dio = new Dio();
-
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(code);
       Map<String, dynamic> result = jsonDecode(resp.toString());
 

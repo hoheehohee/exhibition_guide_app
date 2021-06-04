@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:exhibition_guide_app/mypage/agree_dialog_view.dart';
 import 'package:exhibition_guide_app/mypage/mypage_view.dart';
@@ -223,6 +225,7 @@ class SocialProvider with ChangeNotifier {
   // token 서버로 전송
   Future<String> checkServer(data) async {
     Dio dio = new Dio();
+    if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
     print("##### checkServer ");
     Response resp;
 
@@ -263,6 +266,7 @@ class SocialProvider with ChangeNotifier {
 
   Future<String> joinServer(data) async {
     Dio dio = new Dio();
+    if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
     print("##### joinServer ");
     Response resp;
     Response resp1;
@@ -333,6 +337,7 @@ class SocialProvider with ChangeNotifier {
 
   Future<void> menuChek() async {
     Dio dio = new Dio();
+    if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
     Response resp;
     try {
       resp = await dio.get("${BASE_URL}/reservationOpenMenuData.do");

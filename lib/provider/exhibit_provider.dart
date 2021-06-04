@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:exhibition_guide_app/booking/booking_result_view.dart';
 import 'package:exhibition_guide_app/model/booking_modify_model.dart';
@@ -141,6 +143,7 @@ class ExhibitProvider with ChangeNotifier {
     Response resp;
 
     try {
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(BASE_URL + '/contentsData.do');
       final jsonData = json.decode('{"exhibitItem": $resp}');
       var map = Map<String, dynamic>.from(jsonData);
@@ -162,6 +165,7 @@ class ExhibitProvider with ChangeNotifier {
     Response resp;
 
     try{
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(BASE_URL + '/contentsDataDetail.do', queryParameters: {"idx": idx});
       _exhibitItem = jsonDecode(resp.toString());
       print("######### $idx");
@@ -183,6 +187,7 @@ class ExhibitProvider with ChangeNotifier {
 
     print("###### search: ${{"contentsType": type, "exhibitionType": exhibitionType, "highlightYN": 'Y', "searchString": search}.toString()}");
     try {
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       respOne = await dio.get(
         BASE_URL + '/contentsData.do',
         queryParameters: {"contentsType": type, "exhibitionType": exhibitionType, "highlightYN": 'Y', "searchString": search}
@@ -224,6 +229,7 @@ class ExhibitProvider with ChangeNotifier {
     Response respThree;
 
     try {
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       respOne = await dio.get(
           BASE_URL + '/contentsData.do',
           queryParameters: {"highlightYN": 'Y', "exhibitionCode": exhibitionCode}
@@ -262,6 +268,7 @@ class ExhibitProvider with ChangeNotifier {
     Response resp;
 
     try {
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(BASE_URL + '/exhibitionData.do', queryParameters: {"location": type});
       final jsonData = json.decode('{"data": $resp}');
       _exhibitThemeData = ETM.ExhibitThemeModel.fromJson(jsonData);
@@ -305,6 +312,7 @@ class ExhibitProvider with ChangeNotifier {
     Response respThree;
 
     try {
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       respOne = await dio.get(
           BASE_URL + '/contentsData.do',
           queryParameters: {"contentsType": "B", "highlightYN": 'Y', "searchString": search}
@@ -382,6 +390,7 @@ class ExhibitProvider with ChangeNotifier {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       _bookingRegData.loginID = prefs.getString('loginId');
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(
         BASE_URL + "/applyInsertData.do",
         queryParameters: _bookingRegData.toJson(),
@@ -407,6 +416,7 @@ class ExhibitProvider with ChangeNotifier {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       _bookingRegData.loginID = prefs.getString('loginId');
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(
         BASE_URL + "/applyUpdateData.do",
         queryParameters: _bookingRegData.toModifyJson(),
@@ -431,6 +441,7 @@ class ExhibitProvider with ChangeNotifier {
     final loginID = prefs.getString('loginId');
 
     try{
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(
         BASE_URL + "/applyDetailData.do",
         queryParameters: {"applyID": applyID, "loginID": loginID},
@@ -451,6 +462,7 @@ class ExhibitProvider with ChangeNotifier {
     final loginID = prefs.getString('loginId');
     _loading = true;
     try{
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(
         BASE_URL + "/applyDetailData.do",
         queryParameters: {"applyID": applyID, "loginID": loginID},
@@ -475,6 +487,7 @@ class ExhibitProvider with ChangeNotifier {
       else if (_menuType == "F5") params = {"location": "B", "exhibitionType": "A"};
       else if (_menuType == "plan") params = {"exhibitionType": "A"};
 
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(
         BASE_URL + "/exhibitionData.do",
         queryParameters: params
@@ -500,6 +513,7 @@ class ExhibitProvider with ChangeNotifier {
     _loading = true;
     try{
       Response resp;
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(
           BASE_URL + "/contentsData.do",
           queryParameters: {"exhibitionCode": code}
@@ -522,6 +536,7 @@ class ExhibitProvider with ChangeNotifier {
       String nowDay = DateFormat('dd').format(DateTime.now());
       Response resp;
       Dio dio = new Dio();
+      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(
           BASE_URL + "/reservationOpenDateData.do",
           queryParameters: {"searchMonth": params}
