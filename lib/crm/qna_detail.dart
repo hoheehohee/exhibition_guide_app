@@ -64,9 +64,23 @@ class _QnaDetailState extends State<QnaDetailView> {
             Expanded(
               child: Padding(
                   padding: EdgeInsets.all(mqw * 0.05),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Text(_qna.getValue("questions"), style: TextStyle(fontSize: 20)),
+                  // child: SingleChildScrollView(
+                  //   scrollDirection: Axis.vertical,
+                  //   child: Text(_qna.getValue("questions"), style: TextStyle(fontSize: 20.0)),
+                  // )
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(child: Text(_qna.getValue("questions"), style: TextStyle(fontSize: 20.0))),
+                          ],
+                        ),
+                      ),
+                    ],
                   )
               ),
               flex: 1,
@@ -105,12 +119,22 @@ class _QnaDetailState extends State<QnaDetailView> {
                         Expanded(
                           flex: 1,
                           child: Padding(
-                              padding: EdgeInsets.all(mqh * 0.03),
-                              child: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  child: Text(_qna.getValue("answers"), style: TextStyle(fontSize: 20))
-                              )
-                          ),
+                                padding: EdgeInsets.all(mqh * 0.03),
+                                child: CustomScrollView(
+                                  slivers: [
+                                    SliverFillRemaining(
+                                      hasScrollBody: false,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Expanded(child: Text(_qna.getValue("questions"), style: TextStyle(fontSize: 20.0))),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                            ),
                         )
                       ],
                     ),
