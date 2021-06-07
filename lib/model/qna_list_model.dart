@@ -31,7 +31,7 @@ class Data {
   String questionsDate;
   int qnaID;
   String questions;
-  int rowNumber;
+  double rowNumber;
   String answerDate;
   String answers;
 
