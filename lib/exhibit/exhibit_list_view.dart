@@ -70,7 +70,7 @@ class _ExhibitListViewState extends State<ExhibitListView> {
 
       if (widget.exhibitionCode != null && widget.exhibitionCode.isNotEmpty) {
         print("###### type2");
-        Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataTwoSel(widget.exhibitionCode);
+        Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataTwoSel(widget.exhibitionCode, search: '');
       } else {
         Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataSel(widget.contentType, widget.exhibitionType);
       }
@@ -201,7 +201,13 @@ class _ExhibitListViewState extends State<ExhibitListView> {
           child: TextField(
             style: TextStyle(fontSize: 18),
             onSubmitted: (value) {
-              Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataSel(widget.contentType, widget.exhibitionType, search: value);
+              if (widget.exhibitionCode != null && widget.exhibitionCode.isNotEmpty) {
+                Provider.of<ExhibitProvider>(context, listen: false).setExhibitContentDataTwoSel(widget.exhibitionCode, search: value);
+              } else {
+                Provider.of<ExhibitProvider>(context, listen: false)
+                    .setExhibitContentDataSel(
+                    widget.contentType, widget.exhibitionType, search: value);
+              }
             },
             decoration: InputDecoration(
               contentPadding: EdgeInsets.only(top: 1),

@@ -221,7 +221,7 @@ class ExhibitProvider with ChangeNotifier {
   }
 
   //전시유물, 전시물 목록 API조회
-  Future<void> setExhibitContentDataTwoSel(String exhibitionCode) async {
+  Future<void> setExhibitContentDataTwoSel(String exhibitionCode, { String search }) async {
     _loading = true;
     init();
     Response respOne;
@@ -232,14 +232,15 @@ class ExhibitProvider with ChangeNotifier {
       if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       respOne = await dio.get(
           BASE_URL + '/contentsData.do',
-          queryParameters: {"highlightYN": 'Y', "exhibitionCode": exhibitionCode}
+          queryParameters: {"highlightYN": 'Y', "exhibitionCode": exhibitionCode, "searchString": search}
       );
-      final jsonData = json.decode('{"data": $respOne}');
+
+      final jsonData = json.decode('{"data": []}');
       _exhibitContentDataOne = ExhibitContentsDataModel.fromJson(jsonData);
 
       respTwo = await dio.get(
           BASE_URL + '/contentsData.do',
-          queryParameters: {"contentsType": 'B', "exhibitionCode": exhibitionCode }
+          queryParameters: {"contentsType": 'B', "exhibitionCode": exhibitionCode , "searchString": search}
       );
 
       final jsonDataTwo = json.decode('{"data": $respTwo}');
@@ -247,7 +248,7 @@ class ExhibitProvider with ChangeNotifier {
 
       respThree = await dio.get(
           BASE_URL + '/contentsData.do',
-          queryParameters: {"contentsType": "A", "exhibitionCode": exhibitionCode }
+          queryParameters: {"contentsType": "A", "exhibitionCode": exhibitionCode , "searchString": search}
       );
       final jsonThree = json.decode('{"data": $respThree}');
       _exhibitContentDataThree = ExhibitContentsDataModel.fromJson(jsonThree);
