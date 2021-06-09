@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:exhibition_guide_app/l10n/l10n.dart';
 import 'package:exhibition_guide_app/main/splash_screen.dart';
 import 'package:exhibition_guide_app/provider/devices_provider.dart';
@@ -18,7 +20,16 @@ import 'package:flutter/services.dart';
 void main() {
   KakaoContext.clientId = "92171a32648f836ef5946da743070f49";
   KakaoContext.javascriptClientId = "c58110022ae2050a821d63d28eda67cc";
+  HttpOverrides.global = new MyHttpOverrides();
   runApp(MyApp());
+}
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
 }
 
 class MyApp extends StatelessWidget {
