@@ -49,7 +49,6 @@ class MyPageProvider with ChangeNotifier {
   Future<void> setQnaListSel() async {
     _loading = true;
     Response resp;
-    if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
 
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -82,7 +81,6 @@ class MyPageProvider with ChangeNotifier {
   //1:1 문의 저장
   Future<String> setQna(String text) async {
     Response resp;
-    if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
 
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -98,7 +96,6 @@ class MyPageProvider with ChangeNotifier {
   //1:1 문의 상세
   Future<void> getQna(int qnaId) async {
     Response resp;
-    if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
 
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -130,7 +127,6 @@ class MyPageProvider with ChangeNotifier {
 
     try{
 
-      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(BASE_URL + '/faqData.do', queryParameters: { "lang": _lang});
       final jsonData = json.decode("$resp");
       _faqList = FaqListModel.fromJson(jsonData);
@@ -170,7 +166,6 @@ class MyPageProvider with ChangeNotifier {
       }
 
       if(loginId != null) {
-        if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
         resp = await dio.get(BASE_URL + '/applyListData.do', queryParameters: queryParameters);
         final jsonData = json.decode("$resp");
         print("######## $resp");
@@ -190,7 +185,6 @@ class MyPageProvider with ChangeNotifier {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String loginId = prefs.getString('loginId');
-      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(BASE_URL + '/applyStateUpdateData.do?loginID=${loginId}&applyID=${applyID}');
       var map = Map<String, dynamic>.from(json.decode(resp.toString()));
       return map['state'];
@@ -208,7 +202,6 @@ class MyPageProvider with ChangeNotifier {
       // String loginId = "3se61vr220cidol826d5";
 
       if(loginId != null) {
-        if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
         resp = await dio.get(BASE_URL + '/applyMypageCount.do', queryParameters: { "loginID": loginId});
         _applyCount = ApplyCountModel.fromJson(jsonDecode(resp.toString()));
       }
@@ -227,7 +220,6 @@ class MyPageProvider with ChangeNotifier {
       // String loginId = "3se61vr220cidol826d5";
 
       if(loginId != null) {
-        if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
         resp = await dio.get(BASE_URL + '/applyMypageCount.do', queryParameters: { "loginID": loginId, "monthCount": 3});
         _applyCountLatest = ApplyCountModel.fromJson(jsonDecode(resp.toString()));
       }
@@ -252,7 +244,6 @@ class MyPageProvider with ChangeNotifier {
       else if (language == "zh") _lang = "chn";
       else if (language == "ja") _lang = "jpn";
 
-      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(
         BASE_URL + "/noticeData.do",
         queryParameters: {"lang": _lang, "PAGE_INDEX": 1, "PAGE_ROW": 1000}
@@ -282,7 +273,6 @@ class MyPageProvider with ChangeNotifier {
       else if (language == "zh") _lang = "chn";
       else if (language == "ja") _lang = "jpn";
 
-      if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
       resp = await dio.get(
         BASE_URL + "/noticeDetailData.do",
         queryParameters: {"boardIdx": idx, "lang": _lang}

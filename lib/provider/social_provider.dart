@@ -9,7 +9,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 // import 'package:flutter_kakao_login/flutter_kakao_login.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+// import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -40,6 +41,7 @@ class SocialProvider with ChangeNotifier {
   // 카카오 로그인
   Future<Map> kakaoLogin() async {
     print("##### kakaoLogin");
+
     try {
       String authCode = await AuthCodeClient.instance.request(); // via browser
       AccessTokenResponse token = await AuthApi.instance.issueAccessToken(authCode);
@@ -114,28 +116,26 @@ class SocialProvider with ChangeNotifier {
   // 페이스북 로그인
   Future<Map> facebookLogin() async {
     try {
+      final facebookSignIn = FacebookLogin();
       Dio dio = new Dio();
-      final fb = FacebookLogin();
-      // Log in
-      final res = await fb.logIn(permissions: [
-        FacebookPermission.publicProfile,
-        FacebookPermission.email,
-      ]);
 
-      if (res.status == FacebookLoginStatus.success) {
-        final FacebookAccessToken accessToken = res.accessToken;
-        final resp = await dio.get(
-            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${accessToken.token}');
-        var info = Map<String, dynamic>.from(json.decode(resp.toString()));
-        Map data = {"snsType": "facebook", "email": info['email']};
-        //토큰 디바이스 로컬에 저장
-        if(data["email"] == null){
-          data["check"] = "C";
-        } else {
-          data["check"] = await checkServer(data);
-        }
-        return data;
-        // checkServer(data);
+      // Let's force the users to login using the login dialog based on WebViews. Yay!
+      facebookSignIn.loginBehavior = FacebookLoginBehavior.webViewOnly;
+      final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
+      switch (result.status) {
+        case FacebookLoginStatus.loggedIn:
+          final FacebookAccessToken accessToken = result.accessToken;
+          final resp = await dio.get(
+              'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${accessToken.token}');
+          var info = Map<String, dynamic>.from(json.decode(resp.toString()));
+          Map data = {"snsType": "facebook", "email": info['email']};
+          //토큰 디바이스 로컬에 저장
+          if(data["email"] == null){
+            data["check"] = "C";
+          } else {
+            data["check"] = await checkServer(data);
+          }
+          return data;
       }
     } catch(e) {
       // 화면 전환을 위해 임시로 로그인을 성공으로 함
@@ -149,7 +149,7 @@ class SocialProvider with ChangeNotifier {
   //애플
   Future<Map> appleLogin_aos() async {
     try{
-      var redirectURL = "https://www.fomo.or.kr/signInWithApple.do";
+      var redirectURL = "https://app.fomo.or.kr/signInWithApple.do";
       final credential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
@@ -225,7 +225,6 @@ class SocialProvider with ChangeNotifier {
   // token 서버로 전송
   Future<String> checkServer(data) async {
     Dio dio = new Dio();
-    if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
     print("##### checkServer ");
     Response resp;
 
@@ -266,7 +265,6 @@ class SocialProvider with ChangeNotifier {
 
   Future<String> joinServer(data) async {
     Dio dio = new Dio();
-    if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
     print("##### joinServer ");
     Response resp;
     Response resp1;
@@ -337,7 +335,6 @@ class SocialProvider with ChangeNotifier {
 
   Future<void> menuChek() async {
     Dio dio = new Dio();
-    if (Platform.isAndroid) { (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) { client.badCertificateCallback = (X509Certificate cert, String host, int port) => true; return client; }; }
     Response resp;
     try {
       resp = await dio.get("${BASE_URL}/reservationOpenMenuData.do");
